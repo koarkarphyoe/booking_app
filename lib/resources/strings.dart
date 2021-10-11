@@ -1,0 +1,56 @@
+const welcome = "Welcome!";
+const welcomePageGetStarted = "Get Started";
+const helloWelcomeToGalaxyApp = "Hello! Welcome to Galaxy App.";
+const loginSingInScreenGreetingText = "Welcome back, login to continue";
+const loginText = "Login";
+const registerText = "Register";
+const emailText = "Email";
+const passwordText = "Password";
+const fortgotPasswordText = "Forgot Password?";
+const signInWithFacebookBtnText = "Sign in with facebook";
+const signInWithGoogleBtnText = "Sign in with google";
+const comfirmBtnText = "Confirm";
+const userNameTextField = "UserName";
+const phoneNumberTextField = "Phone Number";
+const createAccountBtnText = "Create Account";
+const nowShowingText = "Now Showing";
+const comingSoonText = "Coming Soon";
+const plotSummaryText = "Plot Summary";
+const castText = "Cast";
+const getYourTicketText = "Get your ticket";
+const awesomeTitleText = "Awesome!";
+const thisIsYourTicketText = "This is your ticket.";
+const bookingNoText = "Booking no";
+const showTimeAndDateText = "Show time - Date";
+const theaterText = "Theater";
+const screenText = "Screen";
+const rowText = "Row";
+const seatText = "Seats";
+const priceText = "Price";
+const comboSetMText = "Combo set M";
+const comboSetLText = "Combo set L";
+const comboFor2Text = "Combo for 2";
+const minusSignInComboSet = "-";
+const plusSignInComboSet = "-";
+const enterPromoCodeText = "Enter promo code";
+const donotHavePromoCodeText = "Don't have any promo code?";
+const getItNowText = "Get it now";
+const subTotalText = "Sub total : ";
+const paymentMethodText = "Payment method";
+const creditCardText = "Credit card";
+const visaMasterJCBText = "Visa,master card,JCB";
+const internetBankingATMText = "Internet Banking (ATM card)";
+const eWalletText = "E-wallet";
+const payPalText = "Paypal";
+const paymentAmount = "Payment amount";
+const cardHolderLarge = "CARD HOLDER";
+const expireText = "EXPIRES";
+const cardNumbarText = "Card number";
+const cardHolder = "Card holder";
+const expirationDate = "Expiration date";
+const cVcText = "CVC";
+const logOutText = "Log out";
+
+
+
+// https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR41Jl9Omn4hm2Kv7j7K4eVqFC16vrZ7zlDk6fXsjmtTbnNNrGuD3ESEOcpdSsg6tP7h4s&usqp=CAU
