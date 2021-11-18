@@ -27,11 +27,11 @@ class MovieChooseTime extends StatelessWidget {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                MovieDateChooseSectionView(),
-                SizedBox(height: marginMedium1X),
-                ChooseItemGridSectionView(),
-                ChooseItemGridSectionView(),
-                ChooseItemGridSectionView(),
+                const MovieDateChooseSectionView(),
+                const SizedBox(height: marginMedium1X),
+                const ChooseItemGridSectionView(),
+                const ChooseItemGridSectionView(),
+                const ChooseItemGridSectionView(),
                 Padding(
                   padding: const EdgeInsets.symmetric(
                       horizontal: marginMedium, vertical: marginMedium2X),
@@ -86,7 +86,7 @@ class ChooseItemGridSectionView extends StatelessWidget {
                 border: Border.all(width: 1, color: Colors.grey),
                 borderRadius: BorderRadius.circular(5),
               ),
-              child: Center(child: Text("2D")),
+              child: const Center(child: Text("2D")),
             );
           },
         ),
