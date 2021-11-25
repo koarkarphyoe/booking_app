@@ -1,12 +1,47 @@
 import 'package:flutter/material.dart';
+import 'package:student_app/data/model/data_models.dart';
+import 'package:student_app/data/model/data_models_impl.dart';
+import 'package:student_app/network/api_constants.dart';
+import 'package:student_app/network/response/email_response.dart';
 import 'package:student_app/resources/colors.dart';
 import 'package:student_app/resources/dimens.dart';
 import 'package:student_app/resources/strings.dart';
 import 'package:student_app/widgets/title_text.dart';
 import 'package:student_app/widgets/title_text_bold.dart';
 
-class HomePage extends StatelessWidget {
-  const HomePage({Key? key}) : super(key: key);
+class HomePage extends StatefulWidget {
+  
+
+  final String email;
+  final String password;
+  const HomePage(this.email, this.password);
+
+  @override
+  State<HomePage> createState() => _HomePageState(email,password);
+}
+
+class _HomePageState extends State<HomePage> {
+//   final GlobalKey<ScaffoldState> _drawerKey = GlobalKey();
+//  void _openDrawer() {
+//     _drawerKey.currentState!.openDrawer();
+//   }
+
+  EmailResponse? mUser;
+  final String email;
+  final String password;
+
+  DataModels userModels = DataModelsImpl();
+
+  _HomePageState(this.email, this.password);
+
+  @override
+  void initState() {
+    userModels.postLoginWithEmail(email,password)?.then((value) {
+      setState(() {
+        mUser = value;
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +72,7 @@ class HomePage extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  const DrawerHeaderSectionView(),
+                  DrawerHeaderSectionView(mUser: mUser),
                   Column(
                     children: menuItems.map((menu) {
                       return Container(
@@ -83,9 +118,9 @@ class HomePage extends StatelessWidget {
 }
 
 class DrawerHeaderSectionView extends StatelessWidget {
-  const DrawerHeaderSectionView({
-    Key? key,
-  }) : super(key: key);
+  final EmailResponse? mUser;
+
+  const DrawerHeaderSectionView({required this.mUser});
 
   @override
   Widget build(BuildContext context) {
@@ -94,10 +129,11 @@ class DrawerHeaderSectionView extends StatelessWidget {
         const SizedBox(
           height: marginMediumXXLarge,
         ),
-        const CircleAvatar(
+        CircleAvatar(
           radius: 25,
-          backgroundImage: NetworkImage(
-              "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR41Jl9Omn4hm2Kv7j7K4eVqFC16vrZ7zlDk6fXsjmtTbnNNrGuD3ESEOcpdSsg6tP7h4s&usqp=CAU"),
+          backgroundImage: NetworkImage("$baseUrl${mUser!.data!.profileImage}"
+              // "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR41Jl9Omn4hm2Kv7j7K4eVqFC16vrZ7zlDk6fXsjmtTbnNNrGuD3ESEOcpdSsg6tP7h4s&usqp=CAU"
+              ),
         ),
         const SizedBox(
           width: marginMedium,
@@ -105,15 +141,15 @@ class DrawerHeaderSectionView extends StatelessWidget {
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const TitleTextBold("Lily Johnson", textSize: textRegular1X),
+            TitleTextBold("${mUser!.data!.name}", textSize: textRegular1X),
             Row(
-              children: const [
+              children: [
                 TitleText(
-                  "lilyjohnson@gmail.com",
+                  "${mUser!.data!.email}",
                   textSize: textRegular,
                 ),
-                SizedBox(width: marginMedium1X),
-                TitleText(
+                const SizedBox(width: marginMedium1X),
+                const TitleText(
                   "Edit",
                   textSize: textRegular,
                 ),

@@ -8,8 +8,15 @@ import 'package:student_app/widgets/title_and_text_field.dart';
 import 'package:student_app/widgets/title_text.dart';
 import 'package:student_app/widgets/title_text_bold.dart';
 
-class PaymentCardPage extends StatelessWidget {
+class PaymentCardPage extends StatefulWidget {
   const PaymentCardPage({Key? key}) : super(key: key);
+
+  @override
+  State<PaymentCardPage> createState() => _PaymentCardPageState();
+}
+
+class _PaymentCardPageState extends State<PaymentCardPage> {
+  TextEditingController textController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -54,15 +61,15 @@ class PaymentCardPage extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const TitleAndTextFieldView(cardNumbarText),
+                  TitleAndTextFieldView(cardNumbarText, textController),
                   const SizedBox(
                     height: marginMedium1X,
                   ),
-                  const TitleAndTextFieldView(cardHolder),
+                  TitleAndTextFieldView(cardHolder, textController),
                   const SizedBox(
                     height: marginMedium1X,
                   ),
-                  const ExpirationDateAndCVC(),
+                  ExpirationDateAndCVC(textController),
                   const SizedBox(
                     height: marginMedium1X,
                   ),
@@ -114,20 +121,19 @@ class AddNewCard extends StatelessWidget {
 }
 
 class ExpirationDateAndCVC extends StatelessWidget {
-  const ExpirationDateAndCVC({
-    Key? key,
-  }) : super(key: key);
+  final TextEditingController textController;
+  const ExpirationDateAndCVC(this.textController);
 
   @override
   Widget build(BuildContext context) {
     return Row(
-      children: const [
+      children: [
         Expanded(
-          child: TitleAndTextFieldView(expirationDate),
+          child: TitleAndTextFieldView(expirationDate, textController),
         ),
-        SizedBox(width: marginMedium1X),
+        const SizedBox(width: marginMedium1X),
         Flexible(
-          child: TitleAndTextFieldView(cVcText),
+          child: TitleAndTextFieldView(cVcText, textController),
         ),
       ],
     );

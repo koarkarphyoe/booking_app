@@ -1,7 +1,7 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables
 
 import 'package:flutter/material.dart';
-import 'package:student_app/data.vos/movie_seat_vo.dart';
+import 'package:student_app/data/vos/movie_seat_vo.dart';
 import 'package:student_app/dummy/dummy_data.dart';
 import 'package:student_app/itemsview/movie_seat_item_view.dart';
 import 'package:student_app/resources/colors.dart';
@@ -57,7 +57,7 @@ class MovieSeatsSectionView extends StatelessWidget {
       physics: const NeverScrollableScrollPhysics(),
       shrinkWrap: true,
       padding: const EdgeInsets.symmetric(horizontal: marginSmall),
-      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 10, childAspectRatio: 1),
       itemBuilder: (context, index) {
         return MovieSeatItemView(_movieSeats[index]);

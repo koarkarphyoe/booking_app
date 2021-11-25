@@ -4,7 +4,8 @@ import 'package:student_app/resources/dimens.dart';
 
 class TitleAndTextFieldView extends StatelessWidget {
   final String textTitle;
-  const TitleAndTextFieldView(this.textTitle);
+  final TextEditingController textController;
+  const TitleAndTextFieldView(this.textTitle,this.textController);
 
   @override
   Widget build(BuildContext context) {
@@ -16,11 +17,12 @@ class TitleAndTextFieldView extends StatelessWidget {
           style: const TextStyle(
               color: paymentCardIconColor, fontSize: textRegular1X),
         ),
-        const TextField(
-            decoration: InputDecoration(
+        TextField(
+            controller: textController,
+            decoration: const InputDecoration(
               hintStyle: TextStyle(),
             ),
-            style: TextStyle(color: Colors.black)),
+            style: const TextStyle(color: Colors.black)),
       ],
     );
   }

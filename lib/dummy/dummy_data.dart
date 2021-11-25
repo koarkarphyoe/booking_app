@@ -1,4 +1,4 @@
-import 'package:student_app/data.vos/movie_seat_vo.dart';
+import 'package:student_app/data/vos/movie_seat_vo.dart';
 import 'package:student_app/utils/constants.dart';
 
 List<MovieSeatVO> dummyMovieSeats = [
