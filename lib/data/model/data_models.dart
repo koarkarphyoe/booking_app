@@ -20,5 +20,5 @@ abstract class DataModels {
   //Database
 
   Future<UserVO>? getUserInfoFromDatabase();
-  Future<String> getTokenFromDatabase();
+  Future<String>? getTokenFromDatabase();
 }

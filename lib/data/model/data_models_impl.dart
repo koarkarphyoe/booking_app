@@ -50,7 +50,7 @@ class DataModelsImpl extends DataModels {
   }
 
   @override
-  Future<String> getTokenFromDatabase() {
+  Future<String>? getTokenFromDatabase() {
     return Future.value(tokenDao.getToken());
   }
 }

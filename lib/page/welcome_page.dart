@@ -109,7 +109,7 @@ class _WelcomePageState extends State<WelcomePage> {
   void _loginToApiAndNavigateToHomePage(
       BuildContext context, String email, String password) {
     userModels.postLoginWithEmail(email, password)?.then((value) {
-      if (value.code== 400) {
+      if (value.code == 400) {
         showDialog(
             context: context,
             builder: (context) {

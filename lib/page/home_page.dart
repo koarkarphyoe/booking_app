@@ -31,6 +31,7 @@ class _HomePageState extends State<HomePage> {
   // call network data again from this page
   @override
   void initState() {
+
     userModels.getUserInfoFromDatabase()?.then((value) {
       setState(() {
         mUser = value;
