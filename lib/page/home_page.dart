@@ -4,7 +4,6 @@ import 'package:student_app/data/model/data_models_impl.dart';
 import 'package:student_app/data/vos/user_vo.dart';
 import 'package:student_app/itemsview/horizontal_movie_list_view.dart';
 import 'package:student_app/network/api_constants.dart';
-import 'package:student_app/network/response/email_response.dart';
 import 'package:student_app/resources/colors.dart';
 import 'package:student_app/resources/dimens.dart';
 import 'package:student_app/resources/strings.dart';
@@ -27,14 +26,27 @@ class _HomePageState extends State<HomePage> {
   DataModels userModels = DataModelsImpl();
 
   UserVO? mUser;
+  String? profileImage;
+  String? token;
 
   // call network data again from this page
   @override
   void initState() {
-
     userModels.getUserInfoFromDatabase()?.then((value) {
       setState(() {
         mUser = value;
+      });
+    });
+
+    userModels.getProfileImageFromDatabase()?.then((value) {
+      setState(() {
+        profileImage = value;
+      });
+    });
+
+    userModels.getTokenFromDatabase()?.then((value) {
+      setState(() {
+        token = value;
       });
     });
   }
@@ -78,7 +90,7 @@ class _HomePageState extends State<HomePage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  DrawerHeaderSectionView(userVO: mUser),
+                  DrawerHeaderSectionView(profileImage, userVO: mUser),
                   Column(
                     children: menuItems.map((menu) {
                       return Container(
@@ -124,7 +136,7 @@ class _HomePageState extends State<HomePage> {
           Padding(
             padding:
                 const EdgeInsets.only(left: marginMedium, top: marginMedium),
-            child: UserNameAndPhoto(mUser),
+            child: UserNameAndPhoto(profileImage, mUser),
           ),
           const SizedBox(height: marginMedium),
           const HorizontalMovieListView(nowShowingText),
@@ -136,8 +148,10 @@ class _HomePageState extends State<HomePage> {
 }
 
 class UserNameAndPhoto extends StatelessWidget {
+  final String? profileImage;
   final UserVO? userVO;
-  const UserNameAndPhoto(this.userVO, {Key? key}) : super(key: key);
+  const UserNameAndPhoto(this.profileImage, this.userVO, {Key? key})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -156,13 +170,14 @@ class UserNameAndPhoto extends StatelessWidget {
         //     ),
         //   ),
         // ),
-        CircleAvatar(
-          // ignore: prefer_if_null_operators, unnecessary_null_comparison
-          backgroundImage: NetworkImage(imageUrl != null
-              ? imageUrl
-              : "https://tmba.padc.com.mm/img/avatar3.png"),
+        Container(
+          child: (profileImage != null)
+              ? CircleAvatar(
+                  radius: 25,
+                  backgroundImage: NetworkImage(profileImage ?? imageUrl),
+                )
+              : const CircularProgressIndicator(),
         ),
-
         const SizedBox(width: marginMedium),
         TitleTextBold(
           "Hi ${userVO?.name}",
@@ -175,9 +190,11 @@ class UserNameAndPhoto extends StatelessWidget {
 }
 
 class DrawerHeaderSectionView extends StatelessWidget {
+  final String? profileImage;
   final UserVO? userVO;
 
-  const DrawerHeaderSectionView({required this.userVO});
+  DrawerHeaderSectionView(this.profileImage, {Key? key, required this.userVO})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -187,11 +204,13 @@ class DrawerHeaderSectionView extends StatelessWidget {
         const SizedBox(
           height: marginMediumXXLarge,
         ),
-        CircleAvatar(
-          radius: 25,
-            backgroundImage: NetworkImage(imageUrl != null
-              ? imageUrl
-              : "https://tmba.padc.com.mm/img/avatar3.png"),
+        Container(
+          child: (profileImage != null)
+              ? CircleAvatar(
+                  radius: 25,
+                  backgroundImage: NetworkImage(profileImage ?? imageUrl),
+                )
+              : const CircularProgressIndicator(),
         ),
         const SizedBox(
           width: marginMedium,
