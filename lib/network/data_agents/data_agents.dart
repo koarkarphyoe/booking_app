@@ -2,6 +2,10 @@ import 'package:student_app/data/vos/user_vo.dart';
 import 'package:student_app/network/response/email_response.dart';
 
 abstract class DataAgents {
+
+
+ 
+
   Future<EmailResponse>? postRegisterWithEmail(
       String name,
       String email,
@@ -10,8 +14,5 @@ abstract class DataAgents {
       String facebookAccessToken,
       String googleAccessToken);
 
-  Future<EmailResponse>? postLoginWithEmail(
-    String email,
-    String password,
-  );
+  Future<EmailResponse>? postLoginWithEmail(String email, String password);
 }

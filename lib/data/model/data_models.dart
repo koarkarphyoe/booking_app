@@ -2,6 +2,8 @@ import 'package:student_app/data/vos/user_vo.dart';
 import 'package:student_app/network/response/email_response.dart';
 
 abstract class DataModels {
+  // Network
+
   Future<EmailResponse>? postRegisterWithEmail(
       String name,
       String email,
@@ -15,5 +17,8 @@ abstract class DataModels {
     String password,
   );
 
- 
+  //Database
+
+  Future<UserVO>? getUserInfoFromDatabase();
+  Future<String> getTokenFromDatabase();
 }

@@ -1,3 +1,4 @@
+import 'package:student_app/data/vos/user_vo.dart';
 import 'package:student_app/network/register_api.dart';
 import 'package:dio/dio.dart';
 import 'package:student_app/network/response/email_response.dart';

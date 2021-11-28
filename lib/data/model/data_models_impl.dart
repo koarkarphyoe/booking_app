@@ -3,6 +3,8 @@ import 'package:student_app/data/vos/user_vo.dart';
 import 'package:student_app/network/data_agents/data_agents.dart';
 import 'package:student_app/network/data_agents/data_agents_impl.dart';
 import 'package:student_app/network/response/email_response.dart';
+import 'package:student_app/persistence/daos/token_dao.dart';
+import 'package:student_app/persistence/daos/user_dao.dart';
 
 class DataModelsImpl extends DataModels {
   DataAgents mDataAgent = DataAgentsImpl();
@@ -14,6 +16,9 @@ class DataModelsImpl extends DataModels {
   }
 
   DataModelsImpl._internal();
+
+  UserDao userDao = UserDao();
+  TokenDao tokenDao = TokenDao();
 
   @override
   Future<EmailResponse>? postRegisterWithEmail(
@@ -29,6 +34,23 @@ class DataModelsImpl extends DataModels {
 
   @override
   Future<EmailResponse>? postLoginWithEmail(String email, String password) {
-    return mDataAgent.postLoginWithEmail(email, password);
+    return mDataAgent.postLoginWithEmail(email, password)?.then((value) async {
+      userDao.saveUserInfo(value.data);
+      //save token to Database(Hive)
+      tokenDao.saveToken(value.token);
+      return Future.value(value);
+    });
+  }
+
+  //Database
+
+  @override
+  Future<UserVO>? getUserInfoFromDatabase() {
+    return Future.value(userDao.getUserInfo());
+  }
+
+  @override
+  Future<String> getTokenFromDatabase() {
+    return Future.value(tokenDao.getToken());
   }
 }

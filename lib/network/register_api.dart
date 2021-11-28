@@ -1,5 +1,6 @@
 import 'package:retrofit/http.dart';
 import 'package:dio/dio.dart';
+import 'package:student_app/data/vos/user_vo.dart';
 import 'package:student_app/network/response/email_response.dart';
 import 'api_constants.dart';
 part 'register_api.g.dart';

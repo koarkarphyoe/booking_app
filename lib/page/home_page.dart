@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:student_app/data/model/data_models.dart';
 import 'package:student_app/data/model/data_models_impl.dart';
+import 'package:student_app/data/vos/user_vo.dart';
+import 'package:student_app/itemsview/horizontal_movie_list_view.dart';
 import 'package:student_app/network/api_constants.dart';
 import 'package:student_app/network/response/email_response.dart';
 import 'package:student_app/resources/colors.dart';
@@ -10,14 +12,10 @@ import 'package:student_app/widgets/title_text.dart';
 import 'package:student_app/widgets/title_text_bold.dart';
 
 class HomePage extends StatefulWidget {
-  
-
-  final String email;
-  final String password;
-  const HomePage(this.email, this.password);
+  const HomePage({Key? key}) : super(key: key);
 
   @override
-  State<HomePage> createState() => _HomePageState(email,password);
+  State<HomePage> createState() => _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
@@ -26,17 +24,14 @@ class _HomePageState extends State<HomePage> {
 //     _drawerKey.currentState!.openDrawer();
 //   }
 
-  EmailResponse? mUser;
-  final String email;
-  final String password;
-
   DataModels userModels = DataModelsImpl();
 
-  _HomePageState(this.email, this.password);
+  UserVO? mUser;
 
+  // call network data again from this page
   @override
   void initState() {
-    userModels.postLoginWithEmail(email,password)?.then((value) {
+    userModels.getUserInfoFromDatabase()?.then((value) {
       setState(() {
         mUser = value;
       });
@@ -59,6 +54,16 @@ class _HomePageState extends State<HomePage> {
           Icons.menu,
           color: Colors.black,
         ),
+        actions: const [
+          Padding(
+            padding: EdgeInsets.only(right: marginMedium),
+            child: Icon(
+              Icons.search,
+              color: Colors.black,
+              size: searchAndMenuIconSize,
+            ),
+          ),
+        ],
         elevation: 0,
       ),
       drawer: SizedBox(
@@ -72,7 +77,7 @@ class _HomePageState extends State<HomePage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  DrawerHeaderSectionView(mUser: mUser),
+                  DrawerHeaderSectionView(userVO: mUser),
                   Column(
                     children: menuItems.map((menu) {
                       return Container(
@@ -113,17 +118,69 @@ class _HomePageState extends State<HomePage> {
           ),
         ),
       ),
+      body: Column(
+        children: [
+          Padding(
+            padding:
+                const EdgeInsets.only(left: marginMedium, top: marginMedium),
+            child: UserNameAndPhoto(mUser),
+          ),
+          const SizedBox(height: marginMedium),
+          const HorizontalMovieListView(nowShowingText),
+          const HorizontalMovieListView(comingSoonText),
+        ],
+      ),
+    );
+  }
+}
+
+class UserNameAndPhoto extends StatelessWidget {
+  final UserVO? userVO;
+  const UserNameAndPhoto(this.userVO, {Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    String imageUrl = "$baseUrl${userVO?.profileImage}";
+    return Row(
+      children: [
+        // Container(
+        //   height: 50.0,
+        //   width: 50.0,
+        //   decoration:  const BoxDecoration(
+        //     shape: BoxShape.circle,
+        //     image: DecorationImage(fit: BoxFit.cover,
+        //       image:NetworkImage(
+        //         "https://6.viki.io/image/9c15adec53ea43dfa3e2ce0c77c83c1f.jpeg?s=900x600&e=t",
+        //       ),
+        //     ),
+        //   ),
+        // ),
+        CircleAvatar(
+          // ignore: prefer_if_null_operators, unnecessary_null_comparison
+          backgroundImage: NetworkImage(imageUrl != null
+              ? imageUrl
+              : "https://tmba.padc.com.mm/img/avatar3.png"),
+        ),
+
+        const SizedBox(width: marginMedium),
+        TitleTextBold(
+          "Hi ${userVO?.name}",
+          textSize: textRegular3X,
+          textColor: Colors.black,
+        )
+      ],
     );
   }
 }
 
 class DrawerHeaderSectionView extends StatelessWidget {
-  final EmailResponse? mUser;
+  final UserVO? userVO;
 
-  const DrawerHeaderSectionView({required this.mUser});
+  const DrawerHeaderSectionView({required this.userVO});
 
   @override
   Widget build(BuildContext context) {
+    String imageUrl = "$baseUrl${userVO?.profileImage}";
     return Row(
       children: [
         const SizedBox(
@@ -131,9 +188,9 @@ class DrawerHeaderSectionView extends StatelessWidget {
         ),
         CircleAvatar(
           radius: 25,
-          backgroundImage: NetworkImage("$baseUrl${mUser!.data!.profileImage}"
-              // "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR41Jl9Omn4hm2Kv7j7K4eVqFC16vrZ7zlDk6fXsjmtTbnNNrGuD3ESEOcpdSsg6tP7h4s&usqp=CAU"
-              ),
+            backgroundImage: NetworkImage(imageUrl != null
+              ? imageUrl
+              : "https://tmba.padc.com.mm/img/avatar3.png"),
         ),
         const SizedBox(
           width: marginMedium,
@@ -141,11 +198,11 @@ class DrawerHeaderSectionView extends StatelessWidget {
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            TitleTextBold("${mUser!.data!.name}", textSize: textRegular1X),
+            TitleTextBold("${userVO?.name}", textSize: textRegular1X),
             Row(
               children: [
                 TitleText(
-                  "${mUser!.data!.email}",
+                  "${userVO?.email}",
                   textSize: textRegular,
                 ),
                 const SizedBox(width: marginMedium1X),
