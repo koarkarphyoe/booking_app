@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:student_app/data/vos/data_vo.dart';
+import 'package:student_app/network/api_constants.dart';
 import 'package:student_app/resources/dimens.dart';
 import 'package:student_app/widgets/title_text_bold.dart';
 
 import 'title_text.dart';
 
 class MovieListView extends StatelessWidget {
-  const MovieListView({Key? key}) : super(key: key);
+  final DataVO? mMovie;
+  const MovieListView(this.mMovie);
 
   @override
   Widget build(BuildContext context) {
@@ -18,21 +21,22 @@ class MovieListView extends StatelessWidget {
           ClipRRect(
             borderRadius: BorderRadius.circular(marginSmall),
             child: Image.network(
-              "https://images-na.ssl-images-amazon.com/images/I/81uiXKV9xYL.__AC_SX300_SY300_QL70_FMwebp_.jpg",
+              "$moviePosterBaseUrl${mMovie!.posterPath.toString()}",
+              // "https://images-na.ssl-images-amazon.com/images/I/81uiXKV9xYL.__AC_SX300_SY300_QL70_FMwebp_.jpg",
               fit: BoxFit.cover,
             ),
           ),
           const SizedBox(height: marginXSmall),
-          const Center(
+          Center(
             child: TitleTextBold(
-              "The Wolverine",
+              mMovie!.originalTitle.toString(),
               textColor: Colors.black,
               textSize: textSmallX,
             ),
           ),
-          const Center(
+          Center(
             child: TitleText(
-              "Adventure/Sci-fi -3h 2m",
+              mMovie!.genres.toString(),
               textSize: textSmall,
               textColor: Colors.black26,
             ),

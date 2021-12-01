@@ -6,11 +6,10 @@ part of 'error_response.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-ErrorResponse _$ErrorResponseFromJson(Map<String, dynamic> json) {
-  return ErrorResponse(
-    json['message'] as String,
-  );
-}
+ErrorResponse _$ErrorResponseFromJson(Map<String, dynamic> json) =>
+    ErrorResponse(
+      json['message'] as String,
+    );
 
 Map<String, dynamic> _$ErrorResponseToJson(ErrorResponse instance) =>
     <String, dynamic>{

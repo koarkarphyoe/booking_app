@@ -1,7 +1,9 @@
+import 'package:student_app/data/vos/data_vo.dart';
 import 'package:student_app/data/vos/user_vo.dart';
 import 'package:student_app/network/register_api.dart';
 import 'package:dio/dio.dart';
 import 'package:student_app/network/response/email_response.dart';
+import 'package:student_app/network/response/movie_response.dart';
 
 import 'data_agents.dart';
 
@@ -43,6 +45,15 @@ class DataAgentsImpl extends DataAgents {
         ?.postLoginWithEmail(email, password)
         .asStream()
         .map((event) => event)
+        .first;
+  }
+
+  @override
+  Future<List<DataVO>?>? getNowShowingMovie(String status) {
+    return rApi
+        ?.getNowShowingMovie(status)
+        .asStream()
+        .map((event) => event.data)
         .first;
   }
 }

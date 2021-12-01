@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:student_app/data/model/data_models.dart';
 import 'package:student_app/data/model/data_models_impl.dart';
+import 'package:student_app/data/vos/data_vo.dart';
 import 'package:student_app/data/vos/user_vo.dart';
 import 'package:student_app/itemsview/horizontal_movie_list_view.dart';
 import 'package:student_app/network/api_constants.dart';
@@ -28,10 +29,17 @@ class _HomePageState extends State<HomePage> {
   UserVO? mUser;
   String? profileImage;
   String? token;
+  List<DataVO>? movie;
 
   // call network data again from this page
   @override
   void initState() {
+    userModels.getNowShowingMovie(statusValue1)?.then((value) {
+      setState(() {
+        movie = value;
+      });
+    });
+
     userModels.getUserInfoFromDatabase()?.then((value) {
       setState(() {
         mUser = value;
@@ -131,17 +139,19 @@ class _HomePageState extends State<HomePage> {
           ),
         ),
       ),
-      body: Column(
-        children: [
-          Padding(
-            padding:
-                const EdgeInsets.only(left: marginMedium, top: marginMedium),
-            child: UserNameAndPhoto(profileImage, mUser),
-          ),
-          const SizedBox(height: marginMedium),
-          const HorizontalMovieListView(nowShowingText),
-          const HorizontalMovieListView(comingSoonText),
-        ],
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            Padding(
+              padding:
+                  const EdgeInsets.only(left: marginMedium, top: marginMedium),
+              child: UserNameAndPhoto(profileImage, mUser),
+            ),
+            const SizedBox(height: marginMedium),
+            HorizontalMovieListView(nowShowingText, movie),
+            HorizontalMovieListView(comingSoonText, movie),
+          ],
+        ),
       ),
     );
   }

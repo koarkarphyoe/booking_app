@@ -1,4 +1,5 @@
 import 'package:student_app/data/model/data_models.dart';
+import 'package:student_app/data/vos/data_vo.dart';
 import 'package:student_app/data/vos/user_vo.dart';
 import 'package:student_app/network/data_agents/data_agents.dart';
 import 'package:student_app/network/data_agents/data_agents_impl.dart';
@@ -61,5 +62,10 @@ class DataModelsImpl extends DataModels {
   @override
   Future<String>? getProfileImageFromDatabase() {
     return Future.value(profileImageDao.getProfileImage());
+  }
+
+  @override
+  Future<List<DataVO>?>? getNowShowingMovie(String status) {
+    return mDataAgent.getNowShowingMovie(status);
   }
 }

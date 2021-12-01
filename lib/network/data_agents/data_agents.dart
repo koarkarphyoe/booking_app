@@ -1,4 +1,4 @@
-import 'package:student_app/data/vos/user_vo.dart';
+import 'package:student_app/data/vos/data_vo.dart';
 import 'package:student_app/network/response/email_response.dart';
 
 abstract class DataAgents {
@@ -11,4 +11,6 @@ abstract class DataAgents {
       String googleAccessToken);
 
   Future<EmailResponse>? postLoginWithEmail(String email, String password);
+
+  Future<List<DataVO>?>? getNowShowingMovie(String status);
 }

@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:student_app/data/vos/data_vo.dart';
 import 'package:student_app/resources/dimens.dart';
-import 'package:student_app/resources/strings.dart';
 import 'package:student_app/widgets/movie_list_view.dart';
 import 'package:student_app/widgets/title_text_bold.dart';
+
 class HorizontalMovieListView extends StatelessWidget {
+  final List<DataVO>? mMovie;
   final String titleText;
-  const HorizontalMovieListView(this.titleText,{
-    Key? key,
-  }) : super(key: key);
+  const HorizontalMovieListView(this.titleText, this.mMovie);
 
   @override
   Widget build(BuildContext context) {
@@ -15,14 +15,15 @@ class HorizontalMovieListView extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
       children: [
-         Padding(
+        Padding(
           padding: const EdgeInsets.only(left: marginMedium),
           child: TitleTextBold(
             titleText,
-            textColor: Colors.black,textSize: textRegular3X,
+            textColor: Colors.black,
+            textSize: textRegular3X,
           ),
         ),
-        const SizedBox(height: 16),
+        const SizedBox(height: marginMedium),
         SizedBox(
           height: movieListViewHeight,
           child: ListView.builder(
@@ -30,7 +31,7 @@ class HorizontalMovieListView extends StatelessWidget {
             scrollDirection: Axis.horizontal,
             itemCount: 10,
             itemBuilder: (BuildContext context, int index) {
-              return const MovieListView();
+              return MovieListView(mMovie?[index]);
             },
           ),
         ),

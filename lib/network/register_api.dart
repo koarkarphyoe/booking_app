@@ -1,7 +1,7 @@
 import 'package:retrofit/http.dart';
 import 'package:dio/dio.dart';
-import 'package:student_app/data/vos/user_vo.dart';
 import 'package:student_app/network/response/email_response.dart';
+import 'package:student_app/network/response/movie_response.dart';
 import 'api_constants.dart';
 part 'register_api.g.dart';
 
@@ -27,5 +27,10 @@ abstract class RegisterApi {
   Future<EmailResponse> postLoginWithEmail(
     @Field(emailParam) String email,
     @Field(passwordParam) String password,
+  );
+
+  @GET(getNowShowingMovieEndPoint)
+  Future<MovieResponse> getNowShowingMovie(
+    @Query(statusKey) String status,
   );
 }
