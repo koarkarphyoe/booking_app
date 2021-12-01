@@ -68,4 +68,9 @@ class DataModelsImpl extends DataModels {
   Future<List<DataVO>?>? getNowShowingMovie(String status) {
     return mDataAgent.getNowShowingMovie(status);
   }
+
+  @override
+  Future<List<DataVO>?>? getComingSoonMovie(String status) {
+    return mDataAgent.getCommingSoonMovie(status);
+  }
 }

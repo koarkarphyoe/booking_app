@@ -12,7 +12,6 @@ import 'package:student_app/widgets/title_text.dart';
 import 'package:student_app/widgets/title_text_bold.dart';
 
 class HomePage extends StatefulWidget {
-  //First page
   const HomePage({Key? key}) : super(key: key);
 
   @override
@@ -31,13 +30,20 @@ class _HomePageState extends State<HomePage> {
   String? profileImage;
   String? token;
   List<DataVO>? movie;
+  List<DataVO>? comingSoonMovie;
 
   // call network data again from this page
   @override
   void initState() {
-    userModels.getNowShowingMovie(statusValue1)?.then((value) {
+    userModels.getNowShowingMovie("current")?.then((value) {
       setState(() {
         movie = value;
+      });
+    });
+
+    userModels.getComingSoonMovie("comingsoon")?.then((value) {
+      setState(() {
+        comingSoonMovie = value;
       });
     });
 
@@ -150,7 +156,7 @@ class _HomePageState extends State<HomePage> {
             ),
             const SizedBox(height: marginMedium),
             HorizontalMovieListView(nowShowingText, movie),
-            HorizontalMovieListView(comingSoonText, movie),
+            HorizontalMovieListView(comingSoonText, comingSoonMovie),
           ],
         ),
       ),
@@ -204,7 +210,8 @@ class DrawerHeaderSectionView extends StatelessWidget {
   final String? profileImage;
   final UserVO? userVO;
 
-  const DrawerHeaderSectionView(this.profileImage, {Key? key, required this.userVO})
+  const DrawerHeaderSectionView(this.profileImage,
+      {Key? key, required this.userVO})
       : super(key: key);
 
   @override

@@ -19,6 +19,7 @@ abstract class DataModels {
   );
 
   Future<List<DataVO>?>? getNowShowingMovie(String status);
+  Future<List<DataVO>?>? getComingSoonMovie(String status);
 
   //Database
 

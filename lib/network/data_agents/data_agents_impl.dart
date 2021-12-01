@@ -1,5 +1,6 @@
 import 'package:student_app/data/vos/data_vo.dart';
 import 'package:student_app/data/vos/user_vo.dart';
+import 'package:student_app/network/api_constants.dart';
 import 'package:student_app/network/register_api.dart';
 import 'package:dio/dio.dart';
 import 'package:student_app/network/response/email_response.dart';
@@ -51,7 +52,16 @@ class DataAgentsImpl extends DataAgents {
   @override
   Future<List<DataVO>?>? getNowShowingMovie(String status) {
     return rApi
-        ?.getNowShowingMovie(status)
+        ?.getNowShowingMovie(statusValue1) //for NowShowing api
+        .asStream()
+        .map((event) => event.data)
+        .first;
+  }
+
+  @override
+  Future<List<DataVO>?>? getCommingSoonMovie(String status) {
+    return rApi
+        ?.getNowShowingMovie(statusValue2)
         .asStream()
         .map((event) => event.data)
         .first;

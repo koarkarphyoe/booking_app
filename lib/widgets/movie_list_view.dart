@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:student_app/data/vos/data_vo.dart';
+import 'package:student_app/network/api_constants.dart';
 import 'package:student_app/resources/dimens.dart';
 import 'package:student_app/widgets/title_text_bold.dart';
 
@@ -11,12 +12,6 @@ class MovieListView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final String imageUrl = "${mMovie?.posterPath.toString()}";
-    final String imageUrl2 =
-        "https://images-na.ssl-images-amazon.com/images/I/81uiXKV9xYL.__AC_SX300_SY300_QL70_FMwebp_.jpg";
-
-    final String imageUrl1 = (imageUrl != null) ? imageUrl : imageUrl2;
-
     return Container(
       margin: const EdgeInsets.only(right: marginMedium),
       width: movieListViewWidth,
@@ -26,7 +21,7 @@ class MovieListView extends StatelessWidget {
           ClipRRect(
             borderRadius: BorderRadius.circular(marginSmall),
             child: Image.network(
-              imageUrl1,
+              "$moviePosterBaseUrl${mMovie?.posterPath.toString()}",
               fit: BoxFit.cover,
             ),
           ),

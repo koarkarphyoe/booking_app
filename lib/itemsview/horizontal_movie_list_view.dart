@@ -4,7 +4,6 @@ import 'package:student_app/resources/dimens.dart';
 import 'package:student_app/widgets/movie_list_view.dart';
 import 'package:student_app/widgets/title_text_bold.dart';
 
-
 class HorizontalMovieListView extends StatelessWidget {
   final List<DataVO>? mMovie;
   final String titleText;
@@ -27,14 +26,18 @@ class HorizontalMovieListView extends StatelessWidget {
         const SizedBox(height: marginMedium),
         SizedBox(
           height: movieListViewHeight,
-          child: ListView.builder(
-            padding: const EdgeInsets.only(left: marginMedium),
-            scrollDirection: Axis.horizontal,
-            itemCount: 10,
-            itemBuilder: (BuildContext context, int index) {
-              return MovieListView(mMovie?[index]);
-            },
-          ),
+          child: (mMovie != null)
+              ? ListView.builder(
+                  padding: const EdgeInsets.only(left: marginMedium),
+                  scrollDirection: Axis.horizontal,
+                  itemCount: 10,
+                  itemBuilder: (BuildContext context, int index) {
+                    return MovieListView(mMovie?[index]);
+                  },
+                )
+              : const Center(
+                  child: CircularProgressIndicator(),
+                ),
         ),
       ],
     );
