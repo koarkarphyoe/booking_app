@@ -120,7 +120,7 @@ class _WelcomePageState extends State<WelcomePage> {
       } else {
         debugPrint("User ==> ${value.data}");
         Navigator.push(context, MaterialPageRoute(builder: (context) {
-          return HomePage();
+          return const HomePage();
         }));
       }
     }).catchError((error) {

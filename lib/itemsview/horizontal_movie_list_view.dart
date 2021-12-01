@@ -4,6 +4,7 @@ import 'package:student_app/resources/dimens.dart';
 import 'package:student_app/widgets/movie_list_view.dart';
 import 'package:student_app/widgets/title_text_bold.dart';
 
+
 class HorizontalMovieListView extends StatelessWidget {
   final List<DataVO>? mMovie;
   final String titleText;

@@ -12,6 +12,7 @@ import 'package:student_app/widgets/title_text.dart';
 import 'package:student_app/widgets/title_text_bold.dart';
 
 class HomePage extends StatefulWidget {
+  //First page
   const HomePage({Key? key}) : super(key: key);
 
   @override
@@ -203,7 +204,7 @@ class DrawerHeaderSectionView extends StatelessWidget {
   final String? profileImage;
   final UserVO? userVO;
 
-  DrawerHeaderSectionView(this.profileImage, {Key? key, required this.userVO})
+  const DrawerHeaderSectionView(this.profileImage, {Key? key, required this.userVO})
       : super(key: key);
 
   @override
