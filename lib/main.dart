@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:student_app/data/vos/data_vo.dart';
 import 'package:student_app/page/splash_screen_page.dart';
 import 'package:student_app/persistence/hive_constants.dart';
-
 
 import 'data/vos/card_vo.dart';
 import 'data/vos/user_vo.dart';
@@ -39,6 +39,7 @@ void main() async {
   await Hive.openBox<UserVO>(boxNameUserVO);
   await Hive.openBox<CardVO>(boxNameCardVO);
   await Hive.openBox<String>(boxNameTokenVO);
+  await Hive.openBox<DataVO>(boxNameDataVO);
 
   runApp(const MyApp());
 }

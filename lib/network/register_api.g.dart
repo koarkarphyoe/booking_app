@@ -62,15 +62,15 @@ class _RegisterApi implements RegisterApi {
   }
 
   @override
-  Future<MovieResponse> getNowShowingMovie(statusKey) async {
+  Future<MovieResponse> getNowShowingMovie(status) async {
     const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{r'status': statusKey};
+    final queryParameters = <String, dynamic>{r'status': status};
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<MovieResponse>(
             Options(method: 'GET', headers: _headers, extra: _extra)
-                .compose(_dio.options, '/api/v1/movies?status=current',
+                .compose(_dio.options, '/api/v1/movies',
                     queryParameters: queryParameters, data: _data)
                 .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = MovieResponse.fromJson(_result.data!);
