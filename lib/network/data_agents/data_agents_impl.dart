@@ -59,7 +59,7 @@ class DataAgentsImpl extends DataAgents {
   }
 
   @override
-  Future<List<DataVO>?>? getCommingSoonMovie(String status) {
+  Future<List<DataVO>?>? getComingSoon(String status) {
     return rApi
         ?.getNowShowingMovie(statusValue2)
         .asStream()

@@ -30,7 +30,7 @@ class HorizontalMovieListView extends StatelessWidget {
               ? ListView.builder(
                   padding: const EdgeInsets.only(left: marginMedium),
                   scrollDirection: Axis.horizontal,
-                  itemCount: 10,
+                  itemCount: mMovie?.length,
                   itemBuilder: (BuildContext context, int index) {
                     return MovieListView(mMovie?[index]);
                   },
