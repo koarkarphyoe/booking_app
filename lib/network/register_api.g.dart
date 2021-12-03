@@ -62,7 +62,7 @@ class _RegisterApi implements RegisterApi {
   }
 
   @override
-  Future<MovieResponse> getNowShowingMovie(status) async {
+  Future<MovieResponse> getMovies(status) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{r'status': status};
     final _headers = <String, dynamic>{};

@@ -13,5 +13,5 @@ abstract class DataAgents {
   Future<EmailResponse>? postLoginWithEmail(String email, String password);
 
   Future<List<DataVO>?>? getNowShowingMovie(String status);
-  Future<List<DataVO>?>? getComingSoon(String status);
+  Future<List<DataVO>?>? getComingSoonMovie(String status);
 }

@@ -4,6 +4,7 @@ import 'package:student_app/data/vos/user_vo.dart';
 import 'package:student_app/network/data_agents/data_agents.dart';
 import 'package:student_app/network/data_agents/data_agents_impl.dart';
 import 'package:student_app/network/response/email_response.dart';
+import 'package:student_app/persistence/daos/movie_dao.dart';
 import 'package:student_app/persistence/daos/profile_image_dao.dart';
 import 'package:student_app/persistence/daos/token_dao.dart';
 import 'package:student_app/persistence/daos/user_dao.dart';
@@ -22,6 +23,7 @@ class DataModelsImpl extends DataModels {
   UserDao userDao = UserDao();
   TokenDao tokenDao = TokenDao();
   ProfileImageDao profileImageDao = ProfileImageDao();
+  MovieDao movieDao = MovieDao();
 
   @override
   Future<EmailResponse>? postRegisterWithEmail(
@@ -47,6 +49,32 @@ class DataModelsImpl extends DataModels {
     });
   }
 
+  @override
+  Future<List<DataVO>?>? getNowShowingMovie(String status) {
+    return mDataAgent.getNowShowingMovie(status)?.then((value) async {
+      List<DataVO> nowShowingMovie = value!.map((e) {
+        e.isCurrentMovie = true;
+        e.isComingSoonMovie = false;
+        return e;
+      }).toList();
+      movieDao.saveAllMovie(nowShowingMovie);
+      return Future.value(value);
+    });
+  }
+
+  @override
+  Future<List<DataVO>?>? getComingSoonMovie(String status) {
+    return mDataAgent.getComingSoonMovie(status)?.then((value) async {
+      List<DataVO> comingSoonMovie = value!.map((e) {
+        e.isComingSoonMovie = true;
+        e.isCurrentMovie = false;
+        return e;
+      }).toList();
+      movieDao.saveAllMovie(comingSoonMovie);
+      return Future.value(value);
+    });
+  }
+
   //Database
 
   @override
@@ -65,12 +93,23 @@ class DataModelsImpl extends DataModels {
   }
 
   @override
-  Future<List<DataVO>?>? getNowShowingMovie(String status) {
-    return mDataAgent.getNowShowingMovie(status);
+  Future<List<DataVO>?>? getNowShowingMovieFromDatabase() {
+    return Future.value(movieDao
+        .getAllMovie()
+        .where((element) => element.isCurrentMovie ?? true)
+        .toList());
   }
 
   @override
-  Future<List<DataVO>?>? getComingSoonMovie(String status) {
-    return mDataAgent.getComingSoon(status);
+  Future<List<DataVO>?>? getComingSoonMovieFromDatabase() {
+    return Future.value(movieDao
+        .getAllMovie()
+        .where((element) => element.isComingSoonMovie ?? true)
+        .toList());
+  }
+
+  @override
+  Future<DataVO>? getMovieFromDatabase(int movieId) {
+    return Future.value(movieDao.getSingleMovie(movieId));
   }
 }

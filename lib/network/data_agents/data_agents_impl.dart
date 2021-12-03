@@ -52,16 +52,16 @@ class DataAgentsImpl extends DataAgents {
   @override
   Future<List<DataVO>?>? getNowShowingMovie(String status) {
     return rApi
-        ?.getNowShowingMovie(statusValue1) //for NowShowing api
+        ?.getMovies(statusValue1) //for NowShowing api
         .asStream()
         .map((event) => event.data)
         .first;
   }
 
   @override
-  Future<List<DataVO>?>? getComingSoon(String status) {
+  Future<List<DataVO>?>? getComingSoonMovie(String status) {
     return rApi
-        ?.getNowShowingMovie(statusValue2)
+        ?.getMovies(statusValue2) //for ComingSoon api
         .asStream()
         .map((event) => event.data)
         .first;

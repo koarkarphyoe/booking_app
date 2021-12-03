@@ -30,7 +30,7 @@ abstract class RegisterApi {
   );
 
   @GET(getNowShowingMovieEndPoint)
-  Future<MovieResponse> getNowShowingMovie(
+  Future<MovieResponse> getMovies(
     @Query(statusKey) String status,
   );
 }

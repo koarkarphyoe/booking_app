@@ -35,13 +35,29 @@ class _HomePageState extends State<HomePage> {
   // call network data again from this page
   @override
   void initState() {
+    // From network
     userModels.getNowShowingMovie("current")?.then((value) {
       setState(() {
         movie = value;
       });
     });
 
+    // From database
+    userModels.getNowShowingMovieFromDatabase()?.then((value) {
+      setState(() {
+        movie = value;
+      });
+    });
+
+    // From network
     userModels.getComingSoonMovie("comingsoon")?.then((value) {
+      setState(() {
+        comingSoonMovie = value;
+      });
+    });
+
+    // From database
+    userModels.getComingSoonMovieFromDatabase()?.then((value) {
       setState(() {
         comingSoonMovie = value;
       });

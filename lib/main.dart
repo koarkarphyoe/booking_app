@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:student_app/data/model/data_models_impl.dart';
 import 'package:student_app/data/vos/data_vo.dart';
 import 'package:student_app/page/splash_screen_page.dart';
 import 'package:student_app/persistence/hive_constants.dart';
@@ -30,11 +31,16 @@ void main() async {
   //   print(value.token);
   // });
 
+  DataModelsImpl().getComingSoonMovie("comingsoon")?.then((value) {
+    debugPrint(value.toString());
+  });
+
   //need to import hive_flutter packages
   await Hive.initFlutter();
 
   Hive.registerAdapter(UserVOAdapter());
   Hive.registerAdapter(CardVOAdapter());
+  Hive.registerAdapter(DataVOAdapter());
 
   await Hive.openBox<UserVO>(boxNameUserVO);
   await Hive.openBox<CardVO>(boxNameCardVO);
