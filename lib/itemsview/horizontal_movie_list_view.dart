@@ -7,7 +7,8 @@ import 'package:student_app/widgets/title_text_bold.dart';
 class HorizontalMovieListView extends StatelessWidget {
   final List<DataVO>? mMovie;
   final String titleText;
-  const HorizontalMovieListView(this.titleText, this.mMovie);
+  final Function(int) onTapMovie;
+  const HorizontalMovieListView(this.titleText, this.mMovie, this.onTapMovie);
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +33,9 @@ class HorizontalMovieListView extends StatelessWidget {
                   scrollDirection: Axis.horizontal,
                   itemCount: mMovie?.length,
                   itemBuilder: (BuildContext context, int index) {
-                    return MovieListView(mMovie?[index]);
+                    return MovieListView(mMovie?[index], (movieId) {
+                      onTapMovie(movieId);
+                    });
                   },
                 )
               : const Center(

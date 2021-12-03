@@ -10,8 +10,15 @@ import 'package:student_app/widgets/title_text.dart';
 import 'package:student_app/widgets/title_text_bold.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
-class MovieDetailsPage extends StatelessWidget {
-  const MovieDetailsPage({Key? key}) : super(key: key);
+class MovieDetailsPage extends StatefulWidget {
+  final int movieId;
+  const MovieDetailsPage(this.movieId);
+
+  @override
+  State<MovieDetailsPage> createState() => _MovieDetailsPageState();
+}
+
+class _MovieDetailsPageState extends State<MovieDetailsPage> {
   @override
   Widget build(BuildContext context) {
     final List<String> genreList = ["Adventure", "Action"];

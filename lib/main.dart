@@ -31,9 +31,6 @@ void main() async {
   //   print(value.token);
   // });
 
-  DataModelsImpl().getComingSoonMovie("comingsoon")?.then((value) {
-    debugPrint(value.toString());
-  });
 
   //need to import hive_flutter packages
   await Hive.initFlutter();

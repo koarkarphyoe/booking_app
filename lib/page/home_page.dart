@@ -5,6 +5,7 @@ import 'package:student_app/data/vos/data_vo.dart';
 import 'package:student_app/data/vos/user_vo.dart';
 import 'package:student_app/itemsview/horizontal_movie_list_view.dart';
 import 'package:student_app/network/api_constants.dart';
+import 'package:student_app/page/movie_details_page.dart';
 import 'package:student_app/resources/colors.dart';
 import 'package:student_app/resources/dimens.dart';
 import 'package:student_app/resources/strings.dart';
@@ -31,10 +32,12 @@ class _HomePageState extends State<HomePage> {
   String? token;
   List<DataVO>? movie;
   List<DataVO>? comingSoonMovie;
+  
 
   // call network data again from this page
   @override
   void initState() {
+    super.initState();
     // From network
     userModels.getNowShowingMovie("current")?.then((value) {
       setState(() {
@@ -171,12 +174,17 @@ class _HomePageState extends State<HomePage> {
               child: UserNameAndPhoto(profileImage, mUser),
             ),
             const SizedBox(height: marginMedium),
-            HorizontalMovieListView(nowShowingText, movie),
-            HorizontalMovieListView(comingSoonText, comingSoonMovie),
+            HorizontalMovieListView(nowShowingText, movie,(movieId)=>_navigateToMovieDetailPage(context,movieId)),
+            HorizontalMovieListView(comingSoonText, comingSoonMovie,(movieId)=>_navigateToMovieDetailPage(context,movieId)),
           ],
         ),
       ),
     );
+  }
+
+  Future<dynamic> _navigateToMovieDetailPage(BuildContext context, int movieId) {
+
+    return Navigator.push(context,MaterialPageRoute(builder:(context)=>MovieDetailsPage(movieId)));
   }
 }
 

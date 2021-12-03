@@ -8,7 +8,8 @@ import 'title_text.dart';
 
 class MovieListView extends StatelessWidget {
   final DataVO? mMovie;
-  const MovieListView(this.mMovie);
+  final Function(int) onTapImage;
+  const MovieListView(this.mMovie, this.onTapImage);
 
   @override
   Widget build(BuildContext context) {
@@ -18,11 +19,16 @@ class MovieListView extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          ClipRRect(
-            borderRadius: BorderRadius.circular(marginSmall),
-            child: Image.network(
-              "$moviePosterBaseUrl${mMovie?.posterPath.toString()}",
-              fit: BoxFit.cover,
+          GestureDetector(
+            onTap: () {
+              onTapImage(mMovie!.id!.toInt());
+            },
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(marginSmall),
+              child: Image.network(
+                "$moviePosterBaseUrl${mMovie?.posterPath.toString()}",
+                fit: BoxFit.cover,
+              ),
             ),
           ),
           const SizedBox(height: marginXSmall),
