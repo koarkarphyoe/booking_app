@@ -1,5 +1,8 @@
-
 import 'package:flutter/material.dart';
+import 'package:student_app/data/model/data_models.dart';
+import 'package:student_app/data/model/data_models_impl.dart';
+import 'package:student_app/data/vos/movie_details_vo.dart';
+import 'package:student_app/network/api_constants.dart';
 import 'package:student_app/resources/colors.dart';
 import 'package:student_app/resources/dimens.dart';
 import 'package:student_app/resources/strings.dart';
@@ -18,6 +21,19 @@ class MovieDetailsPage extends StatefulWidget {
 }
 
 class _MovieDetailsPageState extends State<MovieDetailsPage> {
+  DataModels movieModels = DataModelsImpl();
+  MovieDetailsVO? movieDetails;
+
+  @override
+  void initState() {
+    super.initState();
+    movieModels.getMovieDetails(widget.movieId)?.then((value) {
+      setState(() {
+        movieDetails = value;
+      });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final List<String> genreList = ["Adventure", "Action"];
@@ -34,8 +50,8 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
               backgroundColor: primaryColor,
               flexibleSpace: Stack(
                 children: [
-                  const Positioned.fill(
-                    child: MovieDetailsScreenImageView(),
+                  Positioned.fill(
+                    child: MovieDetailsScreenImageView(movieDetails),
                   ),
                   const Align(
                     alignment: Alignment.topLeft,
@@ -98,8 +114,8 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
                       SizedBox(
                         height: movieDetailsScteenCastContainerHeight,
                         child: ListView.builder(
-                          padding:
-                              const EdgeInsets.symmetric(horizontal: marginMedium),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: marginMedium),
                           itemCount: 10,
                           scrollDirection: Axis.horizontal,
                           itemBuilder: (BuildContext context, int index) {
@@ -143,8 +159,8 @@ class PlotSummarySectionView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const TitleTextBold(
+      children: const [
+        TitleTextBold(
           plotSummaryText,
           textSize: textRegular2X,
           textColor: Colors.black,
@@ -213,7 +229,7 @@ class MovieDetailScreenTitleAndRatingView extends StatelessWidget {
             )
           ],
         ),
-        SizedBox(
+        const SizedBox(
           height: marginXSmall,
         ),
         Row(
@@ -239,7 +255,7 @@ class GenreListView extends StatelessWidget {
           //   // ignore: avoid_print
           //   print("selected");
           // },
-          shape: StadiumBorder(
+          shape: const StadiumBorder(
             side: BorderSide(color: Colors.black12),
           ),
           backgroundColor: Colors.transparent,
@@ -273,13 +289,15 @@ class MovieDetailsScreenPlayButtonView extends StatelessWidget {
 }
 
 class MovieDetailsScreenImageView extends StatelessWidget {
-  const MovieDetailsScreenImageView({
+  final MovieDetailsVO? movie;
+  const MovieDetailsScreenImageView(
+    this.movie, {
     Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return const MovieDetailsImageView();
+    return MovieDetailsImageView(movie);
   }
 }
 
@@ -299,15 +317,22 @@ class MovieDetailsScreenBackButtonView extends StatelessWidget {
 }
 
 class MovieDetailsImageView extends StatelessWidget {
-  const MovieDetailsImageView({
+  final MovieDetailsVO? movie;
+  const MovieDetailsImageView(
+    this.movie, {
     Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Image.network(
-      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSHD8WDfqyhvTJycYGsqcxkhv5dG8PcxQ8YMw&usqp=CAU",
-      fit: BoxFit.fill,
-    );
+    return (movie != null)
+        ? Image.network(
+            "$moviePosterBaseUrl${movie?.posterPath}",
+            // "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSHD8WDfqyhvTJycYGsqcxkhv5dG8PcxQ8YMw&usqp=CAU",
+            fit: BoxFit.fill,
+          )
+        : const Center(
+            child: CircularProgressIndicator(),
+          );
   }
 }
