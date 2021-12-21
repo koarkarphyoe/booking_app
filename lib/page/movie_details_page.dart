@@ -79,7 +79,7 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
                       child: Padding(
                         padding: const EdgeInsets.only(
                             top: marginMediumX, left: marginMedium),
-                        child: MovieDetailScreenTitleAndRatingView(
+                        child: MovieDetailScreenTitleAndRatingView(movieDetails,
                             genreList: genreList),
                       ),
                     ),
@@ -90,9 +90,9 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
             SliverList(
               delegate: SliverChildListDelegate(
                 [
-                  const Padding(
-                    padding: EdgeInsets.all(marginMedium),
-                    child: PlotSummarySectionView(),
+                  Padding(
+                    padding: const EdgeInsets.all(marginMedium),
+                    child: PlotSummarySectionView(movieDetails),
                   ),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -151,7 +151,8 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
 }
 
 class PlotSummarySectionView extends StatelessWidget {
-  const PlotSummarySectionView({
+  final MovieDetailsVO? movieDetails;
+  const PlotSummarySectionView(this.movieDetails,{
     Key? key,
   }) : super(key: key);
 
@@ -159,28 +160,31 @@ class PlotSummarySectionView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      children: const [
-        TitleTextBold(
+      children:  [
+        const TitleTextBold(
           plotSummaryText,
           textSize: textRegular2X,
           textColor: Colors.black,
         ),
-        SizedBox(
+        const SizedBox(
           height: marginXSmall,
         ),
+        (movieDetails!=null)?
         TitleText(
-          "Ace detective Harry Goodman goes mysteriously missing, prompting his 21-year-old son, Tim, to find out what happened. Aiding in the investigation is Harry's former Pokémon partner, wise-cracking, adorable super-sleuth Detective Pikachu.",
+          movieDetails!.overview.toString(),
           textColor: Colors.black54,
           textSize: textRegular,
-        )
+        ):const Center(child: CircularProgressIndicator(strokeWidth: 5,),),
       ],
     );
   }
 }
 
 class MovieDetailScreenTitleAndRatingView extends StatelessWidget {
+  final MovieDetailsVO? movieDetails;
   final List<String> genreList;
-  const MovieDetailScreenTitleAndRatingView({
+  const MovieDetailScreenTitleAndRatingView(
+    this.movieDetails, {
     Key? key,
     required this.genreList,
   }) : super(key: key);
@@ -190,19 +194,25 @@ class MovieDetailScreenTitleAndRatingView extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const TitleTextBold(
-          "Detective Pikachu",
-          textColor: Colors.black,
-          textSize: textRegular4X,
-        ),
+        (movieDetails != null)
+            ? TitleTextBold(
+                movieDetails!.originalTitle.toString(),
+                textColor: Colors.black,
+                textSize: textRegular4X,
+              )
+            : const Center(child: CircularProgressIndicator()),
         const SizedBox(height: marginXSmall),
         Row(
           children: [
-            const TitleText(
-              "1h 45m",
-              textColor: Colors.black87,
-              textSize: textRegular2X,
-            ),
+            (movieDetails != null)
+                ? TitleText(
+                    "${movieDetails!.runtime.toString()}m",
+                    textColor: Colors.black87,
+                    textSize: textRegular2X,
+                  )
+                : const Center(
+                    child: CircularProgressIndicator(),
+                  ),
             const SizedBox(
               width: marginSmall,
             ),
@@ -222,11 +232,15 @@ class MovieDetailScreenTitleAndRatingView extends StatelessWidget {
             const SizedBox(
               width: marginMedium,
             ),
-            const TitleText(
-              "IMDb 6.6",
-              textColor: Colors.black87,
-              textSize: textRegular3X,
-            )
+            (movieDetails != null)
+                ? TitleText(
+                    "IMDb ${movieDetails!.rating.toString()}",
+                    textColor: Colors.black87,
+                    textSize: textRegular3X,
+                  )
+                : const Center(
+                    child: CircularProgressIndicator(),
+                  ),
           ],
         ),
         const SizedBox(
