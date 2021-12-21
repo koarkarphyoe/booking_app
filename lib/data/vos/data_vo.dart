@@ -1,7 +1,6 @@
 import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:student_app/persistence/hive_constants.dart';
-import 'casts_vo.dart';
 part 'data_vo.g.dart';
 
 @JsonSerializable()

@@ -3,6 +3,7 @@ import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:student_app/data/model/data_models_impl.dart';
 import 'package:student_app/data/vos/data_vo.dart';
+import 'package:student_app/network/data_agents/data_agents_impl.dart';
 import 'package:student_app/page/splash_screen_page.dart';
 import 'package:student_app/persistence/hive_constants.dart';
 
@@ -10,7 +11,6 @@ import 'data/vos/card_vo.dart';
 import 'data/vos/user_vo.dart';
 
 void main() async {
-
   //check from DataAgents
   // DataAgentsImpl()
   //     .postRegisterWithEmail("testpjj", "testpjj@gmail.com", "123456",
@@ -31,6 +31,14 @@ void main() async {
   //   print(value.data);
   //   print(value.token);
   // });
+
+  // DataAgentsImpl().getMovieDetails(634649)?.then((value) {
+  //   print(value.data.toString());
+  // });
+
+  DataModelsImpl().getMovieDetails(634649)?.then((value) {
+    print(value?.overview.toString());
+  });
 
   //need to import hive_flutter packages
   await Hive.initFlutter();

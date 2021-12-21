@@ -1,6 +1,8 @@
 import 'package:retrofit/http.dart';
 import 'package:dio/dio.dart';
+import 'package:student_app/data/vos/movie_details_vo.dart';
 import 'package:student_app/network/response/email_response.dart';
+import 'package:student_app/network/response/movie_details_response.dart';
 import 'package:student_app/network/response/movie_response.dart';
 import 'api_constants.dart';
 part 'register_api.g.dart';
@@ -34,5 +36,8 @@ abstract class RegisterApi {
     @Query(statusKey) String status,
   );
 
-  
+  @GET("$getMovieDetailsEndPoint/{movie_id}")
+  Future<MovieDetailsResponse> getMovieDetails(
+    @Path("movie_id") String movieId,
+  );
 }

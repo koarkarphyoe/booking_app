@@ -1,5 +1,6 @@
 import 'package:student_app/data/model/data_models.dart';
 import 'package:student_app/data/vos/data_vo.dart';
+import 'package:student_app/data/vos/movie_details_vo.dart';
 import 'package:student_app/data/vos/user_vo.dart';
 import 'package:student_app/network/data_agents/data_agents.dart';
 import 'package:student_app/network/data_agents/data_agents_impl.dart';
@@ -73,6 +74,11 @@ class DataModelsImpl extends DataModels {
       movieDao.saveAllMovie(comingSoonMovie);
       return Future.value(value);
     });
+  }
+
+  @override
+  Future<MovieDetailsVO?>? getMovieDetails(int movieId) {
+    return mDataAgent.getMovieDetails(movieId)?.then((value) => value.data);
   }
 
   //Database

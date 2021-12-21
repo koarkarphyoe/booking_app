@@ -33,5 +33,6 @@ class MovieDetailsVO extends DataVO {
   factory MovieDetailsVO.fromJson(Map<String, dynamic> json) =>
       _$MovieDetailsVOFromJson(json);
   
+  @override
   Map<String, dynamic> toJson() => _$MovieDetailsVOToJson(this);
 }

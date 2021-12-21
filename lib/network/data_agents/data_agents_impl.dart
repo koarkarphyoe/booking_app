@@ -1,9 +1,11 @@
 import 'package:student_app/data/vos/data_vo.dart';
+import 'package:student_app/data/vos/movie_details_vo.dart';
 import 'package:student_app/data/vos/user_vo.dart';
 import 'package:student_app/network/api_constants.dart';
 import 'package:student_app/network/register_api.dart';
 import 'package:dio/dio.dart';
 import 'package:student_app/network/response/email_response.dart';
+import 'package:student_app/network/response/movie_details_response.dart';
 import 'package:student_app/network/response/movie_response.dart';
 
 import 'data_agents.dart';
@@ -64,6 +66,15 @@ class DataAgentsImpl extends DataAgents {
         ?.getMovies(statusValue2) //for ComingSoon api
         .asStream()
         .map((event) => event.data)
+        .first;
+  }
+
+  @override
+  Future<MovieDetailsResponse>? getMovieDetails(int movieId) {
+    return rApi
+        ?.getMovieDetails(movieId.toString())
+        .asStream()
+        .map((event) => event)
         .first;
   }
 }
