@@ -32,13 +32,14 @@ void main() async {
   //   print(value.token);
   // });
 
+  // take movie details with movieId
   // DataAgentsImpl().getMovieDetails(634649)?.then((value) {
   //   print(value.data.toString());
   // });
 
-  DataModelsImpl().getMovieDetails(634649)?.then((value) {
-    print(value?.overview.toString());
-  });
+  // DataModelsImpl().getMovieDetails(634649)?.then((value) {
+  //   print(value?.overview.toString());
+  // });
 
   //need to import hive_flutter packages
   await Hive.initFlutter();
