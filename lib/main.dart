@@ -10,7 +10,6 @@ import 'data/vos/card_vo.dart';
 import 'data/vos/user_vo.dart';
 
 void main() async {
-// hi i am back!
 
   //check from DataAgents
   // DataAgentsImpl()
@@ -32,7 +31,6 @@ void main() async {
   //   print(value.data);
   //   print(value.token);
   // });
-
 
   //need to import hive_flutter packages
   await Hive.initFlutter();

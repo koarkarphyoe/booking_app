@@ -33,4 +33,6 @@ abstract class RegisterApi {
   Future<MovieResponse> getMovies(
     @Query(statusKey) String status,
   );
+
+  
 }

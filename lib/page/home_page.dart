@@ -182,9 +182,14 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Future<dynamic> _navigateToMovieDetailPage(BuildContext context, int movieId) {
-
-    return Navigator.push(context,MaterialPageRoute(builder:(context)=>MovieDetailsPage(movieId)));
+  Future<dynamic> _navigateToMovieDetailPage(
+      BuildContext context, int movieId) {
+    return Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => MovieDetailsPage(movieId),
+      ),
+    );
   }
 }
 

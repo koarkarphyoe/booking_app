@@ -1,4 +1,3 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, sized_box_for_whitespace
 
 import 'package:flutter/material.dart';
 import 'package:student_app/resources/colors.dart';
@@ -75,40 +74,40 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
             SliverList(
               delegate: SliverChildListDelegate(
                 [
-                  Padding(
-                    padding: const EdgeInsets.all(marginMedium),
+                  const Padding(
+                    padding: EdgeInsets.all(marginMedium),
                     child: PlotSummarySectionView(),
                   ),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Padding(
-                        padding: const EdgeInsets.only(
+                      const Padding(
+                        padding: EdgeInsets.only(
                             left: marginMedium,
                             right: marginMedium,
                             bottom: marginMedium),
-                        child: const TitleTextBold(
+                        child: TitleTextBold(
                           castText,
                           textSize: textRegular2X,
                           textColor: Colors.black,
                         ),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: marginXSmall,
                       ),
-                      Container(
+                      SizedBox(
                         height: movieDetailsScteenCastContainerHeight,
                         child: ListView.builder(
                           padding:
-                              EdgeInsets.symmetric(horizontal: marginMedium),
+                              const EdgeInsets.symmetric(horizontal: marginMedium),
                           itemCount: 10,
                           scrollDirection: Axis.horizontal,
                           itemBuilder: (BuildContext context, int index) {
-                            return MovieDetailsCastImageView();
+                            return const MovieDetailsCastImageView();
                           },
                         ),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: marginMedium,
                       ),
                       Padding(
@@ -120,7 +119,7 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
                           isGhostButton: true,
                         ),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: marginMediumXXLarge,
                       ),
                     ],
