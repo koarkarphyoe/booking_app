@@ -9,13 +9,16 @@ class MovieDetailsCastImageView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final castImageUrl = castImage?.profilePath != null
+        ? "$moviePosterBaseUrl${castImage?.profilePath}"
+        : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR41Jl9Omn4hm2Kv7j7K4eVqFC16vrZ7zlDk6fXsjmtTbnNNrGuD3ESEOcpdSsg6tP7h4s&usqp=CAU";
     return Padding(
       padding: const EdgeInsets.only(right: marginMedium),
       child: (castImage != null)
           ? CircleAvatar(
               radius: movieDetailsScreenCastImageRadius,
               backgroundImage: NetworkImage(
-                "$moviePosterBaseUrl${castImage?.profilePath}",
+                castImageUrl,
                 // "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR41Jl9Omn4hm2Kv7j7K4eVqFC16vrZ7zlDk6fXsjmtTbnNNrGuD3ESEOcpdSsg6tP7h4s&usqp=CAU",
               ),
             )
