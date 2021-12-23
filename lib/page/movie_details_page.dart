@@ -39,7 +39,6 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
 
   @override
   Widget build(BuildContext context) {
-    final List<String> genreList = ["Adventure", "Action"];
     return Scaffold(
       body: SizedBox(
         // height: MediaQuery.of(context).size.height,
@@ -200,6 +199,7 @@ class MovieDetailScreenTitleAndRatingView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final List<String> genreListOriginal = ["Action", "Adventure", "Drama"];
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -256,7 +256,8 @@ class MovieDetailScreenTitleAndRatingView extends StatelessWidget {
           height: marginXSmall,
         ),
         Row(
-          children: genreList!.genres!.map((e) => GenreListView(e)).toList(),
+          children: genreList?.genres?.map((e) => GenreListView(e)).toList() ??
+              genreListOriginal.map((e) => GenreListView(e)).toList(),
         ),
       ],
     );
@@ -270,7 +271,7 @@ class GenreListView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(right: marginMedium),
+      padding: const EdgeInsets.only(right: marginXSmall),
       child: Chip(
           //if use FilterChip
           // onSelected: (bool value) {
