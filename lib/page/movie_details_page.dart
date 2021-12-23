@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:student_app/data/model/data_models.dart';
 import 'package:student_app/data/model/data_models_impl.dart';
+import 'package:student_app/data/vos/casts_vo.dart';
 import 'package:student_app/data/vos/movie_details_vo.dart';
 import 'package:student_app/network/api_constants.dart';
 import 'package:student_app/resources/colors.dart';
@@ -23,6 +24,7 @@ class MovieDetailsPage extends StatefulWidget {
 class _MovieDetailsPageState extends State<MovieDetailsPage> {
   DataModels movieModels = DataModelsImpl();
   MovieDetailsVO? movieDetails;
+  List<CastsVO>? castImage;
 
   @override
   void initState() {
@@ -30,6 +32,7 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
     movieModels.getMovieDetails(widget.movieId)?.then((value) {
       setState(() {
         movieDetails = value;
+        castImage = value?.casts;
       });
     });
   }
@@ -116,10 +119,14 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
                         child: ListView.builder(
                           padding: const EdgeInsets.symmetric(
                               horizontal: marginMedium),
-                          itemCount: 10,
+                          itemCount: castImage?.length.toInt(),
                           scrollDirection: Axis.horizontal,
                           itemBuilder: (BuildContext context, int index) {
-                            return const MovieDetailsCastImageView();
+                            return (castImage != null)
+                                ? MovieDetailsCastImageView(castImage?[index])
+                                : const Center(
+                                    child: CircularProgressIndicator(),
+                                  );
                           },
                         ),
                       ),
@@ -152,7 +159,8 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
 
 class PlotSummarySectionView extends StatelessWidget {
   final MovieDetailsVO? movieDetails;
-  const PlotSummarySectionView(this.movieDetails,{
+  const PlotSummarySectionView(
+    this.movieDetails, {
     Key? key,
   }) : super(key: key);
 
@@ -160,7 +168,7 @@ class PlotSummarySectionView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      children:  [
+      children: [
         const TitleTextBold(
           plotSummaryText,
           textSize: textRegular2X,
@@ -169,12 +177,17 @@ class PlotSummarySectionView extends StatelessWidget {
         const SizedBox(
           height: marginXSmall,
         ),
-        (movieDetails!=null)?
-        TitleText(
-          movieDetails!.overview.toString(),
-          textColor: Colors.black54,
-          textSize: textRegular,
-        ):const Center(child: CircularProgressIndicator(strokeWidth: 5,),),
+        (movieDetails != null)
+            ? TitleText(
+                movieDetails!.overview.toString(),
+                textColor: Colors.black54,
+                textSize: textRegular,
+              )
+            : const Center(
+                child: CircularProgressIndicator(
+                  strokeWidth: 5,
+                ),
+              ),
       ],
     );
   }
