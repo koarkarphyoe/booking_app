@@ -19,7 +19,6 @@ class MovieDetailsCastImageView extends StatelessWidget {
               radius: movieDetailsScreenCastImageRadius,
               backgroundImage: NetworkImage(
                 castImageUrl,
-                // "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR41Jl9Omn4hm2Kv7j7K4eVqFC16vrZ7zlDk6fXsjmtTbnNNrGuD3ESEOcpdSsg6tP7h4s&usqp=CAU",
               ),
             )
           : const Center(
