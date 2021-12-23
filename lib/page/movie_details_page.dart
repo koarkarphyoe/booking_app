@@ -82,8 +82,8 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
                       child: Padding(
                         padding: const EdgeInsets.only(
                             top: marginMediumX, left: marginMedium),
-                        child: MovieDetailScreenTitleAndRatingView(movieDetails,
-                            genreList: genreList),
+                        child: MovieDetailScreenTitleAndRatingView(
+                            movieDetails, movieDetails),
                       ),
                     ),
                   ),
@@ -195,12 +195,8 @@ class PlotSummarySectionView extends StatelessWidget {
 
 class MovieDetailScreenTitleAndRatingView extends StatelessWidget {
   final MovieDetailsVO? movieDetails;
-  final List<String> genreList;
-  const MovieDetailScreenTitleAndRatingView(
-    this.movieDetails, {
-    Key? key,
-    required this.genreList,
-  }) : super(key: key);
+  final MovieDetailsVO? genreList;
+  const MovieDetailScreenTitleAndRatingView(this.genreList, this.movieDetails);
 
   @override
   Widget build(BuildContext context) {
@@ -260,8 +256,7 @@ class MovieDetailScreenTitleAndRatingView extends StatelessWidget {
           height: marginXSmall,
         ),
         Row(
-          children:
-              genreList.map((genreText) => GenreListView(genreText)).toList(),
+          children: genreList!.genres!.map((e) => GenreListView(e)).toList(),
         ),
       ],
     );

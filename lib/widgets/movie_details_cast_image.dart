@@ -11,19 +11,15 @@ class MovieDetailsCastImageView extends StatelessWidget {
   Widget build(BuildContext context) {
     final castImageUrl = castImage?.profilePath != null
         ? "$moviePosterBaseUrl${castImage?.profilePath}"
-        : "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR41Jl9Omn4hm2Kv7j7K4eVqFC16vrZ7zlDk6fXsjmtTbnNNrGuD3ESEOcpdSsg6tP7h4s&usqp=CAU";
+        : "https://e7.pngegg.com/pngimages/529/832/png-clipart-computer-icons-avatar-user-profile-avatar-blue-heroes.png";
     return Padding(
       padding: const EdgeInsets.only(right: marginMedium),
-      child: (castImage != null)
-          ? CircleAvatar(
-              radius: movieDetailsScreenCastImageRadius,
-              backgroundImage: NetworkImage(
-                castImageUrl,
-              ),
-            )
-          : const Center(
-              child: CircularProgressIndicator(),
-            ),
+      child: CircleAvatar(
+        radius: movieDetailsScreenCastImageRadius,
+        backgroundImage: NetworkImage(
+          castImageUrl,
+        ),
+      ),
     );
   }
 }

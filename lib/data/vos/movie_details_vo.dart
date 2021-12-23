@@ -1,6 +1,7 @@
 import 'package:json_annotation/json_annotation.dart';
 import 'package:student_app/data/vos/casts_vo.dart';
 import 'package:student_app/data/vos/data_vo.dart';
+import 'package:student_app/page/movie_details_page.dart';
 part 'movie_details_vo.g.dart';
 
 @JsonSerializable()
@@ -35,4 +36,6 @@ class MovieDetailsVO extends DataVO {
   
   @override
   Map<String, dynamic> toJson() => _$MovieDetailsVOToJson(this);
+
+  map(GenreListView Function(dynamic e) param0) {}
 }
