@@ -46,7 +46,7 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
           slivers: [
             SliverAppBar(
               elevation: 0,
-              expandedHeight: MediaQuery.of(context).size.height / 2,
+              expandedHeight: MediaQuery.of(context).size.height/1.5,
               collapsedHeight: sliverAppBarCollapsedHeight,
               automaticallyImplyLeading: false,
               backgroundColor: primaryColor,
@@ -80,10 +80,11 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
                       ),
                       child: Padding(
                         padding: const EdgeInsets.only(
-                            top: marginMediumX, left: marginMedium),
+                            top: marginXXSmall, left: marginMedium),
                         child: MovieDetailScreenTitleAndRatingView(
                             movieDetails, movieDetails),
                       ),
+                     
                     ),
                   ),
                 ],
@@ -142,7 +143,7 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
                         ),
                       ),
                       const SizedBox(
-                        height: marginMediumXXLarge,
+                        height: marginMediumLarge,
                       ),
                     ],
                   ),
@@ -199,7 +200,6 @@ class MovieDetailScreenTitleAndRatingView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final List<String> genreListOriginal = ["Action", "Adventure", "Drama"];
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -255,12 +255,25 @@ class MovieDetailScreenTitleAndRatingView extends StatelessWidget {
         const SizedBox(
           height: marginXSmall,
         ),
-        Row(
-          children: genreList?.genres?.map((e) => GenreListView(e)).toList() ??
-              genreListOriginal.map((e) => GenreListView(e)).toList(),
+        Wrap(
+          alignment: WrapAlignment.start,
+          direction: Axis.horizontal,
+          crossAxisAlignment: WrapCrossAlignment.start,
+          children: _genresListWidget(),
+          // genreList?.genres?.map((e) => GenreListView(e)).toList() ??
+          // genreListOriginal.map((e) => GenreListView(e)).toList(),
         ),
+         
       ],
     );
+  }
+
+  List<Widget> _genresListWidget() {
+    List<Widget> widgets = [];
+    final List<String> genreListOriginal = ["", "", ""];
+    widgets.addAll(genreList?.genres?.map((e) => GenreListView(e)).toList() ??
+        genreListOriginal.map((e) => GenreListView(e)).toList());
+    return widgets;
   }
 }
 
@@ -271,7 +284,7 @@ class GenreListView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(right: marginXSmall),
+      padding: const EdgeInsets.only(right: marginForChip),
       child: Chip(
           //if use FilterChip
           // onSelected: (bool value) {

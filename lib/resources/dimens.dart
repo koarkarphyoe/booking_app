@@ -9,6 +9,8 @@ const textRegular5X = 24.0;
 const textRegular6X = 26.0;
 const textRegular7X = 28.0;
 
+const marginForChip = 2.0;
+const marginXXSmall = 5.0;
 const marginXSmall = 8.0;
 const marginSmall = 14.0;
 const marginMedium = 16.0;
@@ -29,7 +31,7 @@ const welcomeScreenGetStartedHeightWidth = 5.0;
 const tabBarViewSizedBoxHeight = 600.0;
 const sliverAppBarExpandedHeight = 400.0;
 const sliverAppBarCollapsedHeight = 150.0;
-const movieDetailsTitleScreenContainerHeight = 180.0;
+const movieDetailsTitleScreenContainerHeight = 200.0;
 
 const searchAndMenuIconSize = 35.0;
 const movieDetailsScreenPlayCircleSize = 70.0;
