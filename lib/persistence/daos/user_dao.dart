@@ -1,6 +1,5 @@
 import 'package:hive/hive.dart';
 import 'package:student_app/data/vos/user_vo.dart';
-import 'package:student_app/network/response/email_response.dart';
 import 'package:student_app/persistence/hive_constants.dart';
 
 class UserDao {

@@ -39,11 +39,11 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
     // From network
-    userModels.getNowShowingMovie("current")?.then((value) {
-      setState(() {
-        movie = value;
-      });
-    });
+    // userModels.getNowShowingMovie("current")?.then((value) {
+    //   setState(() {
+    //     movie = value;
+    //   });
+    // });
 
     // From database
     userModels.getNowShowingMovieFromDatabase()?.then((value) {
@@ -53,11 +53,11 @@ class _HomePageState extends State<HomePage> {
     });
 
     // From network
-    userModels.getComingSoonMovie("comingsoon")?.then((value) {
-      setState(() {
-        comingSoonMovie = value;
-      });
-    });
+    // userModels.getComingSoonMovie("comingsoon")?.then((value) {
+    //   setState(() {
+    //     comingSoonMovie = value;
+    //   });
+    // });
 
     // From database
     userModels.getComingSoonMovieFromDatabase()?.then((value) {

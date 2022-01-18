@@ -56,7 +56,6 @@ void main() async {
   await Hive.openBox<CardVO>(boxNameCardVO);
   await Hive.openBox<String>(boxNameTokenVO);
   await Hive.openBox<DataVO>(boxNameDataVO);
-  await Hive.openBox<CastsVO>(boxNameCastsVO);
   await Hive.openBox<MovieDetailsVO>(boxNameMovieDetailsVO);
 
   runApp(const MyApp());

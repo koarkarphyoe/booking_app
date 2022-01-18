@@ -46,7 +46,7 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
           slivers: [
             SliverAppBar(
               elevation: 0,
-              expandedHeight: MediaQuery.of(context).size.height/1.5,
+              expandedHeight: MediaQuery.of(context).size.height / 1.5,
               collapsedHeight: sliverAppBarCollapsedHeight,
               automaticallyImplyLeading: false,
               backgroundColor: primaryColor,
@@ -84,7 +84,6 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
                         child: MovieDetailScreenTitleAndRatingView(
                             movieDetails, movieDetails),
                       ),
-                     
                     ),
                   ),
                 ],
@@ -263,7 +262,6 @@ class MovieDetailScreenTitleAndRatingView extends StatelessWidget {
           // genreList?.genres?.map((e) => GenreListView(e)).toList() ??
           // genreListOriginal.map((e) => GenreListView(e)).toList(),
         ),
-         
       ],
     );
   }
