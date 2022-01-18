@@ -176,6 +176,7 @@ class _HomePageState extends State<HomePage> {
             const SizedBox(height: marginMedium),
             HorizontalMovieListView(nowShowingText, movie,(movieId)=>_navigateToMovieDetailPage(context,movieId)),
             HorizontalMovieListView(comingSoonText, comingSoonMovie,(movieId)=>_navigateToMovieDetailPage(context,movieId)),
+            const SizedBox(height: marginXSmall,),
           ],
         ),
       ),
