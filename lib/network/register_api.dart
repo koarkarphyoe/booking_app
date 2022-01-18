@@ -1,6 +1,5 @@
 import 'package:retrofit/http.dart';
 import 'package:dio/dio.dart';
-import 'package:student_app/data/vos/movie_details_vo.dart';
 import 'package:student_app/network/response/email_response.dart';
 import 'package:student_app/network/response/movie_details_response.dart';
 import 'package:student_app/network/response/movie_response.dart';
