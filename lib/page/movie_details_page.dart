@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:student_app/data/model/data_models.dart';
 import 'package:student_app/data/model/data_models_impl.dart';
 import 'package:student_app/data/vos/casts_vo.dart';
+import 'package:student_app/data/vos/data_vo.dart';
 import 'package:student_app/data/vos/movie_details_vo.dart';
 import 'package:student_app/network/api_constants.dart';
 import 'package:student_app/resources/colors.dart';
@@ -35,6 +36,13 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
         castImage = value?.casts;
       });
     });
+
+    movieModels.getMovieDetailsFromDatabase(widget.movieId).then((value) {
+      setState(() {
+        movieDetails = value;
+        castImage = value?.casts;
+      });
+    });
   }
 
   @override
@@ -55,11 +63,15 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
                   Positioned.fill(
                     child: MovieDetailsScreenImageView(movieDetails),
                   ),
-                  const Align(
+                  Align(
                     alignment: Alignment.topLeft,
                     child: Padding(
-                      padding: EdgeInsets.only(top: 50, left: 16),
-                      child: MovieDetailsScreenBackButtonView(),
+                      padding: const EdgeInsets.only(top: 50, left: 16),
+                      child: MovieDetailsScreenBackButtonView(
+                        onTapBack: () {
+                          Navigator.pop(context);
+                        },
+                      ),
                     ),
                   ),
                   const Align(
@@ -194,7 +206,7 @@ class PlotSummarySectionView extends StatelessWidget {
 
 class MovieDetailScreenTitleAndRatingView extends StatelessWidget {
   final MovieDetailsVO? movieDetails;
-  final MovieDetailsVO? genreList;
+  final DataVO? genreList;
   const MovieDetailScreenTitleAndRatingView(this.genreList, this.movieDetails);
 
   @override
@@ -323,7 +335,7 @@ class MovieDetailsScreenPlayButtonView extends StatelessWidget {
 }
 
 class MovieDetailsScreenImageView extends StatelessWidget {
-  final MovieDetailsVO? movie;
+  final DataVO? movie;
   const MovieDetailsScreenImageView(
     this.movie, {
     Key? key,
@@ -336,22 +348,29 @@ class MovieDetailsScreenImageView extends StatelessWidget {
 }
 
 class MovieDetailsScreenBackButtonView extends StatelessWidget {
+  final Function onTapBack;
   const MovieDetailsScreenBackButtonView({
     Key? key,
+    required this.onTapBack,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return const Icon(
-      Icons.chevron_left,
-      size: 50,
-      color: Colors.white,
+    return GestureDetector(
+      onTap: () {
+        onTapBack();
+      },
+      child: const Icon(
+        Icons.chevron_left,
+        size: 50,
+        color: Colors.white,
+      ),
     );
   }
 }
 
 class MovieDetailsImageView extends StatelessWidget {
-  final MovieDetailsVO? movie;
+  final DataVO? movie;
   const MovieDetailsImageView(
     this.movie, {
     Key? key,

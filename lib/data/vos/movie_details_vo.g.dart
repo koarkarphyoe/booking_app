@@ -8,7 +8,7 @@ part of 'movie_details_vo.dart';
 
 class MovieDetailsVOAdapter extends TypeAdapter<MovieDetailsVO> {
   @override
-  final int typeId = 5;
+  final int typeId = 4;
 
   @override
   MovieDetailsVO read(BinaryReader reader) {

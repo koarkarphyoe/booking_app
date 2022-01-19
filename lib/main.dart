@@ -49,7 +49,6 @@ void main() async {
   Hive.registerAdapter(UserVOAdapter());
   Hive.registerAdapter(CardVOAdapter());
   Hive.registerAdapter(DataVOAdapter());
-  Hive.registerAdapter(CastsVOAdapter());
   Hive.registerAdapter(MovieDetailsVOAdapter());
 
   await Hive.openBox<UserVO>(boxNameUserVO);

@@ -8,7 +8,7 @@ part of 'casts_vo.dart';
 
 class CastsVOAdapter extends TypeAdapter<CastsVO> {
   @override
-  final int typeId = 4;
+  final int typeId = 5;
 
   @override
   CastsVO read(BinaryReader reader) {

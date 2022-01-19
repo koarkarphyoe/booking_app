@@ -7,7 +7,8 @@ import 'package:student_app/persistence/hive_constants.dart';
 part 'movie_details_vo.g.dart';
 
 @JsonSerializable()
-@HiveType(typeId: hiveTypeIdMovieDetailsVO,adapterName: "MovieDetailsVOAdapter")
+@HiveType(
+    typeId: hiveTypeIdMovieDetailsVO, adapterName: "MovieDetailsVOAdapter")
 class MovieDetailsVO extends DataVO {
   @JsonKey(name: "rating")
   @HiveField(7)
@@ -35,12 +36,12 @@ class MovieDetailsVO extends DataVO {
       String? posterPath,
       bool? isCurrentMovie,
       bool? isComingSoonMovie)
-      : super(id, originalTitle, releaseDate, genres,
-            posterPath, isCurrentMovie, isComingSoonMovie);
+      : super(id, originalTitle, releaseDate, genres, posterPath,
+            isCurrentMovie, isComingSoonMovie);
 
   factory MovieDetailsVO.fromJson(Map<String, dynamic> json) =>
       _$MovieDetailsVOFromJson(json);
-  
+
   @override
   Map<String, dynamic> toJson() => _$MovieDetailsVOToJson(this);
 
