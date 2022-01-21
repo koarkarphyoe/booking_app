@@ -27,7 +27,7 @@ abstract class DataModels {
   //Database
 
   Future<UserVO>? getUserInfoFromDatabase();
-  Future<String>? getTokenFromDatabase();
+  Future<String?>? getTokenFromDatabase();
   Future<String>? getProfileImageFromDatabase();
   Future<List<DataVO>?>? getNowShowingMovieFromDatabase();
   Future<List<DataVO>?>? getComingSoonMovieFromDatabase();

@@ -32,7 +32,6 @@ class _HomePageState extends State<HomePage> {
   String? token;
   List<DataVO>? movie;
   List<DataVO>? comingSoonMovie;
-  
 
   // call network data again from this page
   @override
@@ -174,9 +173,13 @@ class _HomePageState extends State<HomePage> {
               child: UserNameAndPhoto(profileImage, mUser),
             ),
             const SizedBox(height: marginMedium),
-            HorizontalMovieListView(nowShowingText, movie,(movieId)=>_navigateToMovieDetailPage(context,movieId)),
-            HorizontalMovieListView(comingSoonText, comingSoonMovie,(movieId)=>_navigateToMovieDetailPage(context,movieId)),
-            const SizedBox(height: marginXSmall,),
+            HorizontalMovieListView(nowShowingText, movie,
+                (movieId) => _navigateToMovieDetailPage(context, movieId)),
+            HorizontalMovieListView(comingSoonText, comingSoonMovie,
+                (movieId) => _navigateToMovieDetailPage(context, movieId)),
+            const SizedBox(
+              height: marginXSmall,
+            ),
           ],
         ),
       ),

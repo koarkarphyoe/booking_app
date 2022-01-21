@@ -1,3 +1,4 @@
+import 'package:stream_transform/src/concatenate.dart';
 import 'package:student_app/data/model/data_models.dart';
 import 'package:student_app/data/vos/data_vo.dart';
 import 'package:student_app/data/vos/movie_details_vo.dart';
@@ -91,7 +92,7 @@ class DataModelsImpl extends DataModels {
   }
 
   @override
-  Future<String>? getTokenFromDatabase() {
+  Future<String?>? getTokenFromDatabase() {
     return Future.value(tokenDao.getToken());
   }
 
