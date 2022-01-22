@@ -34,4 +34,5 @@ abstract class DataModels {
   Future<DataVO>? getMovieFromDatabase(int movieId);
   Future<MovieDetailsVO?> getMovieDetailsFromDatabase(int movieId);
   void deleteTokenFromDatabase();
+  void deleteUserInfoFromDatabase();
 }

@@ -131,4 +131,9 @@ class DataModelsImpl extends DataModels {
   void deleteTokenFromDatabase() {
     tokenDao.deleteToken();
   }
+
+  @override
+  void deleteUserInfoFromDatabase() {
+    userDao.deleteUserUnfo();
+  }
 }

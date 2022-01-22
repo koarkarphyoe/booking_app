@@ -146,12 +146,19 @@ class _HomePageState extends State<HomePage> {
                   GestureDetector(
                     onTap: () {
                       userModels.deleteTokenFromDatabase();
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const SplashScreen(),
-                        ),
-                      );
+                      userModels.deleteUserInfoFromDatabase();
+                      Navigator.pushAndRemoveUntil(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const SplashScreen(),
+                          ),
+                          (route) => false);
+                      // Navigator.push(
+                      //   context,
+                      //   MaterialPageRoute(
+                      //     builder: (context) => const SplashScreen(),
+                      //   )
+                      // );
                     },
                     child: const ListTile(
                       leading: Icon(
