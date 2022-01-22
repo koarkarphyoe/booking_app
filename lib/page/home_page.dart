@@ -6,6 +6,7 @@ import 'package:student_app/data/vos/user_vo.dart';
 import 'package:student_app/itemsview/horizontal_movie_list_view.dart';
 import 'package:student_app/network/api_constants.dart';
 import 'package:student_app/page/movie_details_page.dart';
+import 'package:student_app/page/splash_screen_page.dart';
 import 'package:student_app/resources/colors.dart';
 import 'package:student_app/resources/dimens.dart';
 import 'package:student_app/resources/strings.dart';
@@ -32,7 +33,6 @@ class _HomePageState extends State<HomePage> {
   String? token;
   List<DataVO>? movie;
   List<DataVO>? comingSoonMovie;
-  
 
   // call network data again from this page
   @override
@@ -143,16 +143,27 @@ class _HomePageState extends State<HomePage> {
                     }).toList(),
                   ),
                   const Spacer(),
-                  const ListTile(
-                    leading: Icon(
-                      Icons.logout,
-                      color: Colors.white,
-                    ),
-                    title: Text(
-                      logOutText,
-                      style: TextStyle(
+                  GestureDetector(
+                    onTap: () {
+                      userModels.deleteTokenFromDatabase();
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const SplashScreen(),
+                        ),
+                      );
+                    },
+                    child: const ListTile(
+                      leading: Icon(
+                        Icons.logout,
                         color: Colors.white,
-                        fontSize: textRegular,
+                      ),
+                      title: Text(
+                        logOutText,
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: textRegular,
+                        ),
                       ),
                     ),
                   ),
@@ -174,9 +185,13 @@ class _HomePageState extends State<HomePage> {
               child: UserNameAndPhoto(profileImage, mUser),
             ),
             const SizedBox(height: marginMedium),
-            HorizontalMovieListView(nowShowingText, movie,(movieId)=>_navigateToMovieDetailPage(context,movieId)),
-            HorizontalMovieListView(comingSoonText, comingSoonMovie,(movieId)=>_navigateToMovieDetailPage(context,movieId)),
-            const SizedBox(height: marginXSmall,),
+            HorizontalMovieListView(nowShowingText, movie,
+                (movieId) => _navigateToMovieDetailPage(context, movieId)),
+            HorizontalMovieListView(comingSoonText, comingSoonMovie,
+                (movieId) => _navigateToMovieDetailPage(context, movieId)),
+            const SizedBox(
+              height: marginXSmall,
+            ),
           ],
         ),
       ),

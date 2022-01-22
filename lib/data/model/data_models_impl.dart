@@ -1,3 +1,4 @@
+import 'package:stream_transform/src/concatenate.dart';
 import 'package:student_app/data/model/data_models.dart';
 import 'package:student_app/data/vos/data_vo.dart';
 import 'package:student_app/data/vos/movie_details_vo.dart';
@@ -6,6 +7,7 @@ import 'package:student_app/network/data_agents/data_agents.dart';
 import 'package:student_app/network/data_agents/data_agents_impl.dart';
 import 'package:student_app/network/response/email_response.dart';
 import 'package:student_app/persistence/daos/movie_dao.dart';
+import 'package:student_app/persistence/daos/movie_details_dao.dart';
 import 'package:student_app/persistence/daos/profile_image_dao.dart';
 import 'package:student_app/persistence/daos/token_dao.dart';
 import 'package:student_app/persistence/daos/user_dao.dart';
@@ -25,6 +27,7 @@ class DataModelsImpl extends DataModels {
   TokenDao tokenDao = TokenDao();
   ProfileImageDao profileImageDao = ProfileImageDao();
   MovieDao movieDao = MovieDao();
+  MovieDetailsDao movieDetailsDao = MovieDetailsDao();
 
   @override
   Future<EmailResponse>? postRegisterWithEmail(
@@ -89,7 +92,7 @@ class DataModelsImpl extends DataModels {
   }
 
   @override
-  Future<String>? getTokenFromDatabase() {
+  Future<String?>? getTokenFromDatabase() {
     return Future.value(tokenDao.getToken());
   }
 
@@ -117,5 +120,15 @@ class DataModelsImpl extends DataModels {
   @override
   Future<DataVO>? getMovieFromDatabase(int movieId) {
     return Future.value(movieDao.getSingleMovie(movieId));
+  }
+
+  @override
+  Future<MovieDetailsVO?> getMovieDetailsFromDatabase(int movieId) {
+    return Future.value(movieDetailsDao.getMovieDetails(movieId));
+  }
+
+  @override
+  void deleteTokenFromDatabase() {
+    tokenDao.deleteToken();
   }
 }

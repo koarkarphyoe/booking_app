@@ -1,3 +1,4 @@
+import 'package:student_app/data/vos/casts_vo.dart';
 import 'package:student_app/data/vos/data_vo.dart';
 import 'package:student_app/data/vos/movie_details_vo.dart';
 import 'package:student_app/data/vos/user_vo.dart';
@@ -26,9 +27,11 @@ abstract class DataModels {
   //Database
 
   Future<UserVO>? getUserInfoFromDatabase();
-  Future<String>? getTokenFromDatabase();
+  Future<String?>? getTokenFromDatabase();
   Future<String>? getProfileImageFromDatabase();
   Future<List<DataVO>?>? getNowShowingMovieFromDatabase();
   Future<List<DataVO>?>? getComingSoonMovieFromDatabase();
   Future<DataVO>? getMovieFromDatabase(int movieId);
+  Future<MovieDetailsVO?> getMovieDetailsFromDatabase(int movieId);
+  void deleteTokenFromDatabase();
 }

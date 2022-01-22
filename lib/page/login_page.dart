@@ -11,14 +11,14 @@ import 'package:student_app/widgets/title_text.dart';
 import 'package:student_app/widgets/title_text_bold.dart';
 import 'package:student_app/widgets/title_and_text_field.dart';
 
-class WelcomePage extends StatefulWidget {
-  const WelcomePage({Key? key}) : super(key: key);
+class LoginPage extends StatefulWidget {
+  const LoginPage({Key? key}) : super(key: key);
 
   @override
-  State<WelcomePage> createState() => _WelcomePageState();
+  State<LoginPage> createState() => _LoginPageState();
 }
 
-class _WelcomePageState extends State<WelcomePage> {
+class _LoginPageState extends State<LoginPage> {
   DataModels userModels = DataModelsImpl();
 
   TextEditingController nameTextController = TextEditingController();
@@ -118,7 +118,7 @@ class _WelcomePageState extends State<WelcomePage> {
               );
             });
       } else {
-        debugPrint("User ==> ${value.data}");
+        debugPrint("User Token==> ${value.token.toString()}");
         Navigator.push(context, MaterialPageRoute(builder: (context) {
           return const HomePage();
         }));
