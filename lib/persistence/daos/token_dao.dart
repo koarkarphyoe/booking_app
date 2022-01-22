@@ -21,4 +21,8 @@ class TokenDao {
   Box<String> getTokenBox() {
     return Hive.box<String>(boxNameTokenVO);
   }
+
+  void deleteToken() {
+    Hive.box<String>(boxNameTokenVO).delete("token");
+  }
 }

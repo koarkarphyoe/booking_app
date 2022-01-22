@@ -126,4 +126,9 @@ class DataModelsImpl extends DataModels {
   Future<MovieDetailsVO?> getMovieDetailsFromDatabase(int movieId) {
     return Future.value(movieDetailsDao.getMovieDetails(movieId));
   }
+
+  @override
+  void deleteTokenFromDatabase() {
+    tokenDao.deleteToken();
+  }
 }
