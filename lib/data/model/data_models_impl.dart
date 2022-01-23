@@ -48,7 +48,6 @@ class DataModelsImpl extends DataModels {
       profileImageDao.saveProfileImage(value.data?.profileImage);
       //save token to Database(Hive)
       tokenDao.saveToken(value.token);
-
       return Future.value(value);
     });
   }

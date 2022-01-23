@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:student_app/data/model/data_models.dart';
 import 'package:student_app/data/model/data_models_impl.dart';
+import 'package:student_app/network/api_constants.dart';
 import 'package:student_app/page/home_page.dart';
 import 'package:student_app/resources/colors.dart';
 import 'package:student_app/resources/dimens.dart';
@@ -29,6 +30,8 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     List<String> textList = [loginText, registerText];
+    final String facebookTokenAccess = "";
+    final String googleTokenAccess = "";
     return Scaffold(
       appBar: AppBar(
         leadingWidth: 0,
@@ -94,7 +97,21 @@ class _LoginPageState extends State<LoginPage> {
                           emailTextController: emailTextController,
                           passwordTextController: passwordTextController,
                           phoneNumberTextController: phoneTextController,
-                          onTapButton: () {}),
+                          onTapButton: (String name,
+                              String email,
+                              String password,
+                              String phoneNo,
+                              String facebookAccessToken,
+                              String googleAccessToken) {
+                            _registerToApiAndNavigateToLoginTab(
+                                context,
+                                name,
+                                email,
+                                password,
+                                phoneNo,
+                                facebookAccessToken,
+                                googleAccessToken);
+                          }),
                     ],
                   ),
                 ),
@@ -119,28 +136,66 @@ class _LoginPageState extends State<LoginPage> {
             });
       } else {
         debugPrint("User Token==> ${value.token.toString()}");
-        Navigator.push(context, MaterialPageRoute(builder: (context) {
-          return const HomePage();
-        }));
+        Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const HomePage(),
+            ),
+            (route) => false);
+        // Navigator.push(
+        //   context,
+        //   MaterialPageRoute(
+        //     builder: (context) {
+        //       return const HomePage();
+        //     },
+        //   ),
+        // );
       }
     }).catchError((error) {
       print("${error.toString()}");
     });
   }
+
+  void _registerToApiAndNavigateToLoginTab(
+      BuildContext context,
+      String name,
+      String email,
+      String password,
+      String phoneNo,
+      String facebookAccessToken,
+      String googleAccessToken) {
+    userModels
+        .postRegisterWithEmail(name, email, password, phoneNo,
+            facebookAccessToken, googleAccessToken)!
+        .then(
+      (value) {
+        print(value.message);
+        print(value.code);
+        print(value.data);
+        print(value.token);
+      },
+    );
+  }
 }
 
 class RegisterScreenView extends StatelessWidget {
-  final Function onTapButton;
+  final Function(String name, String email, String password, String phoneNo,
+      String facebookAccessToken, String googleAccessToken) onTapButton;
+  final String facebookAccessToken = "";
+  final String googleAccessToken = "";
   final TextEditingController userNameTextController;
   final TextEditingController emailTextController;
   final TextEditingController passwordTextController;
   final TextEditingController phoneNumberTextController;
+
   const RegisterScreenView(
-      {required this.userNameTextController,
+      {Key? key,
+      required this.userNameTextController,
       required this.emailTextController,
       required this.passwordTextController,
       required this.phoneNumberTextController,
-      required this.onTapButton});
+      required this.onTapButton})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -166,7 +221,13 @@ class RegisterScreenView extends StatelessWidget {
           ConfirmButtonView(
             createAccountBtnText,
             () {
-              onTapButton();
+              onTapButton(
+                  userNameTextController.text,
+                  emailTextController.text,
+                  passwordTextController.text,
+                  phoneNumberTextController.text,
+                  facebookAccessToken,
+                  googleAccessToken);
             },
             textColor: Colors.white,
             buttonBackgroundColor: primaryColor,
