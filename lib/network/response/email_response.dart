@@ -1,5 +1,7 @@
+import 'package:hive/hive.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:student_app/data/vos/user_vo.dart';
+import 'package:student_app/persistence/hive_constants.dart';
 part 'email_response.g.dart';
 
 //response from network api

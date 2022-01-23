@@ -6,7 +6,10 @@ import 'package:student_app/data/vos/casts_vo.dart';
 import 'package:student_app/data/vos/data_vo.dart';
 import 'package:student_app/data/vos/movie_details_vo.dart';
 import 'package:student_app/network/data_agents/data_agents_impl.dart';
+import 'package:student_app/network/response/email_response.dart';
+import 'package:student_app/page/home_page.dart';
 import 'package:student_app/page/splash_screen_page.dart';
+import 'package:student_app/page/login_page.dart';
 import 'package:student_app/persistence/hive_constants.dart';
 import 'package:student_app/persistence/hive_constants.dart';
 
@@ -50,28 +53,49 @@ void main() async {
   Hive.registerAdapter(UserVOAdapter());
   Hive.registerAdapter(CardVOAdapter());
   Hive.registerAdapter(DataVOAdapter());
-  Hive.registerAdapter(CastsVOAdapter());
   Hive.registerAdapter(MovieDetailsVOAdapter());
 
   await Hive.openBox<UserVO>(boxNameUserVO);
   await Hive.openBox<CardVO>(boxNameCardVO);
-  await Hive.openBox<String>(boxNameTokenVO);
   await Hive.openBox<DataVO>(boxNameDataVO);
-  await Hive.openBox<CastsVO>(boxNameCastsVO);
   await Hive.openBox<MovieDetailsVO>(boxNameMovieDetailsVO);
+  await Hive.openBox<String>(boxNameTokenVO);
 
   runApp(const MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({Key? key}) : super(key: key);
 
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
   // This widget is the root of your application.
+
+  DataModelsImpl dataModels = DataModelsImpl();
+  String? token = "";
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    dataModels.getTokenFromDatabase()?.then((value) {
+      setState(() {
+        token = value;
+      });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: SplashScreen(),
+      // home: SplashScreen(),
+      home: (token != "" && token != null)
+          ? const HomePage()
+          : const SplashScreen(),
     );
   }
 }

@@ -5,7 +5,7 @@ import 'package:student_app/persistence/hive_constants.dart';
 part 'card_vo.g.dart';
 
 @JsonSerializable()
-@HiveType(typeId: hiveTypeIdCardVO,adapterName: "CardVOAdapter")
+@HiveType(typeId: hiveTypeIdCardVO, adapterName: "CardVOAdapter")
 class CardVO {
   @JsonKey(name: "id")
   @HiveField(0)
@@ -28,13 +28,12 @@ class CardVO {
   String? cardType;
 
   CardVO(
-      this.id,
-      this.cardHolder,
-      this.cardNumber,
-      this.expirationDate,
-      this.cardType,
-      );
-
+    this.id,
+    this.cardHolder,
+    this.cardNumber,
+    this.expirationDate,
+    this.cardType,
+  );
 
   @override
   String toString() {

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:student_app/page/welcome_page.dart';
+import 'package:student_app/page/login_page.dart';
 import 'package:student_app/resources/colors.dart';
 import 'package:student_app/resources/dimens.dart';
 import 'package:student_app/resources/strings.dart';
@@ -26,7 +26,7 @@ class SplashScreen extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => const WelcomePage(),
+                    builder: (context) => const LoginPage(),
                   ),
                 );
               }, isGhostButton: true),
