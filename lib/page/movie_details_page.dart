@@ -5,6 +5,7 @@ import 'package:student_app/data/vos/casts_vo.dart';
 import 'package:student_app/data/vos/data_vo.dart';
 import 'package:student_app/data/vos/movie_details_vo.dart';
 import 'package:student_app/network/api_constants.dart';
+import 'package:student_app/page/movie_choose_time.dart';
 import 'package:student_app/resources/colors.dart';
 import 'package:student_app/resources/dimens.dart';
 import 'package:student_app/resources/strings.dart';
@@ -69,7 +70,7 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
                       padding: const EdgeInsets.only(top: 50, left: 16),
                       child: MovieDetailsScreenBackButtonView(
                         onTapBack: () {
-                          Navigator.pop(context);
+                          navigateToPreviousPage(context);
                         },
                       ),
                     ),
@@ -148,7 +149,9 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
                         padding: const EdgeInsets.all(marginMedium),
                         child: ConfirmButtonView(
                           getYourTicketText,
-                          () {},
+                          () {
+                            _navigateToMovieChooseTimePage(context);
+                          },
                           buttonBackgroundColor: primaryColor,
                           isGhostButton: true,
                         ),
@@ -166,6 +169,17 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
       ),
     );
   }
+
+  Future<dynamic> _navigateToMovieChooseTimePage(BuildContext context) {
+    return Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => MovieChooseTime(movieDetails!),
+      ),
+    );
+  }
+
+  void navigateToPreviousPage(BuildContext context) => Navigator.pop(context);
 }
 
 class PlotSummarySectionView extends StatelessWidget {

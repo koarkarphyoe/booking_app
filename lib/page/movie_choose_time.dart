@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:student_app/data/vos/movie_details_vo.dart';
 import 'package:student_app/resources/colors.dart';
 import 'package:student_app/resources/dimens.dart';
+import 'package:student_app/resources/strings.dart';
 import 'package:student_app/widgets/confirm_button_view.dart';
 import 'package:student_app/widgets/title_text.dart';
 import 'package:student_app/widgets/title_text_bold.dart';
 
 class MovieChooseTime extends StatelessWidget {
-  const MovieChooseTime({Key? key}) : super(key: key);
+  final MovieDetailsVO movieDetails;
+  const MovieChooseTime(this.movieDetails, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -14,10 +17,15 @@ class MovieChooseTime extends StatelessWidget {
       appBar: AppBar(
         elevation: 0,
         backgroundColor: primaryColor,
-        leading: const Icon(
-          Icons.chevron_left,
-          size: paymentPageBackButtonIconSize,
-          color: Colors.white,
+        leading: GestureDetector(
+          onTap: () {
+            _navigateToPreviousPage(context);
+          },
+          child: const Icon(
+            Icons.chevron_left,
+            size: paymentPageBackButtonIconSize,
+            color: Colors.white,
+          ),
         ),
       ),
       body: SingleChildScrollView(
@@ -36,7 +44,7 @@ class MovieChooseTime extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(
                       horizontal: marginMedium, vertical: marginMedium2X),
                   child: ConfirmButtonView(
-                    "Next",
+                    buttonNextText,
                     () {},
                     isGhostButton: true,
                     buttonBackgroundColor: primaryColor,
@@ -49,6 +57,8 @@ class MovieChooseTime extends StatelessWidget {
       ),
     );
   }
+
+  void _navigateToPreviousPage(BuildContext context) => Navigator.pop(context);
 }
 
 class ChooseItemGridSectionView extends StatelessWidget {

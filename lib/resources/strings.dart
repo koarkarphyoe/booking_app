@@ -21,6 +21,7 @@ const comingSoonText = "Coming Soon";
 const plotSummaryText = "Plot Summary";
 const castText = "Cast";
 const getYourTicketText = "Get your ticket";
+const buttonNextText = "Next";
 const awesomeTitleText = "Awesome!";
 const thisIsYourTicketText = "This is your ticket.";
 const bookingNoText = "Booking no";
