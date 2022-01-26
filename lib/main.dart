@@ -43,8 +43,12 @@ void main() async {
   //   print(value.data.toString());
   // });
 
-  DataModelsImpl().getMovieDetails(634649)?.then((value) {
-    print(value?.posterPath.toString());
+  // DataModelsImpl().getMovieDetails(634649)?.then((value) {
+  //   print(value?.posterPath.toString());
+  // });
+
+  DataModelsImpl().getCinemasList()?.then((value) {
+    print(value.toString());
   });
 
   //need to import hive_flutter packages

@@ -8,6 +8,7 @@ const String registerWithEmailEndPoint = "/api/v1/register";
 const String loginWithEmailEndPoint = "/api/v1/email-login";
 const String getNowShowingMovieEndPoint = "/api/v1/movies";
 const String getMovieDetailsEndPoint = "/api/v1/movies";
+const String getCinemasListEndPoint = "/api/v1/cinemas";
 
 //Body in api
 const String nameParam = "name";

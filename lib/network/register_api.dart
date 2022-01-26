@@ -1,5 +1,6 @@
 import 'package:retrofit/http.dart';
 import 'package:dio/dio.dart';
+import 'package:student_app/network/response/cinemas_response.dart';
 import 'package:student_app/network/response/email_response.dart';
 import 'package:student_app/network/response/movie_details_response.dart';
 import 'package:student_app/network/response/movie_response.dart';
@@ -39,4 +40,7 @@ abstract class RegisterApi {
   Future<MovieDetailsResponse> getMovieDetails(
     @Path("movie_id") String movieId,
   );
+
+  @GET(getCinemasListEndPoint)
+  Future<CinemasResponse> getCinemasList();
 }

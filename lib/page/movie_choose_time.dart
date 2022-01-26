@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:student_app/data/model/data_models.dart';
+import 'package:student_app/data/model/data_models_impl.dart';
+import 'package:student_app/data/vos/cinemas_list_vo.dart';
 import 'package:student_app/data/vos/movie_details_vo.dart';
 import 'package:student_app/resources/colors.dart';
 import 'package:student_app/resources/dimens.dart';
@@ -7,9 +10,30 @@ import 'package:student_app/widgets/confirm_button_view.dart';
 import 'package:student_app/widgets/title_text.dart';
 import 'package:student_app/widgets/title_text_bold.dart';
 
-class MovieChooseTime extends StatelessWidget {
+class MovieChooseTime extends StatefulWidget {
   final MovieDetailsVO movieDetails;
   const MovieChooseTime(this.movieDetails, {Key? key}) : super(key: key);
+
+  @override
+  State<MovieChooseTime> createState() => _MovieChooseTimeState();
+}
+
+class _MovieChooseTimeState extends State<MovieChooseTime> {
+  DataModels mDataModels = DataModelsImpl();
+
+  List<CinemasListVO>? cinemas;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+    mDataModels.getCinemasList()?.then((value) {
+      setState(() {
+        cinemas = value;
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -36,10 +60,13 @@ class MovieChooseTime extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const MovieDateChooseSectionView(),
-                const SizedBox(height: marginMedium1X),
-                const ChooseItemGridSectionView(),
-                const ChooseItemGridSectionView(),
-                const ChooseItemGridSectionView(),
+                // const SizedBox(height: marginMedium1X),
+                // ChooseItemGridSectionView(cinemas?.elementAt(0).name),
+                // ChooseItemGridSectionView(cinemas?.elementAt(1).name),
+                // ChooseItemGridSectionView(cinemas?.elementAt(2).name),
+                ChooseItemGridSectionView(cinemas?.elementAt(0)),
+                ChooseItemGridSectionView(cinemas?.elementAt(1)),
+                ChooseItemGridSectionView(cinemas?.elementAt(2)),
                 Padding(
                   padding: const EdgeInsets.symmetric(
                       horizontal: marginMedium, vertical: marginMedium2X),
@@ -62,7 +89,9 @@ class MovieChooseTime extends StatelessWidget {
 }
 
 class ChooseItemGridSectionView extends StatelessWidget {
-  const ChooseItemGridSectionView({
+  CinemasListVO? cinemasList;
+  ChooseItemGridSectionView(
+    this.cinemasList, {
     Key? key,
   }) : super(key: key);
 
@@ -71,14 +100,16 @@ class ChooseItemGridSectionView extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Padding(
-          padding: EdgeInsets.symmetric(
+        Padding(
+          padding: const EdgeInsets.symmetric(
               horizontal: marginSmall, vertical: marginSmall),
-          child: TitleTextBold(
-            "Available in",
-            textColor: Colors.black,
-            textSize: textRegular1X,
-          ),
+          child: (cinemasList != null)
+              ? TitleTextBold(
+                  cinemasList!.name,
+                  textColor: Colors.black,
+                  textSize: textRegular1X,
+                )
+              : const Center(child: CircularProgressIndicator()),
         ),
         GridView.builder(
           itemCount: 6,

@@ -1,8 +1,10 @@
+import 'package:student_app/data/vos/cinemas_list_vo.dart';
 import 'package:student_app/data/vos/data_vo.dart';
 import 'package:student_app/data/vos/user_vo.dart';
 import 'package:student_app/network/api_constants.dart';
 import 'package:student_app/network/register_api.dart';
 import 'package:dio/dio.dart';
+import 'package:student_app/network/response/cinemas_response.dart';
 import 'package:student_app/network/response/email_response.dart';
 import 'package:student_app/network/response/movie_details_response.dart';
 import 'package:student_app/network/response/movie_response.dart';
@@ -75,5 +77,10 @@ class DataAgentsImpl extends DataAgents {
         .asStream()
         .map((event) => event)
         .first;
+  }
+
+  @override
+  Future<List<CinemasListVO>?>? getCinemasList() {
+    return rApi?.getCinemasList().asStream().map((event) => event.data).first;
   }
 }
