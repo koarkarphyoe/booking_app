@@ -3,6 +3,7 @@ import 'package:student_app/data/model/data_models.dart';
 import 'package:student_app/data/vos/cinemas_vo.dart';
 import 'package:student_app/data/vos/data_vo.dart';
 import 'package:student_app/data/vos/movie_details_vo.dart';
+import 'package:student_app/data/vos/timeslotdata_vo.dart';
 import 'package:student_app/data/vos/user_vo.dart';
 import 'package:student_app/network/data_agents/data_agents.dart';
 import 'package:student_app/network/data_agents/data_agents_impl.dart';
@@ -87,6 +88,11 @@ class DataModelsImpl extends DataModels {
   @override
   Future<List<CinemasVO>?>? getCinemasList() {
     return mDataAgent.getCinemasList()?.then((value) => value);
+  }
+
+  @override
+  Future<List<TimeSlotDataVO>?>? getCinemaTimeslots(String token, String date) {
+    return mDataAgent.getCinemaTimeslots(token, date)?.then((value) => value);
   }
 
   //Database

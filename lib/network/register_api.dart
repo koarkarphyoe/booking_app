@@ -1,6 +1,7 @@
 import 'package:retrofit/http.dart';
 import 'package:dio/dio.dart';
 import 'package:student_app/network/response/cinemas_response.dart';
+import 'package:student_app/network/response/day_timeslots_response.dart';
 import 'package:student_app/network/response/email_response.dart';
 import 'package:student_app/network/response/movie_details_response.dart';
 import 'package:student_app/network/response/movie_response.dart';
@@ -43,4 +44,10 @@ abstract class RegisterApi {
 
   @GET(getCinemasListEndPoint)
   Future<CinemasResponse> getCinemasList();
+
+  @GET(getCinemaDayTimeSlotEndPoint)
+  Future<DayTimeslotsResponse> getCinemaTimeslots(
+    @Header("Authorization") String token,
+    @Query(date) String date,
+  );
 }

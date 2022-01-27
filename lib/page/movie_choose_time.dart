@@ -21,12 +21,11 @@ class MovieChooseTime extends StatefulWidget {
 class _MovieChooseTimeState extends State<MovieChooseTime> {
   DataModels mDataModels = DataModelsImpl();
 
-   List<CinemasVO?>? cinemas;
-   String? token;
+  List<CinemasVO?>? cinemas;
+  String? token;
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
 
     mDataModels.getCinemasList()?.then((value) {
@@ -59,19 +58,20 @@ class _MovieChooseTimeState extends State<MovieChooseTime> {
           ),
         ),
       ),
-      body: (cinemas !=null) ?SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const MovieDateChooseSectionView(),
-                ChooseItemGridSectionView(cinemas),
-                Padding(
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: marginMedium, vertical: marginMedium2X),
-                  child: ConfirmButtonView(
+      body: (cinemas != null)
+          ? SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const MovieDateChooseSectionView(),
+                      ChooseItemGridSectionView(cinemas),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: marginMedium, vertical: marginMedium2X),
+                        child: ConfirmButtonView(
                           buttonNextText,
                           () {},
                           isGhostButton: true,

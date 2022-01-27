@@ -15,6 +15,7 @@ import 'package:student_app/persistence/hive_constants.dart';
 
 import 'data/vos/card_vo.dart';
 import 'data/vos/user_vo.dart';
+import 'network/api_constants.dart';
 
 void main() async {
   //check from DataAgents
@@ -47,7 +48,7 @@ void main() async {
   //   print(value?.posterPath.toString());
   // });
 
-  DataModelsImpl().getCinemasList()?.then((value) {
+  DataModelsImpl().getCinemaTimeslots(tokenTest, dateTest)?.then((value) {
     print(value.toString());
   });
 

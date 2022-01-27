@@ -31,3 +31,8 @@ const String date = "date";
 const String statusValue1 = "current";
 const String statusValue2 = "comingsoon";
 const String dateValue = "2022-01-27";
+
+//for test
+
+const String tokenTest = "Bearer 3544|BTPhoQ1KJ41OzWoFE21CtWQNlvIjMqhti4oEScKt";
+const String dateTest = "2022-01-27";
