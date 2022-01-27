@@ -9,6 +9,7 @@ const String loginWithEmailEndPoint = "/api/v1/email-login";
 const String getNowShowingMovieEndPoint = "/api/v1/movies";
 const String getMovieDetailsEndPoint = "/api/v1/movies";
 const String getCinemasListEndPoint = "/api/v1/cinemas";
+const String getCinemaDayTimeSlotEndPoint = "/api/v1/cinema-day-timeslots";
 
 //Body in api
 const String nameParam = "name";
@@ -23,8 +24,10 @@ const String applicationJson = "application/json";
 //Param Key
 
 const String statusKey = "status";
+const String date = "date";
 
 //Param Value
 
 const String statusValue1 = "current";
 const String statusValue2 = "comingsoon";
+const String dateValue = "2022-01-27";

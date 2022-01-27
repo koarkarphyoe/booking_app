@@ -1,13 +1,12 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'cinemas_list_vo.dart';
+part of 'cinemas_vo.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-CinemasListVO _$CinemasListVOFromJson(Map<String, dynamic> json) =>
-    CinemasListVO(
+CinemasVO _$CinemasVOFromJson(Map<String, dynamic> json) => CinemasVO(
       json['id'] as int,
       json['name'] as String,
       json['phone'] as String,
@@ -15,8 +14,7 @@ CinemasListVO _$CinemasListVOFromJson(Map<String, dynamic> json) =>
       json['address'] as String,
     );
 
-Map<String, dynamic> _$CinemasListVOToJson(CinemasListVO instance) =>
-    <String, dynamic>{
+Map<String, dynamic> _$CinemasVOToJson(CinemasVO instance) => <String, dynamic>{
       'id': instance.id,
       'name': instance.name,
       'phone': instance.phone,

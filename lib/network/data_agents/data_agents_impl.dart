@@ -1,4 +1,4 @@
-import 'package:student_app/data/vos/cinemas_list_vo.dart';
+import 'package:student_app/data/vos/cinemas_vo.dart';
 import 'package:student_app/data/vos/data_vo.dart';
 import 'package:student_app/data/vos/user_vo.dart';
 import 'package:student_app/network/api_constants.dart';
@@ -80,7 +80,7 @@ class DataAgentsImpl extends DataAgents {
   }
 
   @override
-  Future<List<CinemasListVO>?>? getCinemasList() {
+  Future<List<CinemasVO>?>? getCinemasList() {
     return rApi?.getCinemasList().asStream().map((event) => event.data).first;
   }
 }

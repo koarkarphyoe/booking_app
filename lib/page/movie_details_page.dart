@@ -48,126 +48,131 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SizedBox(
-        // height: MediaQuery.of(context).size.height,
-        child: CustomScrollView(
-          slivers: [
-            SliverAppBar(
-              elevation: 0,
-              expandedHeight: MediaQuery.of(context).size.height / 1.5,
-              collapsedHeight: sliverAppBarCollapsedHeight,
-              automaticallyImplyLeading: false,
-              backgroundColor: primaryColor,
-              flexibleSpace: Stack(
-                children: [
-                  Positioned.fill(
-                    child: MovieDetailsScreenImageView(movieDetails),
-                  ),
-                  Align(
-                    alignment: Alignment.topLeft,
-                    child: Padding(
-                      padding: const EdgeInsets.only(top: 50, left: 16),
-                      child: MovieDetailsScreenBackButtonView(
-                        onTapBack: () {
-                          navigateToPreviousPage(context);
-                        },
-                      ),
+    return (movieDetails != null && castImage != null)
+        ? Scaffold(
+            body: SizedBox(
+              // height: MediaQuery.of(context).size.height,
+              child: CustomScrollView(
+                slivers: [
+                  SliverAppBar(
+                    elevation: 0,
+                    expandedHeight: MediaQuery.of(context).size.height / 1.5,
+                    collapsedHeight: sliverAppBarCollapsedHeight,
+                    automaticallyImplyLeading: false,
+                    backgroundColor: primaryColor,
+                    flexibleSpace: Stack(
+                      children: [
+                        Positioned.fill(
+                          child: MovieDetailsScreenImageView(movieDetails),
+                        ),
+                        Align(
+                          alignment: Alignment.topLeft,
+                          child: Padding(
+                            padding: const EdgeInsets.only(top: 50, left: 16),
+                            child: MovieDetailsScreenBackButtonView(
+                              onTapBack: () {
+                                navigateToPreviousPage(context);
+                              },
+                            ),
+                          ),
+                        ),
+                        const Align(
+                          alignment: Alignment.center,
+                          child: MovieDetailsScreenPlayButtonView(),
+                        ),
+                        Align(
+                          alignment: Alignment.bottomCenter,
+                          child: Container(
+                            height: movieDetailsTitleScreenContainerHeight,
+                            width: MediaQuery.of(context).size.width,
+                            decoration: const BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(marginMedium1X),
+                                topRight: Radius.circular(marginMedium1X),
+                              ),
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.only(
+                                  top: marginXXSmall, left: marginMedium),
+                              child: MovieDetailScreenTitleAndRatingView(
+                                  movieDetails, movieDetails),
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
-                  const Align(
-                    alignment: Alignment.center,
-                    child: MovieDetailsScreenPlayButtonView(),
-                  ),
-                  Align(
-                    alignment: Alignment.bottomCenter,
-                    child: Container(
-                      height: movieDetailsTitleScreenContainerHeight,
-                      width: MediaQuery.of(context).size.width,
-                      decoration: const BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.only(
-                          topLeft: Radius.circular(marginMedium1X),
-                          topRight: Radius.circular(marginMedium1X),
+                  SliverList(
+                    delegate: SliverChildListDelegate(
+                      [
+                        Padding(
+                          padding: const EdgeInsets.all(marginMedium),
+                          child: PlotSummarySectionView(movieDetails),
                         ),
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.only(
-                            top: marginXXSmall, left: marginMedium),
-                        child: MovieDetailScreenTitleAndRatingView(
-                            movieDetails, movieDetails),
-                      ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Padding(
+                              padding: EdgeInsets.only(
+                                  left: marginMedium,
+                                  right: marginMedium,
+                                  bottom: marginMedium),
+                              child: TitleTextBold(
+                                castText,
+                                textSize: textRegular2X,
+                                textColor: Colors.black,
+                              ),
+                            ),
+                            const SizedBox(
+                              height: marginXSmall,
+                            ),
+                            SizedBox(
+                              height: movieDetailsScteenCastContainerHeight,
+                              child: ListView.builder(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: marginMedium),
+                                itemCount: castImage?.length.toInt(),
+                                scrollDirection: Axis.horizontal,
+                                itemBuilder: (BuildContext context, int index) {
+                                  return (castImage != null)
+                                      ? MovieDetailsCastImageView(
+                                          castImage?[index])
+                                      : const Center(
+                                          child: CircularProgressIndicator(),
+                                        );
+                                },
+                              ),
+                            ),
+                            const SizedBox(
+                              height: marginMedium,
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.all(marginMedium),
+                              child: ConfirmButtonView(
+                                getYourTicketText,
+                                () {
+                                  _navigateToMovieChooseTimePage(context);
+                                },
+                                buttonBackgroundColor: primaryColor,
+                                isGhostButton: true,
+                              ),
+                            ),
+                            const SizedBox(
+                              height: marginMediumLarge,
+                            ),
+                          ],
+                        ),
+                      ],
                     ),
                   ),
                 ],
               ),
             ),
-            SliverList(
-              delegate: SliverChildListDelegate(
-                [
-                  Padding(
-                    padding: const EdgeInsets.all(marginMedium),
-                    child: PlotSummarySectionView(movieDetails),
-                  ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Padding(
-                        padding: EdgeInsets.only(
-                            left: marginMedium,
-                            right: marginMedium,
-                            bottom: marginMedium),
-                        child: TitleTextBold(
-                          castText,
-                          textSize: textRegular2X,
-                          textColor: Colors.black,
-                        ),
-                      ),
-                      const SizedBox(
-                        height: marginXSmall,
-                      ),
-                      SizedBox(
-                        height: movieDetailsScteenCastContainerHeight,
-                        child: ListView.builder(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: marginMedium),
-                          itemCount: castImage?.length.toInt(),
-                          scrollDirection: Axis.horizontal,
-                          itemBuilder: (BuildContext context, int index) {
-                            return (castImage != null)
-                                ? MovieDetailsCastImageView(castImage?[index])
-                                : const Center(
-                                    child: CircularProgressIndicator(),
-                                  );
-                          },
-                        ),
-                      ),
-                      const SizedBox(
-                        height: marginMedium,
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(marginMedium),
-                        child: ConfirmButtonView(
-                          getYourTicketText,
-                          () {
-                            _navigateToMovieChooseTimePage(context);
-                          },
-                          buttonBackgroundColor: primaryColor,
-                          isGhostButton: true,
-                        ),
-                      ),
-                      const SizedBox(
-                        height: marginMediumLarge,
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
+          )
+        : const Center(
+            child: CircularProgressIndicator(),
+          );
   }
 
   Future<dynamic> _navigateToMovieChooseTimePage(BuildContext context) {
@@ -228,25 +233,19 @@ class MovieDetailScreenTitleAndRatingView extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        (movieDetails != null)
-            ? TitleTextBold(
-                movieDetails!.originalTitle.toString(),
-                textColor: Colors.black,
-                textSize: textRegular4X,
-              )
-            : const Center(child: CircularProgressIndicator()),
+        TitleTextBold(
+          movieDetails!.originalTitle.toString(),
+          textColor: Colors.black,
+          textSize: textRegular4X,
+        ),
         const SizedBox(height: marginXSmall),
         Row(
           children: [
-            (movieDetails != null)
-                ? TitleText(
-                    "${movieDetails!.runtime.toString()}m",
-                    textColor: Colors.black87,
-                    textSize: textRegular2X,
-                  )
-                : const Center(
-                    child: CircularProgressIndicator(),
-                  ),
+            TitleText(
+              "${movieDetails!.runtime.toString()}m",
+              textColor: Colors.black87,
+              textSize: textRegular2X,
+            ),
             const SizedBox(
               width: marginSmall,
             ),
@@ -266,15 +265,11 @@ class MovieDetailScreenTitleAndRatingView extends StatelessWidget {
             const SizedBox(
               width: marginMedium,
             ),
-            (movieDetails != null)
-                ? TitleText(
-                    "IMDb ${movieDetails!.rating.toString()}",
-                    textColor: Colors.black87,
-                    textSize: textRegular3X,
-                  )
-                : const Center(
-                    child: CircularProgressIndicator(),
-                  ),
+            TitleText(
+              "IMDb ${movieDetails!.rating.toString()}",
+              textColor: Colors.black87,
+              textSize: textRegular3X,
+            )
           ],
         ),
         const SizedBox(
@@ -392,14 +387,10 @@ class MovieDetailsImageView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return (movie != null)
-        ? Image.network(
-            "$moviePosterBaseUrl${movie?.posterPath}",
-            // "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSHD8WDfqyhvTJycYGsqcxkhv5dG8PcxQ8YMw&usqp=CAU",
-            fit: BoxFit.fill,
-          )
-        : const Center(
-            child: CircularProgressIndicator(),
-          );
+    return Image.network(
+      "$moviePosterBaseUrl${movie?.posterPath}",
+      // "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSHD8WDfqyhvTJycYGsqcxkhv5dG8PcxQ8YMw&usqp=CAU",
+      fit: BoxFit.fill,
+    );
   }
 }

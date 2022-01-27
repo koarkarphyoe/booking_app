@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:student_app/data/model/data_models.dart';
 import 'package:student_app/data/model/data_models_impl.dart';
-import 'package:student_app/data/vos/cinemas_list_vo.dart';
+import 'package:student_app/data/vos/cinemas_vo.dart';
 import 'package:student_app/data/vos/movie_details_vo.dart';
 import 'package:student_app/resources/colors.dart';
 import 'package:student_app/resources/dimens.dart';
@@ -21,8 +21,8 @@ class MovieChooseTime extends StatefulWidget {
 class _MovieChooseTimeState extends State<MovieChooseTime> {
   DataModels mDataModels = DataModelsImpl();
 
-  List<CinemasListVO>? cinemas;
-  String? token;
+   List<CinemasVO?>? cinemas;
+   String? token;
 
   @override
   void initState() {
@@ -59,7 +59,7 @@ class _MovieChooseTimeState extends State<MovieChooseTime> {
           ),
         ),
       ),
-      body: SingleChildScrollView(
+      body: (cinemas !=null) ?SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -67,28 +67,25 @@ class _MovieChooseTimeState extends State<MovieChooseTime> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const MovieDateChooseSectionView(),
-                // const SizedBox(height: marginMedium1X),
-                // ChooseItemGridSectionView(cinemas?.elementAt(0).name),
-                // ChooseItemGridSectionView(cinemas?.elementAt(1).name),
-                // ChooseItemGridSectionView(cinemas?.elementAt(2).name),
-                ChooseItemGridSectionView(cinemas?.elementAt(0)),
-                ChooseItemGridSectionView(cinemas?.elementAt(1)),
-                ChooseItemGridSectionView(cinemas?.elementAt(2)),
+                ChooseItemGridSectionView(cinemas),
                 Padding(
                   padding: const EdgeInsets.symmetric(
                       horizontal: marginMedium, vertical: marginMedium2X),
                   child: ConfirmButtonView(
-                    buttonNextText,
-                    () {},
-                    isGhostButton: true,
-                    buttonBackgroundColor: primaryColor,
+                          buttonNextText,
+                          () {},
+                          isGhostButton: true,
+                          buttonBackgroundColor: primaryColor,
+                        ),
+                      ),
+                    ],
                   ),
-                ),
-              ],
+                ],
+              ),
+            )
+          : const Center(
+              child: CircularProgressIndicator(),
             ),
-          ],
-        ),
-      ),
     );
   }
 
@@ -96,8 +93,8 @@ class _MovieChooseTimeState extends State<MovieChooseTime> {
 }
 
 class ChooseItemGridSectionView extends StatelessWidget {
-  CinemasListVO? cinemasList;
-  ChooseItemGridSectionView(
+  final List<CinemasVO?>? cinemasList;
+  const ChooseItemGridSectionView(
     this.cinemasList, {
     Key? key,
   }) : super(key: key);
@@ -106,18 +103,34 @@ class ChooseItemGridSectionView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
+      children: cinemasList!
+          .map((cinema) => CinemaNameView(cinemaName: cinema))
+          .toList(),
+    );
+  }
+}
+
+class CinemaNameView extends StatelessWidget {
+  const CinemaNameView({
+    Key? key,
+    required this.cinemaName,
+  }) : super(key: key);
+
+  final CinemasVO? cinemaName;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
-          padding: const EdgeInsets.symmetric(
-              horizontal: marginSmall, vertical: marginSmall),
-          child: (cinemasList != null)
-              ? TitleTextBold(
-                  cinemasList!.name,
-                  textColor: Colors.black,
-                  textSize: textRegular1X,
-                )
-              : const Center(child: CircularProgressIndicator()),
-        ),
+            padding: const EdgeInsets.symmetric(
+                horizontal: marginSmall, vertical: marginSmall),
+            child: TitleTextBold(
+              cinemaName!.name,
+              textColor: Colors.black,
+              textSize: textRegular1X,
+            )),
         GridView.builder(
           itemCount: 6,
           shrinkWrap: true,

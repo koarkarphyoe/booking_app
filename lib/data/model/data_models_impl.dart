@@ -1,6 +1,6 @@
 import 'package:stream_transform/src/concatenate.dart';
 import 'package:student_app/data/model/data_models.dart';
-import 'package:student_app/data/vos/cinemas_list_vo.dart';
+import 'package:student_app/data/vos/cinemas_vo.dart';
 import 'package:student_app/data/vos/data_vo.dart';
 import 'package:student_app/data/vos/movie_details_vo.dart';
 import 'package:student_app/data/vos/user_vo.dart';
@@ -85,7 +85,7 @@ class DataModelsImpl extends DataModels {
   }
 
   @override
-  Future<List<CinemasListVO>?>? getCinemasList() {
+  Future<List<CinemasVO>?>? getCinemasList() {
     return mDataAgent.getCinemasList()?.then((value) => value);
   }
 

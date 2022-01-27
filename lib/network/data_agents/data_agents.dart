@@ -1,4 +1,4 @@
-import 'package:student_app/data/vos/cinemas_list_vo.dart';
+import 'package:student_app/data/vos/cinemas_vo.dart';
 import 'package:student_app/data/vos/data_vo.dart';
 import 'package:student_app/network/response/cinemas_response.dart';
 import 'package:student_app/network/response/email_response.dart';
@@ -19,5 +19,5 @@ abstract class DataAgents {
   Future<List<DataVO>?>? getNowShowingMovie(String status);
   Future<List<DataVO>?>? getComingSoonMovie(String status);
   Future<MovieDetailsResponse>? getMovieDetails(int movieId);
-  Future<List<CinemasListVO>?>? getCinemasList();
+  Future<List<CinemasVO>?>? getCinemasList();
 }

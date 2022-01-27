@@ -11,7 +11,7 @@ CinemasResponse _$CinemasResponseFromJson(Map<String, dynamic> json) =>
       json['code'] as int,
       json['message'] as String,
       (json['data'] as List<dynamic>)
-          .map((e) => CinemasListVO.fromJson(e as Map<String, dynamic>))
+          .map((e) => CinemasVO.fromJson(e as Map<String, dynamic>))
           .toList(),
     );
 
