@@ -22,6 +22,7 @@ class _MovieChooseTimeState extends State<MovieChooseTime> {
   DataModels mDataModels = DataModelsImpl();
 
   List<CinemasListVO>? cinemas;
+  String? token;
 
   @override
   void initState() {
@@ -31,6 +32,12 @@ class _MovieChooseTimeState extends State<MovieChooseTime> {
     mDataModels.getCinemasList()?.then((value) {
       setState(() {
         cinemas = value;
+      });
+    });
+
+    mDataModels.getTokenFromDatabase()?.then((value) {
+      setState(() {
+        token = value;
       });
     });
   }
