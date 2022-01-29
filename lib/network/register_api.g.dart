@@ -110,7 +110,7 @@ class _RegisterApi implements RegisterApi {
   }
 
   @override
-  Future<DayTimeslotsResponse> getCinemaTimeslots(token, date) async {
+  Future<DayTimeslotsResponse> getCinemaNameAndTimeSlots(token, date) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{r'date': date};
     final _headers = <String, dynamic>{r'Authorization': token};

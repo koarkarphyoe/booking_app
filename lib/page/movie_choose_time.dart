@@ -3,6 +3,8 @@ import 'package:student_app/data/model/data_models.dart';
 import 'package:student_app/data/model/data_models_impl.dart';
 import 'package:student_app/data/vos/cinemas_vo.dart';
 import 'package:student_app/data/vos/movie_details_vo.dart';
+import 'package:student_app/data/vos/timeslotdata_vo.dart';
+import 'package:student_app/data/vos/timeslots_vo.dart';
 import 'package:student_app/resources/colors.dart';
 import 'package:student_app/resources/dimens.dart';
 import 'package:student_app/resources/strings.dart';
@@ -22,21 +24,24 @@ class _MovieChooseTimeState extends State<MovieChooseTime> {
   DataModels mDataModels = DataModelsImpl();
 
   List<CinemasVO?>? cinemas;
-  String? token;
+  // String? token;
+  List<TimeSlotDataVO>? cinemaList;
+  TimeslotsVO? timeSlots;
 
   @override
   void initState() {
     super.initState();
 
+    // this api not use for cinema names
     mDataModels.getCinemasList()?.then((value) {
       setState(() {
         cinemas = value;
       });
     });
-
-    mDataModels.getTokenFromDatabase()?.then((value) {
+    // this api use for cinema names
+    mDataModels.getCinemaNameAndTimeSlots()?.then((value) {
       setState(() {
-        token = value;
+        cinemaList = value;
       });
     });
   }
@@ -58,7 +63,7 @@ class _MovieChooseTimeState extends State<MovieChooseTime> {
           ),
         ),
       ),
-      body: (cinemas != null)
+      body: (cinemas != null && cinemaList!=null)
           ? SingleChildScrollView(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -67,7 +72,7 @@ class _MovieChooseTimeState extends State<MovieChooseTime> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const MovieDateChooseSectionView(),
-                      ChooseItemGridSectionView(cinemas),
+                      ChooseItemGridSectionView(cinemaList),
                       Padding(
                         padding: const EdgeInsets.symmetric(
                             horizontal: marginMedium, vertical: marginMedium2X),
@@ -93,30 +98,24 @@ class _MovieChooseTimeState extends State<MovieChooseTime> {
 }
 
 class ChooseItemGridSectionView extends StatelessWidget {
-  final List<CinemasVO?>? cinemasList;
-  const ChooseItemGridSectionView(
-    this.cinemasList, {
-    Key? key,
-  }) : super(key: key);
+  final List<TimeSlotDataVO>? cinemaList;
+
+  const ChooseItemGridSectionView(this.cinemaList);
 
   @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      children: cinemasList!
-          .map((cinema) => CinemaNameView(cinemaName: cinema))
+      children: cinemaList!
+          .map((cinema) => CinemaNameView(cinema))
           .toList(),
     );
   }
 }
 
 class CinemaNameView extends StatelessWidget {
-  const CinemaNameView({
-    Key? key,
-    required this.cinemaName,
-  }) : super(key: key);
-
-  final CinemasVO? cinemaName;
+  const CinemaNameView(this.cinema);
+  final TimeSlotDataVO? cinema;
 
   @override
   Widget build(BuildContext context) {
@@ -127,12 +126,12 @@ class CinemaNameView extends StatelessWidget {
             padding: const EdgeInsets.symmetric(
                 horizontal: marginSmall, vertical: marginSmall),
             child: TitleTextBold(
-              cinemaName!.name,
+              cinema!.cinema.toString(),
               textColor: Colors.black,
               textSize: textRegular1X,
             )),
         GridView.builder(
-          itemCount: 6,
+          itemCount: cinema?.timeslots?.length,
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
@@ -147,7 +146,11 @@ class CinemaNameView extends StatelessWidget {
                 border: Border.all(width: 1, color: Colors.grey),
                 borderRadius: BorderRadius.circular(5),
               ),
-              child: const Center(child: Text("2D")),
+              child: Center(
+                child: Text(
+                  cinema!.timeslots![index].startTime.toString(),
+                ),
+              ),
             );
           },
         ),

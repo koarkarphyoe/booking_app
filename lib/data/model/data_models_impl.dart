@@ -4,7 +4,9 @@ import 'package:student_app/data/vos/cinemas_vo.dart';
 import 'package:student_app/data/vos/data_vo.dart';
 import 'package:student_app/data/vos/movie_details_vo.dart';
 import 'package:student_app/data/vos/timeslotdata_vo.dart';
+import 'package:student_app/data/vos/timeslots_vo.dart';
 import 'package:student_app/data/vos/user_vo.dart';
+import 'package:student_app/network/api_constants.dart';
 import 'package:student_app/network/data_agents/data_agents.dart';
 import 'package:student_app/network/data_agents/data_agents_impl.dart';
 import 'package:student_app/network/response/email_response.dart';
@@ -30,6 +32,8 @@ class DataModelsImpl extends DataModels {
   ProfileImageDao profileImageDao = ProfileImageDao();
   MovieDao movieDao = MovieDao();
   MovieDetailsDao movieDetailsDao = MovieDetailsDao();
+
+  
 
   @override
   Future<EmailResponse>? postRegisterWithEmail(
@@ -91,9 +95,11 @@ class DataModelsImpl extends DataModels {
   }
 
   @override
-  Future<List<TimeSlotDataVO>?>? getCinemaTimeslots(String token, String date) {
-    return mDataAgent.getCinemaTimeslots(token, date)?.then((value) => value);
+  Future<List<TimeSlotDataVO>?>? getCinemaNameAndTimeSlots() {
+    return mDataAgent.getCinemaNameAndTimeSlots(tokenDao.getToken().toString(), dateTest)?.then((value) => value);
   }
+
+  
 
   //Database
 
@@ -147,4 +153,5 @@ class DataModelsImpl extends DataModels {
   void deleteUserInfoFromDatabase() {
     userDao.deleteUserUnfo();
   }
+
 }

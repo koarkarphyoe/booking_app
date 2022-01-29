@@ -210,7 +210,7 @@ class _HomePageState extends State<HomePage> {
     return Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => MovieDetailsPage(movieId),
+        builder: (context) => MovieDetailsPage(movieId,token),
       ),
     );
   }

@@ -1,12 +1,17 @@
+import 'package:student_app/data/model/data_models_impl.dart';
 import 'package:student_app/data/vos/casts_vo.dart';
 import 'package:student_app/data/vos/cinemas_vo.dart';
 import 'package:student_app/data/vos/data_vo.dart';
 import 'package:student_app/data/vos/movie_details_vo.dart';
 import 'package:student_app/data/vos/timeslotdata_vo.dart';
+import 'package:student_app/data/vos/timeslots_vo.dart';
 import 'package:student_app/data/vos/user_vo.dart';
 import 'package:student_app/network/response/email_response.dart';
+import 'package:student_app/persistence/daos/token_dao.dart';
 
 abstract class DataModels {
+ 
+  
   // Network
 
   Future<EmailResponse>? postRegisterWithEmail(
@@ -26,7 +31,7 @@ abstract class DataModels {
   Future<List<DataVO>?>? getComingSoonMovie(String status);
   Future<MovieDetailsVO?>? getMovieDetails(int movieId);
   Future<List<CinemasVO>?>? getCinemasList();
-  Future<List<TimeSlotDataVO>?>? getCinemaTimeslots(String token, String date);
+  Future<List<TimeSlotDataVO>?>? getCinemaNameAndTimeSlots();
 
   //Database
 

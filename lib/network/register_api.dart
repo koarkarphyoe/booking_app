@@ -46,7 +46,7 @@ abstract class RegisterApi {
   Future<CinemasResponse> getCinemasList();
 
   @GET(getCinemaDayTimeSlotEndPoint)
-  Future<DayTimeslotsResponse> getCinemaTimeslots(
+  Future<DayTimeslotsResponse> getCinemaNameAndTimeSlots(
     @Header("Authorization") String token,
     @Query(date) String date,
   );

@@ -17,7 +17,8 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
 class MovieDetailsPage extends StatefulWidget {
   final int movieId;
-  const MovieDetailsPage(this.movieId);
+  final String? token;
+  const MovieDetailsPage(this.movieId,this.token);
 
   @override
   State<MovieDetailsPage> createState() => _MovieDetailsPageState();
@@ -179,7 +180,7 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
     return Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => MovieChooseTime(movieDetails!),
+        builder: (context) => MovieChooseTime(movieDetails!,),
       ),
     );
   }

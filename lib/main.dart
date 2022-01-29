@@ -48,9 +48,9 @@ void main() async {
   //   print(value?.posterPath.toString());
   // });
 
-  DataModelsImpl().getCinemaTimeslots(tokenTest, dateTest)?.then((value) {
-    print(value.toString());
-  });
+  // DataModelsImpl().getCinemaTimeslots()?.then((value) {
+  //   print(value.toString());
+  // });
 
   //need to import hive_flutter packages
   await Hive.initFlutter();
@@ -65,6 +65,7 @@ void main() async {
   await Hive.openBox<DataVO>(boxNameDataVO);
   await Hive.openBox<MovieDetailsVO>(boxNameMovieDetailsVO);
   await Hive.openBox<String>(boxNameTokenVO);
+  
 
   runApp(const MyApp());
 }
