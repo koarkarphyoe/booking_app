@@ -35,8 +35,6 @@ class DataModelsImpl extends DataModels {
   MovieDao movieDao = MovieDao();
   MovieDetailsDao movieDetailsDao = MovieDetailsDao();
 
-  
-
   @override
   Future<EmailResponse>? postRegisterWithEmail(
       String name,
@@ -98,10 +96,10 @@ class DataModelsImpl extends DataModels {
 
   @override
   Future<List<TimeSlotDataVO>?>? getCinemaNameAndTimeSlots() {
-    return mDataAgent.getCinemaNameAndTimeSlots(tokenDao.getToken().toString(), dateTest)?.then((value) => value);
+    return mDataAgent
+        .getCinemaNameAndTimeSlots(tokenDao.getToken().toString(), dateTest)
+        ?.then((value) => value);
   }
-
-  
 
   //Database
 
@@ -156,7 +154,7 @@ class DataModelsImpl extends DataModels {
     userDao.deleteUserUnfo();
   }
 
-
+  // for select and show dates in UI section
   @override
   List<DateVO> getDates() {
     List<DateVO> dateList = [];
@@ -177,5 +175,4 @@ class DataModelsImpl extends DataModels {
 
     return dateList;
   }
-
 }

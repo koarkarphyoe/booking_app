@@ -28,6 +28,7 @@ class _MovieChooseTimeState extends State<MovieChooseTime> {
   List<TimeSlotDataVO>? cinemaList;
   TimeslotsVO? timeSlots;
   List<DateVO>? dateList;
+  DateVO? selectedDate;
 
   @override
   void initState() {
@@ -47,6 +48,19 @@ class _MovieChooseTimeState extends State<MovieChooseTime> {
     });
 
     dateList = mDataModels.getDates();
+  }
+
+  _selectDate(int dateId) {
+    setState(() {
+      selectedDate = dateList?.firstWhere((element) => element.id == dateId);
+      //Reset all selected date when user chage tapping on date!
+      dateList?.forEach((element) => element.isSelected = false);
+      //isSelected is false in DateVO,now it is setup to true to handle the color of date when tap from the user!
+      selectedDate?.isSelected = true;
+      //to show and test actual date in console!
+      debugPrint(selectedDate?.yMd.toString());
+      debugPrint(selectedDate?.id.toString());
+    });
   }
 
   @override
@@ -74,7 +88,8 @@ class _MovieChooseTimeState extends State<MovieChooseTime> {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      MovieDateChooseSectionView(dateList),
+                      MovieDateChooseSectionView(
+                          dateList, (dateId) => _selectDate(dateId)),
                       ChooseItemGridSectionView(cinemaList),
                       Padding(
                         padding: const EdgeInsets.symmetric(
@@ -160,13 +175,22 @@ class CinemaNameView extends StatelessWidget {
   }
 }
 
-class MovieDateChooseSectionView extends StatelessWidget {
+class MovieDateChooseSectionView extends StatefulWidget {
   final List<DateVO>? dateList;
+  final Function(int) selectDate;
   const MovieDateChooseSectionView(
-    this.dateList, {
+    this.dateList,
+    this.selectDate, {
     Key? key,
   }) : super(key: key);
 
+  @override
+  State<MovieDateChooseSectionView> createState() =>
+      _MovieDateChooseSectionViewState();
+}
+
+class _MovieDateChooseSectionViewState
+    extends State<MovieDateChooseSectionView> {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -175,7 +199,14 @@ class MovieDateChooseSectionView extends StatelessWidget {
       child: ListView(
         padding: const EdgeInsets.symmetric(horizontal: marginMedium),
         scrollDirection: Axis.horizontal,
-        children: dateList!.map((e) => DateView(e)).toList(),
+        children: widget.dateList!
+            .map(
+              (e) => DateView(
+                e,
+                (dateId) => widget.selectDate(dateId),
+              ),
+            )
+            .toList(),
       ),
       // child: ListView.separated(
       //   padding: const EdgeInsets.symmetric(horizontal: marginMedium),
@@ -208,8 +239,11 @@ class MovieDateChooseSectionView extends StatelessWidget {
 
 class DateView extends StatelessWidget {
   final DateVO date;
+  final Function(int) selectDate;
+
   const DateView(
-    this.date, {
+    this.date,
+    this.selectDate, {
     Key? key,
   }) : super(key: key);
 
@@ -217,20 +251,31 @@ class DateView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: marginMedium),
-      child: Column(
-        children: [
-          TitleText(
-            date.day,
-            textSize: textRegular,
-          ),
-          const SizedBox(
-            height: marginMedium,
-          ),
-          TitleText(
-            date.date,
-            textSize: textRegular,
-          ),
-        ],
+      child: GestureDetector(
+        onTap: () {
+          selectDate(date.id);
+        },
+        child: Column(
+          children: [
+            Text(
+              date.day,
+              style: TextStyle(
+                  fontSize: (date.isSelected) ? textRegular4X : textRegular,
+                  color:
+                      (date.isSelected) ? Colors.white : paymentCardIconColor),
+            ),
+            const SizedBox(
+              height: marginMedium,
+            ),
+            Text(
+              date.date,
+              style: TextStyle(
+                  fontSize: (date.isSelected) ? textRegular4X : textRegular,
+                  color:
+                      (date.isSelected) ? Colors.white : paymentCardIconColor),
+            ),
+          ],
+        ),
       ),
     );
   }
