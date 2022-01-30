@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:student_app/data/model/data_models.dart';
 import 'package:student_app/data/model/data_models_impl.dart';
 import 'package:student_app/data/vos/cinemas_vo.dart';
+import 'package:student_app/data/vos/date_vo.dart';
 import 'package:student_app/data/vos/movie_details_vo.dart';
 import 'package:student_app/data/vos/timeslotdata_vo.dart';
 import 'package:student_app/data/vos/timeslots_vo.dart';
@@ -24,9 +25,9 @@ class _MovieChooseTimeState extends State<MovieChooseTime> {
   DataModels mDataModels = DataModelsImpl();
 
   List<CinemasVO?>? cinemas;
-  // String? token;
   List<TimeSlotDataVO>? cinemaList;
   TimeslotsVO? timeSlots;
+  List<DateVO>? dateList;
 
   @override
   void initState() {
@@ -44,6 +45,8 @@ class _MovieChooseTimeState extends State<MovieChooseTime> {
         cinemaList = value;
       });
     });
+
+    dateList = mDataModels.getDates();
   }
 
   @override
@@ -63,7 +66,7 @@ class _MovieChooseTimeState extends State<MovieChooseTime> {
           ),
         ),
       ),
-      body: (cinemas != null && cinemaList!=null)
+      body: (cinemas != null && cinemaList != null)
           ? SingleChildScrollView(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -71,7 +74,7 @@ class _MovieChooseTimeState extends State<MovieChooseTime> {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const MovieDateChooseSectionView(),
+                      MovieDateChooseSectionView(dateList),
                       ChooseItemGridSectionView(cinemaList),
                       Padding(
                         padding: const EdgeInsets.symmetric(
@@ -106,9 +109,7 @@ class ChooseItemGridSectionView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      children: cinemaList!
-          .map((cinema) => CinemaNameView(cinema))
-          .toList(),
+      children: cinemaList!.map((cinema) => CinemaNameView(cinema)).toList(),
     );
   }
 }
@@ -160,7 +161,9 @@ class CinemaNameView extends StatelessWidget {
 }
 
 class MovieDateChooseSectionView extends StatelessWidget {
-  const MovieDateChooseSectionView({
+  final List<DateVO>? dateList;
+  const MovieDateChooseSectionView(
+    this.dateList, {
     Key? key,
   }) : super(key: key);
 
@@ -169,30 +172,65 @@ class MovieDateChooseSectionView extends StatelessWidget {
     return Container(
       color: primaryColor,
       height: movieDateChooseContainerHeight,
-      child: ListView.separated(
+      child: ListView(
         padding: const EdgeInsets.symmetric(horizontal: marginMedium),
-        separatorBuilder: (context, index) {
-          return const SizedBox(width: marginMedium);
-        },
         scrollDirection: Axis.horizontal,
-        itemCount: 20,
-        itemBuilder: (BuildContext context, int index) {
-          return Column(
-            children: const [
-              TitleText(
-                "Wed",
-                textSize: textRegular,
-              ),
-              SizedBox(
-                height: marginMedium,
-              ),
-              TitleText(
-                "10",
-                textSize: textRegular,
-              ),
-            ],
-          );
-        },
+        children: dateList!.map((e) => DateView(e)).toList(),
+      ),
+      // child: ListView.separated(
+      //   padding: const EdgeInsets.symmetric(horizontal: marginMedium),
+      //   separatorBuilder: (context, index) {
+      //     return const SizedBox(width: marginMedium);
+      //   },
+      //   scrollDirection: Axis.horizontal,
+      //   itemCount: dateList!.length,
+      //   itemBuilder: (BuildContext context, int index) {
+      //     return Column(
+      //       children: const [
+      //         TitleText(
+      //           "Wed",
+      //           textSize: textRegular,
+      //         ),
+      //         SizedBox(
+      //           height: marginMedium,
+      //         ),
+      //         TitleText(
+      //           "10",
+      //           textSize: textRegular,
+      //         ),
+      //       ],
+      //     );
+      //   },
+      // ),
+    );
+  }
+}
+
+class DateView extends StatelessWidget {
+  final DateVO date;
+  const DateView(
+    this.date, {
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: marginMedium),
+      child: Column(
+        children: [
+          TitleText(
+            date.day,
+            textSize: textRegular,
+          ),
+          const SizedBox(
+            height: marginMedium,
+          ),
+          TitleText(
+            date.date,
+            textSize: textRegular,
+          ),
+        ],
       ),
     );
   }

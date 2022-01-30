@@ -2,6 +2,7 @@ import 'package:student_app/data/model/data_models_impl.dart';
 import 'package:student_app/data/vos/casts_vo.dart';
 import 'package:student_app/data/vos/cinemas_vo.dart';
 import 'package:student_app/data/vos/data_vo.dart';
+import 'package:student_app/data/vos/date_vo.dart';
 import 'package:student_app/data/vos/movie_details_vo.dart';
 import 'package:student_app/data/vos/timeslotdata_vo.dart';
 import 'package:student_app/data/vos/timeslots_vo.dart';
@@ -10,8 +11,6 @@ import 'package:student_app/network/response/email_response.dart';
 import 'package:student_app/persistence/daos/token_dao.dart';
 
 abstract class DataModels {
- 
-  
   // Network
 
   Future<EmailResponse>? postRegisterWithEmail(
@@ -44,4 +43,7 @@ abstract class DataModels {
   Future<MovieDetailsVO?> getMovieDetailsFromDatabase(int movieId);
   void deleteTokenFromDatabase();
   void deleteUserInfoFromDatabase();
+
+  //Other
+  List<DateVO> getDates();
 }

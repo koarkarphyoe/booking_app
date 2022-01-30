@@ -1,7 +1,9 @@
+import 'package:intl/intl.dart';
 import 'package:stream_transform/src/concatenate.dart';
 import 'package:student_app/data/model/data_models.dart';
 import 'package:student_app/data/vos/cinemas_vo.dart';
 import 'package:student_app/data/vos/data_vo.dart';
+import 'package:student_app/data/vos/date_vo.dart';
 import 'package:student_app/data/vos/movie_details_vo.dart';
 import 'package:student_app/data/vos/timeslotdata_vo.dart';
 import 'package:student_app/data/vos/timeslots_vo.dart';
@@ -152,6 +154,28 @@ class DataModelsImpl extends DataModels {
   @override
   void deleteUserInfoFromDatabase() {
     userDao.deleteUserUnfo();
+  }
+
+
+  @override
+  List<DateVO> getDates() {
+    List<DateVO> dateList = [];
+
+    for (int i = 0; i < 7; i++) {
+      String day = DateFormat.E().format(DateTime.now().add(Duration(days: i)));
+      String date =
+          DateFormat.d().format(DateTime.now().add(Duration(days: i)));
+      String dayMonthDate =
+          DateFormat.MMMMEEEEd().format(DateTime.now().add(Duration(days: i)));
+
+      String yMd =
+          DateFormat.yMd().format(DateTime.now().add(Duration(days: i)));
+
+      var dateVo = DateVO(i, day, date, dayMonthDate, yMd);
+      dateList.add(dateVo);
+    }
+
+    return dateList;
   }
 
 }
