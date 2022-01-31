@@ -66,7 +66,7 @@ class _MovieChooseTimeState extends State<MovieChooseTime> {
       selectedDate?.isSelected = true;
       //to show and test actual date in console!
       debugPrint(selectedDate?.yMd.toString());
-      debugPrint(selectedDate?.id.toString());
+      debugPrint("DateVO id is ${selectedDate?.id.toString()}");
 
       // this api use for cinema names and user behavior in selecting date and time
       mDataModels
@@ -76,7 +76,8 @@ class _MovieChooseTimeState extends State<MovieChooseTime> {
           cinemaList = value;
           //to test time slot Id from api
           // ignore: avoid_print
-          print(cinemaList?.first.timeslots?[1].cinemaDayTimeslotId);
+          print(
+              "cinema_day_timeslot_id is ${cinemaList?.first.timeslots?[1].cinemaDayTimeslotId}");
         });
       });
     });
