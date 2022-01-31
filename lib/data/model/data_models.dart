@@ -30,7 +30,7 @@ abstract class DataModels {
   Future<List<DataVO>?>? getComingSoonMovie(String status);
   Future<MovieDetailsVO?>? getMovieDetails(int movieId);
   Future<List<CinemasVO>?>? getCinemasList();
-  Future<List<TimeSlotDataVO>?>? getCinemaNameAndTimeSlots();
+  Future<List<TimeSlotDataVO>?>? getCinemaNameAndTimeSlots(String? date);
 
   //Database
 

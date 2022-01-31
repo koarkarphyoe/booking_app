@@ -48,7 +48,7 @@ void main() async {
   //   print(value?.posterPath.toString());
   // });
 
-  // DataModelsImpl().getCinemaTimeslots()?.then((value) {
+  // DataModelsImpl().getCinemaNameAndTimeSlots("2022-01-28")?.then((value) {
   //   print(value.toString());
   // });
 

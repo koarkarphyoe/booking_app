@@ -87,9 +87,9 @@ class DataAgentsImpl extends DataAgents {
   }
 
   @override
-  Future<List<TimeSlotDataVO>?>? getCinemaNameAndTimeSlots(String token, String date) {
+  Future<List<TimeSlotDataVO>?>? getCinemaNameAndTimeSlots(String token, String? date) {
     return rApi
-        ?.getCinemaNameAndTimeSlots(token, date)
+        ?.getCinemaNameAndTimeSlots(token, date!)
         .asStream()
         .map((event) => event.data)
         .first;

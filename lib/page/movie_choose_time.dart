@@ -10,7 +10,6 @@ import 'package:student_app/resources/colors.dart';
 import 'package:student_app/resources/dimens.dart';
 import 'package:student_app/resources/strings.dart';
 import 'package:student_app/widgets/confirm_button_view.dart';
-import 'package:student_app/widgets/title_text.dart';
 import 'package:student_app/widgets/title_text_bold.dart';
 
 class MovieChooseTime extends StatefulWidget {
@@ -34,32 +33,52 @@ class _MovieChooseTimeState extends State<MovieChooseTime> {
   void initState() {
     super.initState();
 
-    // this api not use for cinema names
-    mDataModels.getCinemasList()?.then((value) {
-      setState(() {
-        cinemas = value;
-      });
-    });
+    // this api not use for cinema names (only testing api)
+    // mDataModels.getCinemasList()?.then((value) {
+    //   setState(() {
+    //     cinemas = value;
+    //   });
+    // });
+
+    // take dateList from dateVO
+    dateList = mDataModels.getDates();
+
+    // firstly,to get the cinemaList data from api,so it is need => date String
+    selectedDate = dateList?.first;
+    selectedDate?.isSelected = true;
+
     // this api use for cinema names
-    mDataModels.getCinemaNameAndTimeSlots()?.then((value) {
+    mDataModels
+        .getCinemaNameAndTimeSlots(selectedDate?.yMd.toString())
+        ?.then((value) {
       setState(() {
         cinemaList = value;
       });
     });
-
-    dateList = mDataModels.getDates();
   }
 
   _selectDate(int dateId) {
     setState(() {
-      selectedDate = dateList?.firstWhere((element) => element.id == dateId);
+      selectedDate = dateList!.firstWhere((element) => element.id == dateId);
       //Reset all selected date when user chage tapping on date!
       dateList?.forEach((element) => element.isSelected = false);
-      //isSelected is false in DateVO,now it is setup to true to handle the color of date when tap from the user!
+      //isSelected is false in DateVO,now it is setup to true to handle the color of date when select the date from the user!
       selectedDate?.isSelected = true;
       //to show and test actual date in console!
       debugPrint(selectedDate?.yMd.toString());
       debugPrint(selectedDate?.id.toString());
+
+      // this api use for cinema names and user behavior in selecting date and time
+      mDataModels
+          .getCinemaNameAndTimeSlots(selectedDate?.yMd.toString())
+          ?.then((value) {
+        setState(() {
+          cinemaList = value;
+          //to test time slot Id from api
+          // ignore: avoid_print
+          print(cinemaList?.first.timeslots?[1].cinemaDayTimeslotId);
+        });
+      });
     });
   }
 
@@ -80,7 +99,7 @@ class _MovieChooseTimeState extends State<MovieChooseTime> {
           ),
         ),
       ),
-      body: (cinemas != null && cinemaList != null)
+      body: (cinemaList != null)
           ? SingleChildScrollView(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -117,7 +136,6 @@ class _MovieChooseTimeState extends State<MovieChooseTime> {
 
 class ChooseItemGridSectionView extends StatelessWidget {
   final List<TimeSlotDataVO>? cinemaList;
-
   const ChooseItemGridSectionView(this.cinemaList);
 
   @override

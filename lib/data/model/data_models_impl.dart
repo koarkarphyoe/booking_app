@@ -95,9 +95,9 @@ class DataModelsImpl extends DataModels {
   }
 
   @override
-  Future<List<TimeSlotDataVO>?>? getCinemaNameAndTimeSlots() {
+  Future<List<TimeSlotDataVO>?>? getCinemaNameAndTimeSlots(String? date) {
     return mDataAgent
-        .getCinemaNameAndTimeSlots(tokenDao.getToken().toString(), dateTest)
+        .getCinemaNameAndTimeSlots(tokenDao.getToken().toString(), date)
         ?.then((value) => value);
   }
 

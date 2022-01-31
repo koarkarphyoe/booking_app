@@ -22,5 +22,5 @@ abstract class DataAgents {
   Future<List<DataVO>?>? getComingSoonMovie(String status);
   Future<MovieDetailsResponse>? getMovieDetails(int movieId);
   Future<List<CinemasVO>?>? getCinemasList();
-  Future<List<TimeSlotDataVO>?>? getCinemaNameAndTimeSlots(String token,String date);
+  Future<List<TimeSlotDataVO>?>? getCinemaNameAndTimeSlots(String token,String? date);
 }
