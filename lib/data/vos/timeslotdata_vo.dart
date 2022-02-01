@@ -12,7 +12,7 @@ class TimeSlotDataVO {
   String? cinema;
 
   @JsonKey(name: "timeslots")
-  List<TimeslotsVO>? timeslots;
+  List<TimeslotsVO?>? timeslots;
 
   TimeSlotDataVO(this.cinemaId, this.cinema, this.timeslots);
 

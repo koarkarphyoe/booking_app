@@ -11,7 +11,9 @@ TimeSlotDataVO _$TimeSlotDataVOFromJson(Map<String, dynamic> json) =>
       json['cinema_id'] as int?,
       json['cinema'] as String?,
       (json['timeslots'] as List<dynamic>?)
-          ?.map((e) => TimeslotsVO.fromJson(e as Map<String, dynamic>))
+          ?.map((e) => e == null
+              ? null
+              : TimeslotsVO.fromJson(e as Map<String, dynamic>))
           .toList(),
     );
 

@@ -9,10 +9,12 @@ part of 'timeslots_vo.dart';
 TimeslotsVO _$TimeslotsVOFromJson(Map<String, dynamic> json) => TimeslotsVO(
       json['cinema_day_timeslot_id'] as int?,
       json['start_time'] as String?,
+      isSelected: json['isSelected'] as bool? ?? false,
     );
 
 Map<String, dynamic> _$TimeslotsVOToJson(TimeslotsVO instance) =>
     <String, dynamic>{
       'cinema_day_timeslot_id': instance.cinemaDayTimeslotId,
       'start_time': instance.startTime,
+      'isSelected': instance.isSelected,
     };

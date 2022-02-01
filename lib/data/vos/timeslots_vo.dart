@@ -9,7 +9,9 @@ class TimeslotsVO {
   @JsonKey(name: "start_time")
   String? startTime;
 
-  TimeslotsVO(this.cinemaDayTimeslotId, this.startTime);
+  bool? isSelected;
+
+  TimeslotsVO(this.cinemaDayTimeslotId, this.startTime, {this.isSelected=false});
 
   factory TimeslotsVO.fromJson(Map<String, dynamic> json) =>
       _$TimeslotsVOFromJson(json);

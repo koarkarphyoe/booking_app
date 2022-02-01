@@ -23,11 +23,12 @@ class MovieChooseTime extends StatefulWidget {
 class _MovieChooseTimeState extends State<MovieChooseTime> {
   DataModels mDataModels = DataModelsImpl();
 
-  List<CinemasVO?>? cinemas;
+  // List<CinemasVO?>? cinemas;
   List<TimeSlotDataVO>? cinemaList;
   TimeslotsVO? timeSlots;
   List<DateVO>? dateList;
   DateVO? selectedDate;
+  TimeSlotDataVO? selectedCinemaTime;
 
   @override
   void initState() {
@@ -77,10 +78,30 @@ class _MovieChooseTimeState extends State<MovieChooseTime> {
           //to test time slot Id from api
           // ignore: avoid_print
           print(
-              "cinema_day_timeslot_id is ${cinemaList?.first.timeslots?[1].cinemaDayTimeslotId}");
+              "cinema_day_timeslot_id is ${cinemaList?.first.timeslots?[1]?.cinemaDayTimeslotId}");
         });
       });
     });
+  }
+
+  _selectTime(int? timeSlotsId, int? cinemaId) {
+    setState(
+      //Reset unselected time button colors
+      () {
+        cinemaList?.forEach((element) {
+          element.timeslots?.forEach((element) {
+            element?.isSelected = false;
+          });
+        });
+
+        selectedCinemaTime =
+            cinemaList?.firstWhere((element) => element.cinemaId == cinemaId);
+        selectedCinemaTime?.timeslots
+            ?.firstWhere(
+                (element) => element?.cinemaDayTimeslotId == timeSlotsId)
+            ?.isSelected = true;
+      },
+    );
   }
 
   @override
@@ -110,7 +131,10 @@ class _MovieChooseTimeState extends State<MovieChooseTime> {
                     children: [
                       MovieDateChooseSectionView(
                           dateList, (dateId) => _selectDate(dateId)),
-                      ChooseItemGridSectionView(cinemaList),
+                      ChooseItemGridSectionView(
+                          cinemaList,
+                          (timeSlotsId, cinemaId) =>
+                              _selectTime(timeSlotsId, cinemaId)),
                       Padding(
                         padding: const EdgeInsets.symmetric(
                             horizontal: marginMedium, vertical: marginMedium2X),
@@ -137,21 +161,30 @@ class _MovieChooseTimeState extends State<MovieChooseTime> {
 
 class ChooseItemGridSectionView extends StatelessWidget {
   final List<TimeSlotDataVO>? cinemaList;
-  const ChooseItemGridSectionView(this.cinemaList);
+  final Function(int?, int?) selectTime;
+  const ChooseItemGridSectionView(this.cinemaList, this.selectTime);
 
   @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      children: cinemaList!.map((cinema) => CinemaNameView(cinema)).toList(),
+      children: cinemaList!
+          .map((cinema) => CinemaNameView(cinema, selectTime))
+          .toList(),
     );
   }
 }
 
-class CinemaNameView extends StatelessWidget {
-  const CinemaNameView(this.cinema);
+class CinemaNameView extends StatefulWidget {
+  const CinemaNameView(this.cinema, this.selectedTime);
   final TimeSlotDataVO? cinema;
+  final Function(int?, int?) selectedTime;
 
+  @override
+  State<CinemaNameView> createState() => _CinemaNameViewState();
+}
+
+class _CinemaNameViewState extends State<CinemaNameView> {
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -161,12 +194,12 @@ class CinemaNameView extends StatelessWidget {
             padding: const EdgeInsets.symmetric(
                 horizontal: marginSmall, vertical: marginSmall),
             child: TitleTextBold(
-              cinema!.cinema.toString(),
+              widget.cinema!.cinema.toString(),
               textColor: Colors.black,
               textSize: textRegular1X,
             )),
         GridView.builder(
-          itemCount: cinema?.timeslots?.length,
+          itemCount: widget.cinema?.timeslots?.length,
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
@@ -174,16 +207,31 @@ class CinemaNameView extends StatelessWidget {
             childAspectRatio: 2,
           ),
           itemBuilder: (context, index) {
-            return Container(
-              margin: const EdgeInsets.only(
-                  top: marginMedium, left: marginMedium, right: marginMedium),
-              decoration: BoxDecoration(
-                border: Border.all(width: 1, color: Colors.grey),
-                borderRadius: BorderRadius.circular(5),
-              ),
-              child: Center(
-                child: Text(
-                  cinema!.timeslots![index].startTime.toString(),
+            return GestureDetector(
+              onTap: () {
+                widget.selectedTime(
+                    widget.cinema?.timeslots?[index]?.cinemaDayTimeslotId,
+                    widget.cinema?.cinemaId);
+              },
+              child: Container(
+                margin: const EdgeInsets.only(
+                    top: marginMedium, left: marginMedium, right: marginMedium),
+                decoration: BoxDecoration(
+                  border: Border.all(width: 1, color: Colors.grey),
+                  borderRadius: BorderRadius.circular(5),
+                  color: (widget.cinema!.timeslots![index]!.isSelected!)
+                      ? primaryColor
+                      : null,
+                ),
+                child: Center(
+                  child: Text(
+                    widget.cinema!.timeslots![index]!.startTime.toString(),
+                    style: TextStyle(
+                      color: (widget.cinema!.timeslots![index]!.isSelected!)
+                          ? Colors.white
+                          : null,
+                    ),
+                  ),
                 ),
               ),
             );
