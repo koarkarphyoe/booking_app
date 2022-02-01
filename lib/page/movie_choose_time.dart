@@ -46,7 +46,9 @@ class _MovieChooseTimeState extends State<MovieChooseTime> {
 
     // firstly,to get the cinemaList data from api,so it is need => date String
     selectedDate = dateList?.first;
-    selectedDate?.isSelected = true;
+
+    //to use for first date auto selected
+    // selectedDate?.isSelected = true;
 
     // this api use for cinema names
     mDataModels
@@ -59,35 +61,41 @@ class _MovieChooseTimeState extends State<MovieChooseTime> {
   }
 
   _selectDate(int dateId) {
-    setState(() {
-      selectedDate = dateList!.firstWhere((element) => element.id == dateId);
-      //Reset all selected date when user chage tapping on date!
-      dateList?.forEach((element) => element.isSelected = false);
-      //isSelected is false in DateVO,now it is setup to true to handle the color of date when select the date from the user!
-      selectedDate?.isSelected = true;
-      //to show and test actual date in console!
-      debugPrint(selectedDate?.yMd.toString());
-      debugPrint("DateVO id is ${selectedDate?.id.toString()}");
+    setState(
+      () {
+        selectedDate = dateList!.firstWhere((element) => element.id == dateId);
+        //Reset all selected date when user chage tapping on date!
+        dateList?.forEach((element) => element.isSelected = false);
+        //isSelected is false in DateVO,now it is setup to true to handle the color of date when select the date from the user!
+        selectedDate?.isSelected = true;
+        //to show and test actual date in console!
+        // debugPrint(selectedDate?.yMd.toString());
+        // debugPrint("DateVO id is ${selectedDate?.id.toString()}");
 
-      // this api use for cinema names and user behavior in selecting date and time
-      mDataModels
-          .getCinemaNameAndTimeSlots(selectedDate?.yMd.toString())
-          ?.then((value) {
-        setState(() {
-          cinemaList = value;
-          //to test time slot Id from api
-          // ignore: avoid_print
-          print(
-              "cinema_day_timeslot_id is ${cinemaList?.first.timeslots?[1]?.cinemaDayTimeslotId}");
-        });
-      });
-    });
+        // this api use for cinema names and user behavior in selecting date and time
+        mDataModels
+            .getCinemaNameAndTimeSlots(selectedDate?.yMd.toString())
+            ?.then(
+          (value) {
+            setState(
+              () {
+                cinemaList = value;
+                //to test time slot Id from api
+                // ignore: avoid_print
+                // print(
+                // "cinema_day_timeslot_id is ${cinemaList?.first.timeslots?[1]?.cinemaDayTimeslotId}");
+              },
+            );
+          },
+        );
+      },
+    );
   }
 
   _selectTime(int? timeSlotsId, int? cinemaId) {
     setState(
-      //Reset unselected time button colors
       () {
+        //Reset unselected time button colors
         cinemaList?.forEach((element) {
           element.timeslots?.forEach((element) {
             element?.isSelected = false;
@@ -96,6 +104,7 @@ class _MovieChooseTimeState extends State<MovieChooseTime> {
 
         selectedCinemaTime =
             cinemaList?.firstWhere((element) => element.cinemaId == cinemaId);
+
         selectedCinemaTime?.timeslots
             ?.firstWhere(
                 (element) => element?.cinemaDayTimeslotId == timeSlotsId)
