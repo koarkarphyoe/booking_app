@@ -29,7 +29,6 @@ class _HomePageState extends State<HomePage> {
   DataModels userModels = DataModelsImpl();
 
   UserVO? mUser;
-  String? profileImage;
   String? token;
   List<DataVO>? movie;
   List<DataVO>? comingSoonMovie;
@@ -69,9 +68,9 @@ class _HomePageState extends State<HomePage> {
     userModels.getUserInfoFromDatabase()?.then((value) {
       setState(() {
         mUser = value;
-        profileImage = "$baseUrl${value.profileImage}";
       });
     });
+
     userModels.getTokenFromDatabase()?.then((value) {
       setState(() {
         token = value;
@@ -118,7 +117,7 @@ class _HomePageState extends State<HomePage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  DrawerHeaderSectionView(profileImage, userVO: mUser),
+                  DrawerHeaderSectionView(userVO: mUser),
                   Column(
                     children: menuItems.map((menu) {
                       return Container(
@@ -139,8 +138,7 @@ class _HomePageState extends State<HomePage> {
                   const Spacer(),
                   GestureDetector(
                     onTap: () {
-                      userModels.deleteTokenFromDatabase();
-                      userModels.deleteUserInfoFromDatabase();
+                      userModels.logOut();
                       Navigator.pushAndRemoveUntil(
                           context,
                           MaterialPageRoute(
@@ -183,7 +181,7 @@ class _HomePageState extends State<HomePage> {
             Padding(
               padding:
                   const EdgeInsets.only(left: marginMedium, top: marginMedium),
-              child: UserNameAndPhoto(profileImage, mUser),
+              child: UserNameAndPhoto(mUser),
             ),
             const SizedBox(height: marginMedium),
             HorizontalMovieListView(nowShowingText, movie,
@@ -211,14 +209,11 @@ class _HomePageState extends State<HomePage> {
 }
 
 class UserNameAndPhoto extends StatelessWidget {
-  final String? profileImage;
   final UserVO? userVO;
-  const UserNameAndPhoto(this.profileImage, this.userVO, {Key? key})
-      : super(key: key);
+  const UserNameAndPhoto(this.userVO, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    String imageUrl = "$baseUrl${userVO?.profileImage}";
     return Row(
       children: [
         // Container(
@@ -234,10 +229,11 @@ class UserNameAndPhoto extends StatelessWidget {
         //   ),
         // ),
         Container(
-          child: (profileImage != null)
+          child: (userVO?.profileImage != null)
               ? CircleAvatar(
                   radius: 25,
-                  backgroundImage: NetworkImage(profileImage ?? imageUrl),
+                  backgroundImage:
+                      NetworkImage("$baseUrl${userVO?.profileImage}"),
                 )
               : const CircularProgressIndicator(),
         ),
@@ -253,26 +249,24 @@ class UserNameAndPhoto extends StatelessWidget {
 }
 
 class DrawerHeaderSectionView extends StatelessWidget {
-  final String? profileImage;
   final UserVO? userVO;
 
-  const DrawerHeaderSectionView(this.profileImage,
-      {Key? key, required this.userVO})
+  const DrawerHeaderSectionView({Key? key, required this.userVO})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    String imageUrl = "$baseUrl${userVO?.profileImage}";
     return Row(
       children: [
         const SizedBox(
           height: marginMediumXXLarge,
         ),
         Container(
-          child: (profileImage != null)
+          child: (userVO?.profileImage != null)
               ? CircleAvatar(
                   radius: 25,
-                  backgroundImage: NetworkImage(profileImage ?? imageUrl),
+                  backgroundImage:
+                      NetworkImage("$baseUrl${userVO?.profileImage}"),
                 )
               : const CircularProgressIndicator(),
         ),

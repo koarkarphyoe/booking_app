@@ -18,7 +18,7 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 class MovieDetailsPage extends StatefulWidget {
   final int movieId;
   final String? token;
-  const MovieDetailsPage(this.movieId,this.token);
+  const MovieDetailsPage(this.movieId, this.token);
 
   @override
   State<MovieDetailsPage> createState() => _MovieDetailsPageState();
@@ -57,10 +57,10 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
                 slivers: [
                   SliverAppBar(
                     elevation: 0,
-                    expandedHeight: MediaQuery.of(context).size.height / 1.5,
+                    expandedHeight: MediaQuery.of(context).size.height / 2,
                     collapsedHeight: sliverAppBarCollapsedHeight,
                     automaticallyImplyLeading: false,
-                    backgroundColor: primaryColor,
+                    backgroundColor: Colors.white,
                     flexibleSpace: Stack(
                       children: [
                         Positioned.fill(
@@ -180,7 +180,9 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
     return Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => MovieChooseTime(movieDetails!,),
+        builder: (context) => MovieChooseTime(
+          movieDetails!,
+        ),
       ),
     );
   }
@@ -234,55 +236,64 @@ class MovieDetailScreenTitleAndRatingView extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        TitleTextBold(
-          movieDetails!.originalTitle.toString(),
-          textColor: Colors.black,
-          textSize: textRegular4X,
+        Flexible(
+          flex: 0,
+          child: TitleTextBold(
+            movieDetails!.originalTitle.toString(),
+            textColor: Colors.black,
+            textSize: textRegular4X,
+          ),
         ),
         const SizedBox(height: marginXSmall),
-        Row(
-          children: [
-            TitleText(
-              "${movieDetails!.runtime.toString()}m",
-              textColor: Colors.black87,
-              textSize: textRegular2X,
-            ),
-            const SizedBox(
-              width: marginSmall,
-            ),
-            RatingBar.builder(
-              initialRating: 3,
-              minRating: 1,
-              itemCount: 5,
-              itemSize: 25,
-              itemBuilder: (BuildContext context, int index) {
-                return const Icon(Icons.star, color: Colors.amber);
-              },
-              onRatingUpdate: (rating) {
-                // ignore: avoid_print
-                print("rating");
-              },
-            ),
-            const SizedBox(
-              width: marginMedium,
-            ),
-            TitleText(
-              "IMDb ${movieDetails!.rating.toString()}",
-              textColor: Colors.black87,
-              textSize: textRegular3X,
-            )
-          ],
+        Flexible(
+          flex: 0,
+          child: Row(
+            children: [
+              TitleText(
+                "${movieDetails!.runtime.toString()}m",
+                textColor: Colors.black87,
+                textSize: textRegular2X,
+              ),
+              const SizedBox(
+                width: marginSmall,
+              ),
+              RatingBar.builder(
+                initialRating: 3,
+                minRating: 1,
+                itemCount: 5,
+                itemSize: 25,
+                itemBuilder: (BuildContext context, int index) {
+                  return const Icon(Icons.star, color: Colors.amber);
+                },
+                onRatingUpdate: (rating) {
+                  // ignore: avoid_print
+                  print("rating");
+                },
+              ),
+              const SizedBox(
+                width: marginMedium,
+              ),
+              TitleText(
+                "IMDb ${movieDetails!.rating.toString()}",
+                textColor: Colors.black87,
+                textSize: textRegular3X,
+              )
+            ],
+          ),
         ),
         const SizedBox(
           height: marginXSmall,
         ),
-        Wrap(
-          alignment: WrapAlignment.start,
-          direction: Axis.horizontal,
-          crossAxisAlignment: WrapCrossAlignment.start,
-          children: _genresListWidget(),
-          // genreList?.genres?.map((e) => GenreListView(e)).toList() ??
-          // genreListOriginal.map((e) => GenreListView(e)).toList(),
+        Flexible(
+          flex: 1,
+          child: Wrap(
+            alignment: WrapAlignment.start,
+            direction: Axis.horizontal,
+            crossAxisAlignment: WrapCrossAlignment.start,
+            children: _genresListWidget(),
+            // genreList?.genres?.map((e) => GenreListView(e)).toList() ??
+            // genreListOriginal.map((e) => GenreListView(e)).toList(),
+          ),
         ),
       ],
     );

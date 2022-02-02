@@ -31,7 +31,7 @@ const welcomeScreenGetStartedHeightWidth = 5.0;
 const tabBarViewSizedBoxHeight = 600.0;
 const sliverAppBarExpandedHeight = 400.0;
 const sliverAppBarCollapsedHeight = 150.0;
-const movieDetailsTitleScreenContainerHeight = 200.0;
+const movieDetailsTitleScreenContainerHeight = 180.0;
 
 const searchAndMenuIconSize = 35.0;
 const movieDetailsScreenPlayCircleSize = 70.0;
