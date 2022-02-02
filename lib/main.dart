@@ -1,21 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:student_app/data/model/data_models_impl.dart';
-import 'package:student_app/data/vos/casts_vo.dart';
 import 'package:student_app/data/vos/data_vo.dart';
 import 'package:student_app/data/vos/movie_details_vo.dart';
-import 'package:student_app/network/data_agents/data_agents_impl.dart';
-import 'package:student_app/network/response/email_response.dart';
 import 'package:student_app/page/home_page.dart';
 import 'package:student_app/page/splash_screen_page.dart';
-import 'package:student_app/page/login_page.dart';
-import 'package:student_app/persistence/hive_constants.dart';
 import 'package:student_app/persistence/hive_constants.dart';
 
 import 'data/vos/card_vo.dart';
 import 'data/vos/user_vo.dart';
-import 'network/api_constants.dart';
 
 void main() async {
   //check from DataAgents
@@ -65,7 +58,6 @@ void main() async {
   await Hive.openBox<DataVO>(boxNameDataVO);
   await Hive.openBox<MovieDetailsVO>(boxNameMovieDetailsVO);
   await Hive.openBox<String>(boxNameTokenVO);
-  
 
   runApp(const MyApp());
 }
@@ -85,7 +77,6 @@ class _MyAppState extends State<MyApp> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     dataModels.getTokenFromDatabase()?.then((value) {
       setState(() {

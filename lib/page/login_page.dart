@@ -126,31 +126,38 @@ class _LoginPageState extends State<LoginPage> {
   void _loginToApiAndNavigateToHomePage(
       BuildContext context, String email, String password) {
     userModels.postLoginWithEmail(email, password)?.then((value) {
-      if (value.code == 400) {
-        showDialog(
-            context: context,
-            builder: (context) {
-              return AlertDialog(
-                content: Text("${value.message}"),
-              );
-            });
-      } else {
-        debugPrint("User Token==> ${value.token.toString()}");
-        Navigator.pushAndRemoveUntil(
-            context,
-            MaterialPageRoute(
-              builder: (context) => const HomePage(),
-            ),
-            (route) => false);
-        // Navigator.push(
-        //   context,
-        //   MaterialPageRoute(
-        //     builder: (context) {
-        //       return const HomePage();
-        //     },
-        //   ),
-        // );
-      }
+      Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const HomePage(),
+          ),
+          (route) => false);
+      //if want to use,need to change UserVO to Email Response VO in data_model
+      // if (value.code == 400) {
+      //   showDialog(
+      //       context: context,
+      //       builder: (context) {
+      //         return AlertDialog(
+      //           content: Text("${value.message}"),
+      //         );
+      //       });
+      // } else {
+      //   debugPrint("User Token==> ${value.token.toString()}");
+      //   Navigator.pushAndRemoveUntil(
+      //       context,
+      //       MaterialPageRoute(
+      //         builder: (context) => const HomePage(),
+      //       ),
+      //       (route) => false);
+      //   // Navigator.push(
+      //   //   context,
+      //   //   MaterialPageRoute(
+      //   //     builder: (context) {
+      //   //       return const HomePage();
+      //   //     },
+      //   //   ),
+      //   // );
+      // }
     }).catchError((error) {
       print("${error.toString()}");
     });
@@ -212,11 +219,11 @@ class RegisterScreenView extends StatelessWidget {
           TitleAndTextFieldView(
               phoneNumberTextField, phoneNumberTextController),
           const SizedBox(height: marginMedium1X),
-          ButtonViewWithIcon(registerWithFacebookBtnText,
-              Image.asset('assets/facebookIcon.png')),
+          ButtonViewWithIcon(
+              registerWithFacebookBtnText, Image.asset('assets/facebook.png')),
           const SizedBox(height: marginMedium1X),
           ButtonViewWithIcon(
-              registerWithGoogleBtnText, Image.asset('assets/googleIcon.png')),
+              registerWithGoogleBtnText, Image.asset('assets/google.png')),
           const SizedBox(height: marginMedium1X),
           ConfirmButtonView(
             createAccountBtnText,
@@ -269,12 +276,12 @@ class LoginScreenView extends StatelessWidget {
         const SizedBox(height: marginMedium1X),
         ButtonViewWithIcon(
           signInWithFacebookBtnText,
-          Image.asset('assets/facebookIcon.png'),
+          Image.asset('assets/facebook.png'),
         ),
         const SizedBox(height: marginMedium1X),
         ButtonViewWithIcon(
           signInWithGoogleBtnText,
-          Image.asset('assets/googleIcon.png'),
+          Image.asset('assets/google.png'),
         ),
         const SizedBox(height: marginMedium1X),
         ConfirmButtonView(

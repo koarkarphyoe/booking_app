@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:student_app/data/model/data_models.dart';
 import 'package:student_app/data/model/data_models_impl.dart';
-import 'package:student_app/data/vos/cinemas_vo.dart';
 import 'package:student_app/data/vos/date_vo.dart';
 import 'package:student_app/data/vos/movie_details_vo.dart';
 import 'package:student_app/data/vos/timeslotdata_vo.dart';
@@ -28,7 +27,7 @@ class _MovieChooseTimeState extends State<MovieChooseTime> {
   TimeslotsVO? timeSlots;
   List<DateVO>? dateList;
   DateVO? selectedDate;
-  TimeSlotDataVO? selectedCinemaTime;
+  // TimeSlotDataVO? selectedCinemaTime;
 
   @override
   void initState() {
@@ -48,7 +47,7 @@ class _MovieChooseTimeState extends State<MovieChooseTime> {
     selectedDate = dateList?.first;
 
     //to use for first date auto selected
-    // selectedDate?.isSelected = true;
+    selectedDate?.isSelected = true;
 
     // this api use for cinema names
     mDataModels
@@ -100,15 +99,20 @@ class _MovieChooseTimeState extends State<MovieChooseTime> {
           element.timeslots?.forEach((element) {
             element?.isSelected = false;
           });
+          element.timeslots?.forEach((element) {
+            if (element?.cinemaDayTimeslotId == timeSlotsId) {
+              element?.isSelected = true;
+            }
+          });
         });
 
-        selectedCinemaTime =
-            cinemaList?.firstWhere((element) => element.cinemaId == cinemaId);
+        // selectedCinemaTime =
+        //     cinemaList?.firstWhere((element) => element.cinemaId == cinemaId);
 
-        selectedCinemaTime?.timeslots
-            ?.firstWhere(
-                (element) => element?.cinemaDayTimeslotId == timeSlotsId)
-            ?.isSelected = true;
+        // selectedCinemaTime?.timeslots
+        //     ?.firstWhere(
+        //         (element) => element?.cinemaDayTimeslotId == timeSlotsId)
+        //     ?.isSelected = true;
       },
     );
   }

@@ -69,15 +69,9 @@ class _HomePageState extends State<HomePage> {
     userModels.getUserInfoFromDatabase()?.then((value) {
       setState(() {
         mUser = value;
+        profileImage = "$baseUrl${value.profileImage}";
       });
     });
-
-    userModels.getProfileImageFromDatabase()?.then((value) {
-      setState(() {
-        profileImage = value;
-      });
-    });
-
     userModels.getTokenFromDatabase()?.then((value) {
       setState(() {
         token = value;
@@ -210,7 +204,7 @@ class _HomePageState extends State<HomePage> {
     return Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => MovieDetailsPage(movieId,token),
+        builder: (context) => MovieDetailsPage(movieId, token),
       ),
     );
   }

@@ -1,15 +1,11 @@
 import 'package:student_app/data/vos/cinemas_vo.dart';
 import 'package:student_app/data/vos/data_vo.dart';
 import 'package:student_app/data/vos/timeslotdata_vo.dart';
-import 'package:student_app/data/vos/timeslots_vo.dart';
-import 'package:student_app/data/vos/user_vo.dart';
 import 'package:student_app/network/api_constants.dart';
 import 'package:student_app/network/register_api.dart';
 import 'package:dio/dio.dart';
-import 'package:student_app/network/response/cinemas_response.dart';
 import 'package:student_app/network/response/email_response.dart';
 import 'package:student_app/network/response/movie_details_response.dart';
-import 'package:student_app/network/response/movie_response.dart';
 
 import 'data_agents.dart';
 

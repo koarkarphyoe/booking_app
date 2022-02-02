@@ -23,6 +23,7 @@ class TokenDao {
   }
 
   void deleteToken() {
-    Hive.box<String>(boxNameTokenVO).delete("token");
+    // Hive.box<String>(boxNameTokenVO).delete("token");
+    getTokenBox().clear();
   }
 }

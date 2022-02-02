@@ -1,14 +1,10 @@
-import 'package:student_app/data/model/data_models_impl.dart';
-import 'package:student_app/data/vos/casts_vo.dart';
 import 'package:student_app/data/vos/cinemas_vo.dart';
 import 'package:student_app/data/vos/data_vo.dart';
 import 'package:student_app/data/vos/date_vo.dart';
 import 'package:student_app/data/vos/movie_details_vo.dart';
 import 'package:student_app/data/vos/timeslotdata_vo.dart';
-import 'package:student_app/data/vos/timeslots_vo.dart';
 import 'package:student_app/data/vos/user_vo.dart';
 import 'package:student_app/network/response/email_response.dart';
-import 'package:student_app/persistence/daos/token_dao.dart';
 
 abstract class DataModels {
   // Network
@@ -21,7 +17,7 @@ abstract class DataModels {
       String facebookAccessToken,
       String googleAccessToken);
 
-  Future<EmailResponse>? postLoginWithEmail(
+  Future<UserVO>? postLoginWithEmail(
     String email,
     String password,
   );
@@ -31,12 +27,13 @@ abstract class DataModels {
   Future<MovieDetailsVO?>? getMovieDetails(int movieId);
   Future<List<CinemasVO>?>? getCinemasList();
   Future<List<TimeSlotDataVO>?>? getCinemaNameAndTimeSlots(String? date);
+  void logOut();
+  bool isLogIn();
 
   //Database
 
   Future<UserVO>? getUserInfoFromDatabase();
   Future<String?>? getTokenFromDatabase();
-  Future<String>? getProfileImageFromDatabase();
   Future<List<DataVO>?>? getNowShowingMovieFromDatabase();
   Future<List<DataVO>?>? getComingSoonMovieFromDatabase();
   Future<DataVO>? getMovieFromDatabase(int movieId);

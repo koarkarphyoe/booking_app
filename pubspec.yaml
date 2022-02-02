@@ -78,8 +78,8 @@ flutter:
   #   - images/a_dot_ham.jpeg
   assets:
     - assets/welcomeScreenImage.png
-    - assets/facebookIcon.png
-    - assets/googleIcon.png
+    - assets/facebook.png
+    - assets/google.png
 
 
 

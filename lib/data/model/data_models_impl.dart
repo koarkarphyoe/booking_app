@@ -1,20 +1,16 @@
 import 'package:intl/intl.dart';
-import 'package:stream_transform/src/concatenate.dart';
 import 'package:student_app/data/model/data_models.dart';
 import 'package:student_app/data/vos/cinemas_vo.dart';
 import 'package:student_app/data/vos/data_vo.dart';
 import 'package:student_app/data/vos/date_vo.dart';
 import 'package:student_app/data/vos/movie_details_vo.dart';
 import 'package:student_app/data/vos/timeslotdata_vo.dart';
-import 'package:student_app/data/vos/timeslots_vo.dart';
 import 'package:student_app/data/vos/user_vo.dart';
-import 'package:student_app/network/api_constants.dart';
 import 'package:student_app/network/data_agents/data_agents.dart';
 import 'package:student_app/network/data_agents/data_agents_impl.dart';
 import 'package:student_app/network/response/email_response.dart';
 import 'package:student_app/persistence/daos/movie_dao.dart';
 import 'package:student_app/persistence/daos/movie_details_dao.dart';
-import 'package:student_app/persistence/daos/profile_image_dao.dart';
 import 'package:student_app/persistence/daos/token_dao.dart';
 import 'package:student_app/persistence/daos/user_dao.dart';
 
@@ -31,7 +27,6 @@ class DataModelsImpl extends DataModels {
 
   UserDao userDao = UserDao();
   TokenDao tokenDao = TokenDao();
-  ProfileImageDao profileImageDao = ProfileImageDao();
   MovieDao movieDao = MovieDao();
   MovieDetailsDao movieDetailsDao = MovieDetailsDao();
 
@@ -48,13 +43,12 @@ class DataModelsImpl extends DataModels {
   }
 
   @override
-  Future<EmailResponse>? postLoginWithEmail(String email, String password) {
+  Future<UserVO>? postLoginWithEmail(String email, String password) {
     return mDataAgent.postLoginWithEmail(email, password)?.then((value) async {
       userDao.saveUserInfo(value.data);
-      profileImageDao.saveProfileImage(value.data?.profileImage);
       //save token to Database(Hive)
       tokenDao.saveToken(value.token);
-      return Future.value(value);
+      return Future.value(value.data);
     });
   }
 
@@ -114,11 +108,6 @@ class DataModelsImpl extends DataModels {
   }
 
   @override
-  Future<String>? getProfileImageFromDatabase() {
-    return Future.value(profileImageDao.getProfileImage());
-  }
-
-  @override
   Future<List<DataVO>?>? getNowShowingMovieFromDatabase() {
     return Future.value(movieDao
         .getAllMovie()
@@ -174,5 +163,16 @@ class DataModelsImpl extends DataModels {
     }
 
     return dateList;
+  }
+
+  @override
+  void logOut() {
+    userDao.deleteUserUnfo();
+    tokenDao.deleteToken();
+  }
+
+  @override
+  bool isLogIn() {
+    return tokenDao.getToken()?.isNotEmpty ?? false;
   }
 }

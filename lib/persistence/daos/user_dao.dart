@@ -22,6 +22,7 @@ class UserDao {
   }
 
   void deleteUserUnfo() {
-    Hive.box<UserVO>(boxNameUserVO).clear();
+    // Hive.box<UserVO>(boxNameUserVO).clear();
+    getUserInfoBox().clear();
   }
 }
