@@ -73,26 +73,32 @@ class _MyAppState extends State<MyApp> {
   // This widget is the root of your application.
 
   DataModelsImpl dataModels = DataModelsImpl();
-  String? token = "";
+  // String? token = "";
 
   @override
   void initState() {
     super.initState();
-    dataModels.getTokenFromDatabase()?.then((value) {
-      setState(() {
-        token = value;
-      });
-    });
+    //Method 1 to check token
+    // dataModels.getTokenFromDatabase()?.then((value) {
+    //   setState(() {
+    //     token = value;
+    //   });
+    // });
+
+    //Method 2 to check token
+    dataModels.isLogIn();
   }
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      // home: SplashScreen(),
-      home: (token != "" && token != null)
-          ? const HomePage()
-          : const SplashScreen(),
+
+      // home: (token != "" && token != null)
+      //     ? const HomePage()
+      //     : const SplashScreen(),
+
+      home: dataModels.isLogIn() ? const HomePage() : const SplashScreen(),
     );
   }
 }

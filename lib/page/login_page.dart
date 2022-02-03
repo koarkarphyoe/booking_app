@@ -259,46 +259,49 @@ class LoginScreenView extends StatelessWidget {
       required this.onTapButton});
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        const SizedBox(height: marginMedium1X),
-        TitleAndTextFieldView(emailText, emailTextController),
-        const SizedBox(height: marginMedium1X),
-        TitleAndTextFieldView(passwordText, passwordTextController),
-        const SizedBox(height: marginMedium1X),
-        const Align(
-          alignment: Alignment.centerRight,
-          child: TitleText(
-            fortgotPasswordText,
-            textColor: Colors.black38,
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          const SizedBox(height: marginMedium1X),
+          TitleAndTextFieldView(emailText, emailTextController),
+          const SizedBox(height: marginMedium1X),
+          TitleAndTextFieldView(passwordText, passwordTextController),
+          const SizedBox(height: marginMedium1X),
+          const Align(
+            alignment: Alignment.centerRight,
+            child: TitleText(
+              fortgotPasswordText,
+              textColor: Colors.black38,
+            ),
           ),
-        ),
-        const SizedBox(height: marginMedium1X),
-        ButtonViewWithIcon(
-          signInWithFacebookBtnText,
-          Image.asset('assets/facebook.png'),
-        ),
-        const SizedBox(height: marginMedium1X),
-        ButtonViewWithIcon(
-          signInWithGoogleBtnText,
-          Image.asset('assets/google.png'),
-        ),
-        const SizedBox(height: marginMedium1X),
-        ConfirmButtonView(
-          comfirmBtnText,
-          () {
-            onTapButton(emailTextController.text, passwordTextController.text);
-            // onTapButton(
-            //   print("$emailTextController"),
-            //   print("$passwordTextController"),
-            // );
-          },
-          textColor: Colors.white,
-          buttonBackgroundColor: primaryColor,
-          textSize: 16,
-        ),
-        const SizedBox(height: marginMedium1X),
-      ],
+          const SizedBox(height: marginMedium1X),
+          ButtonViewWithIcon(
+            signInWithFacebookBtnText,
+            Image.asset('assets/facebook.png'),
+          ),
+          const SizedBox(height: marginMedium1X),
+          ButtonViewWithIcon(
+            signInWithGoogleBtnText,
+            Image.asset('assets/google.png'),
+          ),
+          const SizedBox(height: marginMedium1X),
+          ConfirmButtonView(
+            comfirmBtnText,
+            () {
+              onTapButton(
+                  emailTextController.text, passwordTextController.text);
+              // onTapButton(
+              //   print("$emailTextController"),
+              //   print("$passwordTextController"),
+              // );
+            },
+            textColor: Colors.white,
+            buttonBackgroundColor: primaryColor,
+            textSize: 16,
+          ),
+          const SizedBox(height: marginMedium1X),
+        ],
+      ),
     );
   }
 }

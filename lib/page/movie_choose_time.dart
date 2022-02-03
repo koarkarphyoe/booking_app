@@ -27,7 +27,7 @@ class _MovieChooseTimeState extends State<MovieChooseTime> {
   TimeslotsVO? timeSlots;
   List<DateVO>? dateList;
   DateVO? selectedDate;
-  // TimeSlotDataVO? selectedCinemaTime;
+  TimeSlotDataVO? selectedCinemaTime;
 
   @override
   void initState() {
@@ -94,27 +94,81 @@ class _MovieChooseTimeState extends State<MovieChooseTime> {
   _selectTime(int? timeSlotsId, int? cinemaId) {
     setState(
       () {
-        //Reset unselected time button colors
-        cinemaList?.forEach((element) {
-          element.timeslots?.forEach((element) {
-            element?.isSelected = false;
-          });
-          element.timeslots?.forEach((element) {
-            if (element?.cinemaDayTimeslotId == timeSlotsId) {
-              element?.isSelected = true;
-            }
-          });
-        });
+        //Method 1 can use
+        cinemaList = cinemaList?.map(
+          (cinema) {
+            cinema.timeslots?.map(
+              (timeSlots) {
+                timeSlots?.isSelected = false;
+                if (timeSlots?.cinemaDayTimeslotId == timeSlotsId) {
+                  timeSlots?.isSelected = true && cinemaId == cinemaId;
+                  print(
+                      "Cinema Id is ${cinemaId.toString()} and TimeSlots id is ${timeSlots?.cinemaDayTimeslotId.toString()}");
+                }
+                return timeSlots;
+              },
+            ).toList();
+            return cinema;
+          },
+        ).toList();
+
+        //Method 2 also can use
+        // cinemaList = cinemaList?.map(
+        //   (e) {
+        //     // cinemaId == e.cinemaId;(it is need bcoz to carry cinemaId to next page)
+        //     e.timeslots?.map(
+        //       (e) {
+        //         if (e?.cinemaDayTimeslotId == timeSlotsId) {
+        //           e?.isSelected = true;
+        //         }
+        //       },
+        //     ).toList();
+        //     return e;
+        //   },
+        // ).toList();
+
+        //Already test and get the result!
+        // cinemaList = cinemaList?.map(
+        //   (cinema) {
+        //     cinema.timeslots?.map(
+        //       (timeSlotsId) {
+        //         timeSlotsId?.isSelected = false;
+        //       },
+        //     ).toList();
+        //     return cinema;
+        //   },
+        // ).toList();
 
         // selectedCinemaTime =
         //     cinemaList?.firstWhere((element) => element.cinemaId == cinemaId);
-
         // selectedCinemaTime?.timeslots
         //     ?.firstWhere(
         //         (element) => element?.cinemaDayTimeslotId == timeSlotsId)
         //     ?.isSelected = true;
       },
     );
+
+    //Method 1
+    //Reset unselected time button colors
+    // cinemaList?.forEach((element) {
+    //   element.timeslots?.forEach((element) {
+    //     element?.isSelected = false;
+    //   });
+    //   element.timeslots?.forEach((element) {
+    //     if (element?.cinemaDayTimeslotId == timeSlotsId) {
+    //       element?.isSelected = true;
+    //     }
+    //   });
+    // });
+
+    //Method 2
+    // selectedCinemaTime =
+    //     cinemaList?.firstWhere((element) => element.cinemaId == cinemaId);
+
+    // selectedCinemaTime?.timeslots
+    //     ?.firstWhere(
+    //         (element) => element?.cinemaDayTimeslotId == timeSlotsId)
+    //     ?.isSelected = true;
   }
 
   @override
