@@ -143,8 +143,7 @@ class DataModelsImpl extends DataModels {
     userDao.deleteUserUnfo();
   }
 
-
-  //Other 
+  //Other
 
   // for select and show dates in UI section
   @override

@@ -84,20 +84,14 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
                         Align(
                           alignment: Alignment.bottomCenter,
                           child: Container(
-                            height: movieDetailsTitleScreenContainerHeight,
+                            height: movieDetailsWhiteContainerHeight,
                             width: MediaQuery.of(context).size.width,
                             decoration: const BoxDecoration(
                               color: Colors.white,
                               borderRadius: BorderRadius.only(
-                                topLeft: Radius.circular(marginMedium1X),
-                                topRight: Radius.circular(marginMedium1X),
+                                topLeft: Radius.circular(marginMedium2X),
+                                topRight: Radius.circular(marginMedium2X),
                               ),
-                            ),
-                            child: Padding(
-                              padding: const EdgeInsets.only(
-                                  top: marginXXSmall, left: marginMedium),
-                              child: MovieDetailScreenTitleAndRatingView(
-                                  movieDetails, movieDetails),
                             ),
                           ),
                         ),
@@ -107,6 +101,11 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
                   SliverList(
                     delegate: SliverChildListDelegate(
                       [
+                        Padding(
+                          padding: const EdgeInsets.only(left: marginMedium),
+                          child: MovieDetailScreenTitleAndRatingView(
+                              movieDetails, movieDetails),
+                        ),
                         Padding(
                           padding: const EdgeInsets.all(marginMedium),
                           child: PlotSummarySectionView(movieDetails),
@@ -236,64 +235,55 @@ class MovieDetailScreenTitleAndRatingView extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Flexible(
-          flex: 0,
-          child: TitleTextBold(
-            movieDetails!.originalTitle.toString(),
-            textColor: Colors.black,
-            textSize: textRegular4X,
-          ),
+        TitleTextBold(
+          movieDetails!.originalTitle.toString(),
+          textColor: Colors.black,
+          textSize: textRegular4X,
         ),
         const SizedBox(height: marginXSmall),
-        Flexible(
-          flex: 0,
-          child: Row(
-            children: [
-              TitleText(
-                "${movieDetails!.runtime.toString()}m",
-                textColor: Colors.black87,
-                textSize: textRegular2X,
-              ),
-              const SizedBox(
-                width: marginSmall,
-              ),
-              RatingBar.builder(
-                initialRating: 3,
-                minRating: 1,
-                itemCount: 5,
-                itemSize: 25,
-                itemBuilder: (BuildContext context, int index) {
-                  return const Icon(Icons.star, color: Colors.amber);
-                },
-                onRatingUpdate: (rating) {
-                  // ignore: avoid_print
-                  print("rating");
-                },
-              ),
-              const SizedBox(
-                width: marginMedium,
-              ),
-              TitleText(
-                "IMDb ${movieDetails!.rating.toString()}",
-                textColor: Colors.black87,
-                textSize: textRegular3X,
-              )
-            ],
-          ),
+        Row(
+          children: [
+            TitleText(
+              "${movieDetails!.runtime.toString()}m",
+              textColor: Colors.black87,
+              textSize: textRegular2X,
+            ),
+            const SizedBox(
+              width: marginSmall,
+            ),
+            RatingBar.builder(
+              initialRating: 3,
+              minRating: 1,
+              itemCount: 5,
+              itemSize: 25,
+              itemBuilder: (BuildContext context, int index) {
+                return const Icon(Icons.star, color: Colors.amber);
+              },
+              onRatingUpdate: (rating) {
+                // ignore: avoid_print
+                print("rating");
+              },
+            ),
+            const SizedBox(
+              width: marginMedium,
+            ),
+            TitleText(
+              "IMDb ${movieDetails!.rating.toString()}",
+              textColor: Colors.black87,
+              textSize: textRegular3X,
+            )
+          ],
         ),
         const SizedBox(
           height: marginXSmall,
         ),
-        Flexible(
-          flex: 1,
-          child: Wrap(
-            alignment: WrapAlignment.start,
-            direction: Axis.horizontal,
-            crossAxisAlignment: WrapCrossAlignment.start,
-            children: _genresListWidget(),
-            // genreList?.genres?.map((e) => GenreListView(e)).toList() ??
-            // genreListOriginal.map((e) => GenreListView(e)).toList(),
-          ),
+        Wrap(
+          alignment: WrapAlignment.start,
+          direction: Axis.horizontal,
+          crossAxisAlignment: WrapCrossAlignment.start,
+          children: _genresListWidget(),
+          // genreList?.genres?.map((e) => GenreListView(e)).toList() ??
+          // genreListOriginal.map((e) => GenreListView(e)).toList(),
         ),
       ],
     );

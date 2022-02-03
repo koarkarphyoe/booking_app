@@ -18,7 +18,7 @@ const marginMediumX = 18.0;
 const marginMediumXX = 20.0;
 const marginMediumXXX = 25.0;
 const marginMediumXXXX = 41.0;
-const marginMedium1X = 32.0;
+const marginMedium1X = 40.0;
 const marginMedium1XX = 45.0;
 const marginMedium2X = 50.0;
 const marginMedium2XX = 64.0;
@@ -31,7 +31,7 @@ const welcomeScreenGetStartedHeightWidth = 5.0;
 const tabBarViewSizedBoxHeight = 600.0;
 const sliverAppBarExpandedHeight = 400.0;
 const sliverAppBarCollapsedHeight = 150.0;
-const movieDetailsTitleScreenContainerHeight = 180.0;
+const movieDetailsWhiteContainerHeight = 30.0;
 
 const searchAndMenuIconSize = 35.0;
 const movieDetailsScreenPlayCircleSize = 70.0;
