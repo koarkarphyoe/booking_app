@@ -101,11 +101,10 @@ class _MovieChooseTimeState extends State<MovieChooseTime> {
               (timeSlots) {
                 timeSlots?.isSelected = false;
                 if (timeSlots?.cinemaDayTimeslotId == timeSlotsId) {
-                  timeSlots?.isSelected = true && cinemaId == cinemaId;
+                  timeSlots?.isSelected = true;
                   print(
                       "Cinema Id is ${cinemaId.toString()} and TimeSlots id is ${timeSlots?.cinemaDayTimeslotId.toString()}");
                 }
-                return timeSlots;
               },
             ).toList();
             return cinema;
@@ -113,20 +112,6 @@ class _MovieChooseTimeState extends State<MovieChooseTime> {
         ).toList();
 
         //Method 2 also can use
-        // cinemaList = cinemaList?.map(
-        //   (e) {
-        //     // cinemaId == e.cinemaId;(it is need bcoz to carry cinemaId to next page)
-        //     e.timeslots?.map(
-        //       (e) {
-        //         if (e?.cinemaDayTimeslotId == timeSlotsId) {
-        //           e?.isSelected = true;
-        //         }
-        //       },
-        //     ).toList();
-        //     return e;
-        //   },
-        // ).toList();
-
         //Already test and get the result!
         // cinemaList = cinemaList?.map(
         //   (cinema) {
@@ -148,7 +133,7 @@ class _MovieChooseTimeState extends State<MovieChooseTime> {
       },
     );
 
-    //Method 1
+    //Method 3
     //Reset unselected time button colors
     // cinemaList?.forEach((element) {
     //   element.timeslots?.forEach((element) {
@@ -160,15 +145,6 @@ class _MovieChooseTimeState extends State<MovieChooseTime> {
     //     }
     //   });
     // });
-
-    //Method 2
-    // selectedCinemaTime =
-    //     cinemaList?.firstWhere((element) => element.cinemaId == cinemaId);
-
-    // selectedCinemaTime?.timeslots
-    //     ?.firstWhere(
-    //         (element) => element?.cinemaDayTimeslotId == timeSlotsId)
-    //     ?.isSelected = true;
   }
 
   @override
