@@ -35,7 +35,7 @@ const movieDetailsWhiteContainerHeight = 30.0;
 
 const searchAndMenuIconSize = 35.0;
 const movieDetailsScreenPlayCircleSize = 70.0;
-const movieListViewHeight = 330.0;
+const movieListViewHeight = 290.0;
 const movieListViewWidth = 120.0;
 const movieDetailsScreenCastImageRadius = 50.0;
 const movieDetailsScteenCastContainerHeight = 100.0;

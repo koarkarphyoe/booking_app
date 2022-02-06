@@ -39,13 +39,18 @@ class MovieListView extends StatelessWidget {
               textSize: textSmallX,
             ),
           ),
-          Center(
-            child: TitleText(
+          Wrap(
+            alignment: WrapAlignment.start,
+            crossAxisAlignment: WrapCrossAlignment.start,
+            direction: Axis.horizontal,
+            children: [
+              TitleText(
               mMovie!.genres.toString(),
               textSize: textSmall,
               textColor: Colors.black26,
-            ),
-          ),
+              ),
+            ],
+          )
         ],
       ),
     );
