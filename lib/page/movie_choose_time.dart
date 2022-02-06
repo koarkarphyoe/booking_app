@@ -25,7 +25,7 @@ class _MovieChooseTimeState extends State<MovieChooseTime> {
   // List<CinemasVO?>? cinemas;
   List<TimeSlotDataVO>? cinemaList;
   TimeslotsVO? timeSlots;
-  List<DateVO>? dateList;
+  List<DateVO?>? dateList;
   DateVO? selectedDate;
   TimeSlotDataVO? selectedCinemaTime;
 
@@ -62,16 +62,29 @@ class _MovieChooseTimeState extends State<MovieChooseTime> {
   _selectDate(int dateId) {
     setState(
       () {
-        selectedDate = dateList!.firstWhere((element) => element.id == dateId);
+        //second method for time choosing
+        dateList = dateList?.map((date) {
+          date?.isSelected = false;
+          print("setState condition in UI before tapping by user");
+          if (date?.id == dateId) {
+            date?.isSelected = true;
+            print("setState condition in UI after tapping by user");
+          }
+          return date;
+        }).toList();
+
+        //first method for date choosing
+        // selectedDate = dateList!.firstWhere((element) => element.id == dateId);
         //Reset all selected date when user chage tapping on date!
-        dateList?.forEach((element) => element.isSelected = false);
+        // dateList?.forEach((element) => element.isSelected = false);
         //isSelected is false in DateVO,now it is setup to true to handle the color of date when select the date from the user!
-        selectedDate?.isSelected = true;
+        // selectedDate?.isSelected = true;
         //to show and test actual date in console!
         // debugPrint(selectedDate?.yMd.toString());
         // debugPrint("DateVO id is ${selectedDate?.id.toString()}");
 
-        // this api use for cinema names and user behavior in selecting date and time
+        // this api use for cinema names and user behavior in selecting date and time to request movie timeSlots
+        // it is need to call again in setState bcoz timeSlots will different by following user selected date from Api
         mDataModels
             .getCinemaNameAndTimeSlots(selectedDate?.yMd.toString())
             ?.then(
@@ -286,7 +299,7 @@ class _CinemaNameViewState extends State<CinemaNameView> {
 }
 
 class MovieDateChooseSectionView extends StatefulWidget {
-  final List<DateVO>? dateList;
+  final List<DateVO?>? dateList;
   final Function(int) selectDate;
   const MovieDateChooseSectionView(
     this.dateList,
@@ -348,7 +361,7 @@ class _MovieDateChooseSectionViewState
 }
 
 class DateView extends StatelessWidget {
-  final DateVO date;
+  final DateVO? date;
   final Function(int) selectDate;
 
   const DateView(
@@ -363,26 +376,26 @@ class DateView extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: marginMedium),
       child: GestureDetector(
         onTap: () {
-          selectDate(date.id);
+          selectDate(date!.id);
         },
         child: Column(
           children: [
             Text(
-              date.day,
+              date!.day,
               style: TextStyle(
-                  fontSize: (date.isSelected) ? textRegular4X : textRegular,
+                  fontSize: (date!.isSelected) ? textRegular4X : textRegular,
                   color:
-                      (date.isSelected) ? Colors.white : paymentCardIconColor),
+                      (date!.isSelected) ? Colors.white : paymentCardIconColor),
             ),
             const SizedBox(
               height: marginMedium,
             ),
             Text(
-              date.date,
+              date!.date,
               style: TextStyle(
-                  fontSize: (date.isSelected) ? textRegular4X : textRegular,
+                  fontSize: (date!.isSelected) ? textRegular4X : textRegular,
                   color:
-                      (date.isSelected) ? Colors.white : paymentCardIconColor),
+                      (date!.isSelected) ? Colors.white : paymentCardIconColor),
             ),
           ],
         ),
