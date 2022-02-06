@@ -22,12 +22,11 @@ class MovieChooseTime extends StatefulWidget {
 class _MovieChooseTimeState extends State<MovieChooseTime> {
   DataModels mDataModels = DataModelsImpl();
 
-  // List<CinemasVO?>? cinemas;
   List<TimeSlotDataVO>? cinemaList;
   TimeslotsVO? timeSlots;
   List<DateVO?>? dateList;
   DateVO? selectedDate;
-  TimeSlotDataVO? selectedCinemaTime;
+  // TimeSlotDataVO? selectedCinemaTime;//it is need to use ,when use method 2 in time choosing
 
   @override
   void initState() {
@@ -65,10 +64,10 @@ class _MovieChooseTimeState extends State<MovieChooseTime> {
         //second method for time choosing
         dateList = dateList?.map((date) {
           date?.isSelected = false;
-          print("setState condition in UI before tapping by user");
+          print("setState condition in UI before selecting by user");
           if (date?.id == dateId) {
-            date?.isSelected = true;
-            print("setState condition in UI after tapping by user");
+            date?.isSelected = true; //for single select
+            print("setState condition in UI after selecting by user");
           }
           return date;
         }).toList();
@@ -92,10 +91,6 @@ class _MovieChooseTimeState extends State<MovieChooseTime> {
             setState(
               () {
                 cinemaList = value;
-                //to test time slot Id from api
-                // ignore: avoid_print
-                // print(
-                // "cinema_day_timeslot_id is ${cinemaList?.first.timeslots?[1]?.cinemaDayTimeslotId}");
               },
             );
           },
@@ -112,7 +107,8 @@ class _MovieChooseTimeState extends State<MovieChooseTime> {
           (cinema) {
             cinema.timeslots?.map(
               (timeSlots) {
-                timeSlots?.isSelected = false;
+                timeSlots?.isSelected =
+                    false; //if want double selecting,it is not to use
                 if (timeSlots?.cinemaDayTimeslotId == timeSlotsId) {
                   timeSlots?.isSelected = true;
                   print(
@@ -123,28 +119,28 @@ class _MovieChooseTimeState extends State<MovieChooseTime> {
             return cinema;
           },
         ).toList();
-
-        //Method 2 also can use
-        //Already test and get the result!
-        // cinemaList = cinemaList?.map(
-        //   (cinema) {
-        //     cinema.timeslots?.map(
-        //       (timeSlotsId) {
-        //         timeSlotsId?.isSelected = false;
-        //       },
-        //     ).toList();
-        //     return cinema;
-        //   },
-        // ).toList();
-
-        // selectedCinemaTime =
-        //     cinemaList?.firstWhere((element) => element.cinemaId == cinemaId);
-        // selectedCinemaTime?.timeslots
-        //     ?.firstWhere(
-        //         (element) => element?.cinemaDayTimeslotId == timeSlotsId)
-        //     ?.isSelected = true;
       },
     );
+
+    // for default selecting color and need to use by combining mehtod 2 & 3
+    // cinemaList = cinemaList?.map(
+    //   (cinema) {
+    //     cinema.timeslots?.map(
+    //       (timeSlotsId) {
+    //         timeSlotsId?.isSelected = false;
+    //       },
+    //     ).toList();
+    //     return cinema;
+    //   },
+    // ).toList();
+
+    //Method 2
+    // selectedCinemaTime =
+    //     cinemaList?.firstWhere((element) => element.cinemaId == cinemaId);
+    // selectedCinemaTime?.timeslots
+    //     ?.firstWhere(
+    //         (element) => element?.cinemaDayTimeslotId == timeSlotsId)
+    //     ?.isSelected = true;
 
     //Method 3
     //Reset unselected time button colors
