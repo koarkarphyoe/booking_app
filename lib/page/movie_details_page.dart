@@ -175,8 +175,8 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
           );
   }
 
-  Future<dynamic> _navigateToMovieChooseTimePage(BuildContext context) {
-    return Navigator.push(
+  void _navigateToMovieChooseTimePage(BuildContext context) {
+    Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) => MovieChooseTime(

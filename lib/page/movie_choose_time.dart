@@ -4,7 +4,7 @@ import 'package:student_app/data/model/data_models_impl.dart';
 import 'package:student_app/data/vos/date_vo.dart';
 import 'package:student_app/data/vos/movie_details_vo.dart';
 import 'package:student_app/data/vos/timeslotdata_vo.dart';
-import 'package:student_app/data/vos/timeslots_vo.dart';
+import 'package:student_app/page/movie_seats_page.dart';
 import 'package:student_app/resources/colors.dart';
 import 'package:student_app/resources/dimens.dart';
 import 'package:student_app/resources/strings.dart';
@@ -12,7 +12,7 @@ import 'package:student_app/widgets/confirm_button_view.dart';
 import 'package:student_app/widgets/title_text_bold.dart';
 
 class MovieChooseTime extends StatefulWidget {
-  final MovieDetailsVO movieDetails;
+  final movieDetails;
   const MovieChooseTime(this.movieDetails, {Key? key}) : super(key: key);
 
   @override
@@ -23,9 +23,16 @@ class _MovieChooseTimeState extends State<MovieChooseTime> {
   DataModels mDataModels = DataModelsImpl();
 
   List<TimeSlotDataVO>? cinemaList;
-  TimeslotsVO? timeSlots;
+  // TimeSlotDataVO? cinemaName;
+  // TimeslotsVO? timeSlots;
   List<DateVO?>? dateList;
   DateVO? selectedDate;
+
+  // Send data to MovieSeatsPage
+  String? dateForMovieSeatsPage;
+  String? timeForMovieSeatsPage;
+  String? cinemaNameForMovieSeatsPage;
+
   // TimeSlotDataVO? selectedCinemaTime;//it is need to use ,when use method 2 in time choosing
 
   @override
@@ -66,7 +73,8 @@ class _MovieChooseTimeState extends State<MovieChooseTime> {
           date?.isSelected = false;
           print("setState condition in UI before selecting by user");
           if (date?.id == dateId) {
-            date?.isSelected = true; //for single select
+            date?.isSelected = true;
+            dateForMovieSeatsPage = date?.dayMonthDate; //for single select
             print("setState condition in UI after selecting by user");
           }
           return date;
@@ -111,6 +119,8 @@ class _MovieChooseTimeState extends State<MovieChooseTime> {
                     false; //if want double selecting,it is not to use
                 if (timeSlots?.cinemaDayTimeslotId == timeSlotsId) {
                   timeSlots?.isSelected = true;
+                  timeForMovieSeatsPage = timeSlots?.startTime;
+                  cinemaNameForMovieSeatsPage=cinema.cinema;
                   print(
                       "Cinema Id is ${cinemaId.toString()} and TimeSlots id is ${timeSlots?.cinemaDayTimeslotId.toString()}");
                 }
@@ -192,7 +202,13 @@ class _MovieChooseTimeState extends State<MovieChooseTime> {
                             horizontal: marginMedium, vertical: marginMedium2X),
                         child: ConfirmButtonView(
                           buttonNextText,
-                          () {},
+                          () {
+                            _navigateToMovieSeatsPage(
+                                context,
+                                cinemaNameForMovieSeatsPage,
+                                dateForMovieSeatsPage,
+                                timeForMovieSeatsPage);
+                          },
                           isGhostButton: true,
                           buttonBackgroundColor: primaryColor,
                         ),
@@ -205,6 +221,17 @@ class _MovieChooseTimeState extends State<MovieChooseTime> {
           : const Center(
               child: CircularProgressIndicator(),
             ),
+    );
+  }
+
+  _navigateToMovieSeatsPage(
+      BuildContext context, String? cinemaName, String? date, String? time) {
+    return Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => MovieSeatsPage(
+            widget.movieDetails.originalTitle, cinemaName, date, time),
+      ),
     );
   }
 

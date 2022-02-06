@@ -9,9 +9,20 @@ import 'package:student_app/resources/dimens.dart';
 import 'package:student_app/widgets/title_text.dart';
 import 'package:student_app/widgets/title_text_bold.dart';
 
-class MovieSeatsPage extends StatelessWidget {
-  const MovieSeatsPage({Key? key}) : super(key: key);
+class MovieSeatsPage extends StatefulWidget {
+  final movieDetails;
+  final cinemaName;
+  final date;
+  final time;
+  const MovieSeatsPage(this.movieDetails, this.cinemaName, this.date, this.time,
+      {Key? key})
+      : super(key: key);
 
+  @override
+  State<MovieSeatsPage> createState() => _MovieSeatsPageState();
+}
+
+class _MovieSeatsPageState extends State<MovieSeatsPage> {
   @override
   Widget build(BuildContext context) {
     final List<MovieSeatVO> _movieSeats = dummyMovieSeats;
@@ -19,10 +30,15 @@ class MovieSeatsPage extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
-        leading: const Icon(
-          Icons.chevron_left,
-          size: paymentPageBackButtonIconSize,
-          color: Colors.black,
+        leading: GestureDetector(
+          onTap: () {
+            Navigator.pop(context);
+          },
+          child: const Icon(
+            Icons.chevron_left,
+            size: paymentPageBackButtonIconSize,
+            color: Colors.black,
+          ),
         ),
       ),
       body: Container(
@@ -30,8 +46,8 @@ class MovieSeatsPage extends StatelessWidget {
         color: Colors.white,
         child: Column(
           children: [
-            // ignore: prefer_const_constructors
-            MovieNameTimeAndCinemaSectionView(),
+            MovieNameTimeAndCinemaSectionView(widget.movieDetails,
+                widget.cinemaName, widget.date, widget.time),
             const SizedBox(height: marginMedium1X),
             MovieSeatsSectionView(movieSeats: _movieSeats),
           ],
@@ -67,32 +83,42 @@ class MovieSeatsSectionView extends StatelessWidget {
 }
 
 class MovieNameTimeAndCinemaSectionView extends StatelessWidget {
-  const MovieNameTimeAndCinemaSectionView({
+  final String? movieName;
+  final String? cinemaName;
+  final String? date;
+  final String? time;
+  const MovieNameTimeAndCinemaSectionView(
+    this.movieName,
+    this.cinemaName,
+    this.date,
+    this.time, {
     Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Column(
-      children: const [
-        TitleTextBold(
-          "Detectiver Pikachu",
-          textColor: Colors.black,
-          textSize: textRegular4X,
+      children: [
+        Center(
+          child: TitleTextBold(
+            movieName!,
+            textColor: Colors.black,
+            textSize: textRegular4X,
+          ),
         ),
-        SizedBox(
+        const SizedBox(
           height: marginXSmall,
         ),
         TitleText(
-          "Galaxy Cinema - Golden City",
+          cinemaName!,
           textColor: paymentCardIconColor,
           textSize: textRegular1X,
         ),
-        SizedBox(
+        const SizedBox(
           height: marginXSmall,
         ),
         TitleText(
-          "Wednesday, 10 May, 07:00 PM",
+          "$date , $time",
           textColor: Colors.black,
           textSize: textRegular1X,
         ),
