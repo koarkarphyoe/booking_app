@@ -31,7 +31,7 @@ abstract class DataModels {
   void logOut();
   bool isLogIn();
   Future<List<List<MovieSeatListVO>>?> getMovieSeat(
-      String cinemaDayTimeslotId, String bookingDate);
+      int cinemaDayTimeslotId, String bookingDate);
 
   //Database
 

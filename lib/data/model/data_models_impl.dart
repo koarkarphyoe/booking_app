@@ -97,6 +97,16 @@ class DataModelsImpl extends DataModels {
         ?.then((value) => value);
   }
 
+
+    @override
+  Future<List<List<MovieSeatListVO>>?> getMovieSeat(
+      int cinemaDayTimeslotId, String bookingDate) {
+    return mDataAgent
+        .getMovieSeat(
+           tokenDao.getToken().toString(), cinemaDayTimeslotId, bookingDate)
+        !.then((value) => value);
+  }
+
   //Database
 
   @override
@@ -178,14 +188,5 @@ class DataModelsImpl extends DataModels {
   @override
   bool isLogIn() {
     return tokenDao.getToken()?.isNotEmpty ?? false;
-  }
-
-  @override
-  Future<List<List<MovieSeatListVO>>?> getMovieSeat(
-      String cinemaDayTimeslotId, String bookingDate) {
-    return mDataAgent
-        .getMovieSeat(
-           tokenTest, cinemaDayTimeslotId, bookingDate)
-        !.then((value) => value);
   }
 }

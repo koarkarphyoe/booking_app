@@ -25,5 +25,5 @@ abstract class DataAgents {
       String token, String? date);
 
   Future<List<List<MovieSeatListVO>>?>? getMovieSeat(
-      String token, String cinemaDayTimeslotId, String bookingDate);
+      String token, int cinemaDayTimeslotId, String bookingDate);
 }
