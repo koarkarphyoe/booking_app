@@ -3,6 +3,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:student_app/data/model/data_models_impl.dart';
 import 'package:student_app/data/vos/data_vo.dart';
 import 'package:student_app/data/vos/movie_details_vo.dart';
+import 'package:student_app/network/api_constants.dart';
 import 'package:student_app/page/home_page.dart';
 import 'package:student_app/page/splash_screen_page.dart';
 import 'package:student_app/persistence/hive_constants.dart';
@@ -44,6 +45,9 @@ void main() async {
   // DataModelsImpl().getCinemaNameAndTimeSlots("2022-01-28")?.then((value) {
   //   print(value.toString());
   // });
+  // DataModelsImpl()
+  //     .getMovieSeat("1", bookingDate)
+  //     .then((value) => print(value.toString()));
 
   //need to import hive_flutter packages
   await Hive.initFlutter();
@@ -73,6 +77,7 @@ class _MyAppState extends State<MyApp> {
   // This widget is the root of your application.
 
   DataModelsImpl dataModels = DataModelsImpl();
+
   // String? token = "";
 
   @override

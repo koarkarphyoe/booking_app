@@ -4,8 +4,10 @@ import 'package:student_app/data/vos/cinemas_vo.dart';
 import 'package:student_app/data/vos/data_vo.dart';
 import 'package:student_app/data/vos/date_vo.dart';
 import 'package:student_app/data/vos/movie_details_vo.dart';
+import 'package:student_app/data/vos/movie_seat_list_vo.dart';
 import 'package:student_app/data/vos/timeslotdata_vo.dart';
 import 'package:student_app/data/vos/user_vo.dart';
+import 'package:student_app/network/api_constants.dart';
 import 'package:student_app/network/data_agents/data_agents.dart';
 import 'package:student_app/network/data_agents/data_agents_impl.dart';
 import 'package:student_app/network/response/email_response.dart';
@@ -176,5 +178,14 @@ class DataModelsImpl extends DataModels {
   @override
   bool isLogIn() {
     return tokenDao.getToken()?.isNotEmpty ?? false;
+  }
+
+  @override
+  Future<List<List<MovieSeatListVO>>?> getMovieSeat(
+      String cinemaDayTimeslotId, String bookingDate) {
+    return mDataAgent
+        .getMovieSeat(
+           tokenTest, cinemaDayTimeslotId, bookingDate)
+        !.then((value) => value);
   }
 }

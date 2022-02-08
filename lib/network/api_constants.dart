@@ -10,6 +10,7 @@ const String getNowShowingMovieEndPoint = "/api/v1/movies";
 const String getMovieDetailsEndPoint = "/api/v1/movies";
 const String getCinemasListEndPoint = "/api/v1/cinemas";
 const String getCinemaDayTimeSlotEndPoint = "/api/v1/cinema-day-timeslots";
+const String getMovieSeatEndPoint = "/api/v1/seat-plan";
 
 //Body in api
 const String nameParam = "name";
@@ -25,14 +26,18 @@ const String applicationJson = "application/json";
 
 const String statusKey = "status";
 const String date = "date";
+const String cinemaDayTimeSlotId = "cinema_day_timeslot_id";
+const String bookingDate = "booking_date";
 
 //Param Value
 
 const String statusValue1 = "current";
 const String statusValue2 = "comingsoon";
 const String dateValue = "2022-01-27";
+const int cinemaDayTimeSlotsIdValue = 1;
+const String bookingDateValue = "2-7-2022";
 
 //for test
 
-const String tokenTest = "Bearer 3544|BTPhoQ1KJ41OzWoFE21CtWQNlvIjMqhti4oEScKt";
+const String tokenTest = "Bearer 3625|T8kk1yUMpQ1gB1QtKNz2KLJZOm7XYVXpGGKMLa7w";
 const String dateTest = "2022-01-31";

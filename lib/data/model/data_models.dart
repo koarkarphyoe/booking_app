@@ -2,6 +2,7 @@ import 'package:student_app/data/vos/cinemas_vo.dart';
 import 'package:student_app/data/vos/data_vo.dart';
 import 'package:student_app/data/vos/date_vo.dart';
 import 'package:student_app/data/vos/movie_details_vo.dart';
+import 'package:student_app/data/vos/movie_seat_list_vo.dart';
 import 'package:student_app/data/vos/timeslotdata_vo.dart';
 import 'package:student_app/data/vos/user_vo.dart';
 import 'package:student_app/network/response/email_response.dart';
@@ -29,6 +30,8 @@ abstract class DataModels {
   Future<List<TimeSlotDataVO>?>? getCinemaNameAndTimeSlots(String? date);
   void logOut();
   bool isLogIn();
+  Future<List<List<MovieSeatListVO>>?> getMovieSeat(
+      String cinemaDayTimeslotId, String bookingDate);
 
   //Database
 
