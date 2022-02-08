@@ -32,6 +32,8 @@ class _MovieChooseTimeState extends State<MovieChooseTime> {
   String? dateForMovieSeatsPage;
   String? timeForMovieSeatsPage;
   String? cinemaNameForMovieSeatsPage;
+  int? cinemaTimeSlotIdForMovieSeatsPage;
+  String? yMdForMovieSeatsPage;
 
   // TimeSlotDataVO? selectedCinemaTime;//it is need to use ,when use method 2 in time choosing
 
@@ -75,6 +77,7 @@ class _MovieChooseTimeState extends State<MovieChooseTime> {
           if (date?.id == dateId) {
             date?.isSelected = true;
             dateForMovieSeatsPage = date?.dayMonthDate; //for single select
+            yMdForMovieSeatsPage = date?.yMd;
             print("setState condition in UI after selecting by user");
           }
           return date;
@@ -120,7 +123,8 @@ class _MovieChooseTimeState extends State<MovieChooseTime> {
                 if (timeSlots?.cinemaDayTimeslotId == timeSlotsId) {
                   timeSlots?.isSelected = true;
                   timeForMovieSeatsPage = timeSlots?.startTime;
-                  cinemaNameForMovieSeatsPage=cinema.cinema;
+                  cinemaNameForMovieSeatsPage = cinema.cinema;
+                  cinemaTimeSlotIdForMovieSeatsPage = cinema.cinemaId;
                   print(
                       "Cinema Id is ${cinemaId.toString()} and TimeSlots id is ${timeSlots?.cinemaDayTimeslotId.toString()}");
                 }
@@ -207,7 +211,9 @@ class _MovieChooseTimeState extends State<MovieChooseTime> {
                                 context,
                                 cinemaNameForMovieSeatsPage,
                                 dateForMovieSeatsPage,
-                                timeForMovieSeatsPage);
+                                timeForMovieSeatsPage,
+                                cinemaTimeSlotIdForMovieSeatsPage,
+                                yMdForMovieSeatsPage);
                           },
                           isGhostButton: true,
                           buttonBackgroundColor: primaryColor,
@@ -224,13 +230,13 @@ class _MovieChooseTimeState extends State<MovieChooseTime> {
     );
   }
 
-  _navigateToMovieSeatsPage(
-      BuildContext context, String? cinemaName, String? date, String? time) {
+  _navigateToMovieSeatsPage(BuildContext context, String? cinemaName,
+      String? date, String? time, int? cinemaId, String? yMd) {
     return Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => MovieSeatsPage(
-            widget.movieDetails.originalTitle, cinemaName, date, time),
+        builder: (context) => MovieSeatsPage(widget.movieDetails.originalTitle,
+            cinemaName, date, time, cinemaId, yMd),
       ),
     );
   }

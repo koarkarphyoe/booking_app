@@ -1,6 +1,8 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables
 
 import 'package:flutter/material.dart';
+import 'package:student_app/data/model/data_models_impl.dart';
+import 'package:student_app/data/vos/movie_seat_list_vo.dart';
 import 'package:student_app/data/vos/movie_seat_vo.dart';
 import 'package:student_app/dummy/dummy_data.dart';
 import 'package:student_app/itemsview/movie_seat_item_view.dart';
@@ -14,7 +16,10 @@ class MovieSeatsPage extends StatefulWidget {
   final cinemaName;
   final date;
   final time;
-  const MovieSeatsPage(this.movieDetails, this.cinemaName, this.date, this.time,
+  final cinemaId;
+  final yMd;
+  const MovieSeatsPage(
+      this.movieDetails, this.cinemaName, this.date, this.time, this.cinemaId,this.yMd,
       {Key? key})
       : super(key: key);
 
@@ -23,6 +28,21 @@ class MovieSeatsPage extends StatefulWidget {
 }
 
 class _MovieSeatsPageState extends State<MovieSeatsPage> {
+  DataModelsImpl mModel = DataModelsImpl();
+  List<List<MovieSeatListVO>>? movieSeats;
+
+  @override
+  void initState() {
+    super.initState();
+    mModel.getMovieSeat(widget.cinemaId, widget.yMd).then((value) {
+      setState(() {
+        movieSeats = value;
+        print(value.toString());
+        print(widget.date.toString());
+      });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final List<MovieSeatVO> _movieSeats = dummyMovieSeats;
