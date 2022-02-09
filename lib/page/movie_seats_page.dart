@@ -28,9 +28,9 @@ class MovieSeatsPage extends StatefulWidget {
 class _MovieSeatsPageState extends State<MovieSeatsPage> {
   DataModelsImpl mModel = DataModelsImpl();
 
-  List<List<MovieSeatListVO>>? seatPlan;
-  List<MovieSeatListVO>? seatRowList;
-  int? seatColumnList;
+  List<List<MovieSeatListVO>>? allSeatPlanList;
+  List<MovieSeatListVO>? seatListForRow;
+  int? rowNumbersListForGridView;
 
   @override
   void initState() {
@@ -40,21 +40,23 @@ class _MovieSeatsPageState extends State<MovieSeatsPage> {
         setState(
           () {
             //Method 2
-            seatPlan = value;
-            seatColumnList = seatPlan?.first.length;
-            seatRowList = seatPlan?.expand((element) => element).toList();
+            allSeatPlanList = value;
+            rowNumbersListForGridView = allSeatPlanList?.first.length;
+            seatListForRow =
+                allSeatPlanList?.expand((element) => element).toList();
 
             //Method 1
-            // seatRowList = [];
-            // for (int i = 0; i < seatPlan!.length; i++) {
+            // allSeatPlanList = value;
+            // seatListForRow = [];
+            // for (int i = 0; i < allSeatPlanList!.length; i++) {
             //   List<MovieSeatListVO> seats = [
-            //     ...seatPlan![i]
+            //     ...allSeatPlanList![i]
             //   ]; // ... Spread operator insert all the elements of a list into another list
             //   for (var seat in seats) {
-            //     seatRowList?.add(seat);
+            //     seatListForRow?.add(seat);
             //   }
             // }
-            // seatColumnList = seatPlan?.first.length;
+            // rowNumbersListForGridView = allSeatPlanList?.first.length;
           },
         );
       },
@@ -88,7 +90,7 @@ class _MovieSeatsPageState extends State<MovieSeatsPage> {
               MovieNameTimeAndCinemaSectionView(widget.movieDetails,
                   widget.cinemaName, widget.date, widget.time),
               const SizedBox(height: marginMedium1X),
-              MovieSeatsSectionView(seatRowList, seatColumnList),
+              MovieSeatsSectionView(seatListForRow, rowNumbersListForGridView),
             ],
           ),
         ),
@@ -98,7 +100,8 @@ class _MovieSeatsPageState extends State<MovieSeatsPage> {
 }
 
 class MovieSeatsSectionView extends StatelessWidget {
-  const MovieSeatsSectionView(this.seatRowList, this.seatColumnList);
+  const MovieSeatsSectionView(
+      this.seatListForRow, this.rowNumbersListForGridView);
   // const MovieSeatsSectionView({
   //   Key? key,
   //   required List<MovieSeatVO> movieSeats,
@@ -106,23 +109,23 @@ class MovieSeatsSectionView extends StatelessWidget {
   //       super(key: key);
 
   // final List<MovieSeatVO> _movieSeats;
-  final List<MovieSeatListVO>? seatRowList;
-  final int? seatColumnList;
+  final List<MovieSeatListVO>? seatListForRow;
+  final int? rowNumbersListForGridView;
 
   @override
   Widget build(BuildContext context) {
-    return (seatColumnList != null)
+    return (rowNumbersListForGridView != null)
         ? GridView.builder(
-            itemCount: seatRowList?.length,
+            itemCount: seatListForRow?.length,
             physics: const NeverScrollableScrollPhysics(),
             shrinkWrap: true,
             padding: const EdgeInsets.symmetric(horizontal: marginSmall),
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                 mainAxisSpacing: 2,
-                crossAxisCount: seatColumnList!,
+                crossAxisCount: rowNumbersListForGridView!,
                 childAspectRatio: 1),
             itemBuilder: (context, index) {
-              return MovieSeatItemView(seatRowList?[index]);
+              return MovieSeatItemView(seatListForRow?[index]);
             },
           )
         : const Center(
