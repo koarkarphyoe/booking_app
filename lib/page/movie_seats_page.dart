@@ -3,8 +3,6 @@
 import 'package:flutter/material.dart';
 import 'package:student_app/data/model/data_models_impl.dart';
 import 'package:student_app/data/vos/movie_seat_list_vo.dart';
-import 'package:student_app/data/vos/movie_seat_vo.dart';
-import 'package:student_app/dummy/dummy_data.dart';
 import 'package:student_app/itemsview/movie_seat_item_view.dart';
 import 'package:student_app/resources/colors.dart';
 import 'package:student_app/resources/dimens.dart';
@@ -41,17 +39,22 @@ class _MovieSeatsPageState extends State<MovieSeatsPage> {
       (value) {
         setState(
           () {
+            //Method 2
             seatPlan = value;
-            seatRowList = [];
-            for (int i = 0; i < seatPlan!.length; i++) {
-              List<MovieSeatListVO> seats = [
-                ...seatPlan![i]
-              ]; // ... Spread operatortor insert all the elements of a list into another list
-              for (var seat in seats) {
-                seatRowList?.add(seat);
-              }
-            }
             seatColumnList = seatPlan?.first.length;
+            seatRowList = seatPlan?.expand((element) => element).toList();
+
+            //Method 1
+            // seatRowList = [];
+            // for (int i = 0; i < seatPlan!.length; i++) {
+            //   List<MovieSeatListVO> seats = [
+            //     ...seatPlan![i]
+            //   ]; // ... Spread operator insert all the elements of a list into another list
+            //   for (var seat in seats) {
+            //     seatRowList?.add(seat);
+            //   }
+            // }
+            // seatColumnList = seatPlan?.first.length;
           },
         );
       },
