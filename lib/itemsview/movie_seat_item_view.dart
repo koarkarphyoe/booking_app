@@ -1,16 +1,17 @@
 // ignore_for_file: use_key_in_widget_constructors
 
 import 'package:flutter/material.dart';
-import 'package:student_app/data/vos/movie_seat_vo.dart';
+import 'package:student_app/data/vos/movie_seat_list_vo.dart';
 
 class MovieSeatItemView extends StatelessWidget {
-  const MovieSeatItemView(this.mMovieSeatVO);
-  final MovieSeatVO mMovieSeatVO;
+  const MovieSeatItemView(this.mMovieSeat);
+  // final MovieSeatVO mMovieSeatVO;
+  final MovieSeatListVO? mMovieSeat;
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 6, vertical: 6),
+      margin: const EdgeInsets.symmetric(horizontal: 5, vertical: 5),
       decoration: const BoxDecoration(
         // color: _getSeatColor(mMovieSeatVO),
         color: Colors.blue,
@@ -19,7 +20,12 @@ class MovieSeatItemView extends StatelessWidget {
           topRight: Radius.circular(10),
         ),
       ),
-      child: Center(child: Text(mMovieSeatVO.title)),
+      child: Center(
+        child: Text(
+          mMovieSeat!.seatName.toString(),
+          style: const TextStyle(fontSize: 5, fontWeight: FontWeight.bold),
+        ),
+      ),
     );
   }
 

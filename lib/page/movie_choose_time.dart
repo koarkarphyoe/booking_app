@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:student_app/data/model/data_models.dart';
 import 'package:student_app/data/model/data_models_impl.dart';
 import 'package:student_app/data/vos/date_vo.dart';
-import 'package:student_app/data/vos/movie_details_vo.dart';
 import 'package:student_app/data/vos/timeslotdata_vo.dart';
 import 'package:student_app/page/movie_seats_page.dart';
 import 'package:student_app/resources/colors.dart';
@@ -53,7 +52,8 @@ class _MovieChooseTimeState extends State<MovieChooseTime> {
 
     // firstly,to get the cinemaList data from api,so it is need => date String
     selectedDate = dateList?.first;
-
+    dateForMovieSeatsPage = selectedDate?.dayMonthDate;
+    yMdForMovieSeatsPage = selectedDate?.yMd;
     //to use for first date auto selected
     selectedDate?.isSelected = true;
 
@@ -119,14 +119,12 @@ class _MovieChooseTimeState extends State<MovieChooseTime> {
             cinema.timeslots?.map(
               (timeSlots) {
                 timeSlots?.isSelected =
-                    false; //if want double selecting,it is not to use
+                    false; //if want double selecting,no need to use
                 if (timeSlots?.cinemaDayTimeslotId == timeSlotsId) {
                   timeSlots?.isSelected = true;
                   timeForMovieSeatsPage = timeSlots?.startTime;
                   cinemaNameForMovieSeatsPage = cinema.cinema;
                   cinemaTimeSlotIdForMovieSeatsPage = cinema.cinemaId;
-                  print(
-                      "Cinema Id is ${cinemaId.toString()} and TimeSlots id is ${timeSlots?.cinemaDayTimeslotId.toString()}");
                 }
               },
             ).toList();
@@ -207,13 +205,28 @@ class _MovieChooseTimeState extends State<MovieChooseTime> {
                         child: ConfirmButtonView(
                           buttonNextText,
                           () {
-                            _navigateToMovieSeatsPage(
-                                context,
-                                cinemaNameForMovieSeatsPage,
-                                dateForMovieSeatsPage,
-                                timeForMovieSeatsPage,
-                                cinemaTimeSlotIdForMovieSeatsPage,
-                                yMdForMovieSeatsPage);
+                            if (cinemaNameForMovieSeatsPage == null &&
+                                cinemaTimeSlotIdForMovieSeatsPage == null) {
+                              showDialog(
+                                context: context,
+                                builder: (context) {
+                                  return const AlertDialog(
+                                    title: Center(
+                                      child: Text(
+                                          "Sorry,you need to choose time ! "),
+                                    ),
+                                  );
+                                },
+                              );
+                            } else {
+                              _navigateToMovieSeatsPage(
+                                  context,
+                                  cinemaNameForMovieSeatsPage,
+                                  dateForMovieSeatsPage,
+                                  timeForMovieSeatsPage,
+                                  cinemaTimeSlotIdForMovieSeatsPage,
+                                  yMdForMovieSeatsPage);
+                            }
                           },
                           isGhostButton: true,
                           buttonBackgroundColor: primaryColor,

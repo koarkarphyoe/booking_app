@@ -18,8 +18,8 @@ class MovieSeatsPage extends StatefulWidget {
   final time;
   final cinemaId;
   final yMd;
-  const MovieSeatsPage(
-      this.movieDetails, this.cinemaName, this.date, this.time, this.cinemaId,this.yMd,
+  const MovieSeatsPage(this.movieDetails, this.cinemaName, this.date, this.time,
+      this.cinemaId, this.yMd,
       {Key? key})
       : super(key: key);
 
@@ -29,23 +29,38 @@ class MovieSeatsPage extends StatefulWidget {
 
 class _MovieSeatsPageState extends State<MovieSeatsPage> {
   DataModelsImpl mModel = DataModelsImpl();
-  List<List<MovieSeatListVO>>? movieSeats;
+
+  List<List<MovieSeatListVO>>? seatPlan;
+  List<MovieSeatListVO>? seatRowList;
+  int? seatColumnList;
 
   @override
   void initState() {
     super.initState();
-    mModel.getMovieSeat(widget.cinemaId, widget.yMd).then((value) {
-      setState(() {
-        movieSeats = value;
-        print(value.toString());
-        print(widget.date.toString());
-      });
-    });
+    mModel.getMovieSeat(widget.cinemaId, widget.yMd).then(
+      (value) {
+        setState(
+          () {
+            seatPlan = value;
+            seatRowList = [];
+            for (int i = 0; i < seatPlan!.length; i++) {
+              List<MovieSeatListVO> seats = [
+                ...seatPlan![i]
+              ]; // ... Spread operatortor insert all the elements of a list into another list
+              for (var seat in seats) {
+                seatRowList?.add(seat);
+              }
+            }
+            seatColumnList = seatPlan?.first.length;
+          },
+        );
+      },
+    );
   }
 
   @override
   Widget build(BuildContext context) {
-    final List<MovieSeatVO> _movieSeats = dummyMovieSeats;
+    // final List<MovieSeatVO> _movieSeats = dummyMovieSeats;
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
@@ -64,13 +79,15 @@ class _MovieSeatsPageState extends State<MovieSeatsPage> {
       body: Container(
         width: MediaQuery.of(context).size.width,
         color: Colors.white,
-        child: Column(
-          children: [
-            MovieNameTimeAndCinemaSectionView(widget.movieDetails,
-                widget.cinemaName, widget.date, widget.time),
-            const SizedBox(height: marginMedium1X),
-            MovieSeatsSectionView(movieSeats: _movieSeats),
-          ],
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              MovieNameTimeAndCinemaSectionView(widget.movieDetails,
+                  widget.cinemaName, widget.date, widget.time),
+              const SizedBox(height: marginMedium1X),
+              MovieSeatsSectionView(seatRowList, seatColumnList),
+            ],
+          ),
         ),
       ),
     );
@@ -78,27 +95,36 @@ class _MovieSeatsPageState extends State<MovieSeatsPage> {
 }
 
 class MovieSeatsSectionView extends StatelessWidget {
-  const MovieSeatsSectionView({
-    Key? key,
-    required List<MovieSeatVO> movieSeats,
-  })  : _movieSeats = movieSeats,
-        super(key: key);
+  const MovieSeatsSectionView(this.seatRowList, this.seatColumnList);
+  // const MovieSeatsSectionView({
+  //   Key? key,
+  //   required List<MovieSeatVO> movieSeats,
+  // })  : _movieSeats = movieSeats,
+  //       super(key: key);
 
-  final List<MovieSeatVO> _movieSeats;
+  // final List<MovieSeatVO> _movieSeats;
+  final List<MovieSeatListVO>? seatRowList;
+  final int? seatColumnList;
 
   @override
   Widget build(BuildContext context) {
-    return GridView.builder(
-      itemCount: _movieSeats.length,
-      physics: const NeverScrollableScrollPhysics(),
-      shrinkWrap: true,
-      padding: const EdgeInsets.symmetric(horizontal: marginSmall),
-      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 10, childAspectRatio: 1),
-      itemBuilder: (context, index) {
-        return MovieSeatItemView(_movieSeats[index]);
-      },
-    );
+    return (seatColumnList != null)
+        ? GridView.builder(
+            itemCount: seatRowList?.length,
+            physics: const NeverScrollableScrollPhysics(),
+            shrinkWrap: true,
+            padding: const EdgeInsets.symmetric(horizontal: marginSmall),
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                mainAxisSpacing: 2,
+                crossAxisCount: seatColumnList!,
+                childAspectRatio: 1),
+            itemBuilder: (context, index) {
+              return MovieSeatItemView(seatRowList?[index]);
+            },
+          )
+        : const Center(
+            child: CircularProgressIndicator(),
+          );
   }
 }
 
