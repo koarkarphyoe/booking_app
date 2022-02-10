@@ -213,7 +213,7 @@ class _MovieChooseTimeState extends State<MovieChooseTime> {
                                   return const AlertDialog(
                                     title: Center(
                                       child: Text(
-                                          "Sorry,you need to choose time ! "),
+                                          "Sorry,you need to choose time from one of the Cineam ! "),
                                     ),
                                   );
                                 },

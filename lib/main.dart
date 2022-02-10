@@ -4,6 +4,7 @@ import 'package:student_app/data/model/data_models_impl.dart';
 import 'package:student_app/data/vos/data_vo.dart';
 import 'package:student_app/data/vos/movie_details_vo.dart';
 import 'package:student_app/page/home_page.dart';
+import 'package:student_app/page/movie_seats_page.dart';
 import 'package:student_app/page/splash_screen_page.dart';
 import 'package:student_app/persistence/hive_constants.dart';
 
@@ -105,6 +106,7 @@ class _MyAppState extends State<MyApp> {
       //     : const SplashScreen(),
 
       home: dataModels.isLogIn() ? const HomePage() : const SplashScreen(),
+      
     );
   }
 }

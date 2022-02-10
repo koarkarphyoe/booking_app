@@ -7,6 +7,6 @@ const paymentCardIconColor = Color.fromRGBO(129, 145, 178, 1.0);
 const paymentCardTopLeftColor = Color.fromRGBO(136, 118, 252, 1.0);
 const paymentCardButtonRightColor = Color.fromRGBO(164, 120, 243, 1.0);
 const addIconInPaymentCardColor = Color.fromRGBO(14, 192, 137, 1.0);
-const movieSeatTakenColor = Color.fromRGBO(129, 145, 178, 1.0);
-const movieSeatAvailableColor = Color.fromRGBO(208, 216, 235, 1.0);
-
+const movieSeatTakenColor = Color.fromARGB(255, 47, 9, 185);
+const movieSeatReservedColor = Color.fromARGB(255, 89, 134, 201);
+const movieSeatAvailableColor = Color.fromARGB(137, 131, 207, 212);

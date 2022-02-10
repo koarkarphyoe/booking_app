@@ -54,6 +54,9 @@ const cardHolder = "Card holder";
 const expirationDate = "Expiration date";
 const cVcText = "CVC";
 const logOutText = "Log out";
+const movieSeatAvailable = "Availabel";
+const movieSeatReserved = "Reserved";
+const movieSeatYourSelection = "Your Selection";
 
 
 

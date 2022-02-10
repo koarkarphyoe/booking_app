@@ -6,8 +6,12 @@ import 'package:student_app/data/vos/movie_seat_list_vo.dart';
 import 'package:student_app/itemsview/movie_seat_item_view.dart';
 import 'package:student_app/resources/colors.dart';
 import 'package:student_app/resources/dimens.dart';
+import 'package:student_app/widgets/confirm_button_view.dart';
 import 'package:student_app/widgets/title_text.dart';
 import 'package:student_app/widgets/title_text_bold.dart';
+
+import '../itemsview/movie_seats_status.dart';
+import '../resources/strings.dart';
 
 class MovieSeatsPage extends StatefulWidget {
   final movieDetails;
@@ -91,10 +95,79 @@ class _MovieSeatsPageState extends State<MovieSeatsPage> {
                   widget.cinemaName, widget.date, widget.time),
               const SizedBox(height: marginMedium1X),
               MovieSeatsSectionView(seatListForRow, rowNumbersListForGridView),
+              const SizedBox(height: marginMedium),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: marginMedium),
+                child: Row(
+                  children: [
+                    const MovieSeatsStatusView(
+                        movieSeatAvailableColor, movieSeatAvailable),
+                    const SizedBox(
+                      width: marginMediumXXXX,
+                    ),
+                    const MovieSeatsStatusView(
+                        movieSeatReservedColor, movieSeatReserved),
+                    const SizedBox(
+                      width: marginMediumXXX,
+                    ),
+                    const MovieSeatsStatusView(
+                        movieSeatTakenColor, movieSeatYourSelection)
+                  ],
+                ),
+              ),
+              const SizedBox(height: marginMedium1X),
+              const Padding(
+                padding: EdgeInsets.symmetric(horizontal: marginMedium),
+                child: TotalTicketAndSeatsTextView("Tickets", "2"),
+              ),
+              const SizedBox(height: marginMedium),
+              const Padding(
+                padding: EdgeInsets.symmetric(horizontal: marginMedium),
+                child: TotalTicketAndSeatsTextView("Seats", "D Row/5,6"),
+              ),
+              const SizedBox(
+                height: marginMedium,
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: marginMedium),
+                child: ConfirmButtonView(
+                  "Buy Ticket for \$20.00",
+                  () {},
+                  buttonBackgroundColor: primaryColor,
+                ),
+              ),
+              const SizedBox(height: marginMedium),
             ],
           ),
         ),
       ),
+    );
+  }
+}
+
+class TotalTicketAndSeatsTextView extends StatelessWidget {
+  final String text;
+  final String value;
+  const TotalTicketAndSeatsTextView(this.text,this.value,{
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        Text(
+          text,
+          style: const TextStyle(
+              fontSize: textRegular3X, color: paymentCardIconColor),
+        ),
+        const Spacer(),
+        Text(
+          value,
+          style:
+              const TextStyle(fontSize: textRegular3X, color: Colors.black87),
+        ),
+      ],
     );
   }
 }
