@@ -6,8 +6,8 @@ class MovieSeatListVO {
   @JsonKey(name: "id")
   int? id;
 
-  @JsonKey(name: "text")
-  String? text;
+  @JsonKey(name: "type")
+  String? type;
 
   @JsonKey(name: "seat_name")
   String? seatName;
@@ -17,7 +17,18 @@ class MovieSeatListVO {
 
   @JsonKey(name: "price")
   int? price;
-  MovieSeatListVO({this.id, this.text, this.seatName, this.symbol, this.price});
+
+  bool isSelected;
+  int? seatId;
+
+  MovieSeatListVO(
+      {this.id,
+      this.type,
+      this.seatName,
+      this.symbol,
+      this.price,
+      this.isSelected = false,
+      this.seatId});
 
   factory MovieSeatListVO.fromJson(Map<String, dynamic> json) =>
       _$MovieSeatListVOFromJson(json);

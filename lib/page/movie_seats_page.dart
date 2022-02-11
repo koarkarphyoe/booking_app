@@ -36,6 +36,9 @@ class _MovieSeatsPageState extends State<MovieSeatsPage> {
   List<MovieSeatListVO>? seatListForRow;
   int? rowNumbersListForGridView;
 
+  //for Method 2
+  // List<MovieSeatListVO> seatNameLists = [];
+
   @override
   void initState() {
     super.initState();
@@ -48,6 +51,8 @@ class _MovieSeatsPageState extends State<MovieSeatsPage> {
             rowNumbersListForGridView = allSeatPlanList?.first.length;
             seatListForRow =
                 allSeatPlanList?.expand((element) => element).toList();
+            // seatNameLists.addAll(seatListForRow!.map((e) => e).toList());
+            // addSeatId(seatLists);
 
             //Method 1
             // allSeatPlanList = value;
@@ -66,6 +71,42 @@ class _MovieSeatsPageState extends State<MovieSeatsPage> {
       },
     );
   }
+
+  void _selectedSeat(String? seatName) {
+    setState(
+      () {
+        //Method 1
+        seatListForRow?.map((e) {
+          if (e.seatName != "" &&
+              e.type == "available" &&
+              e.seatName == seatName) {
+            if (e.isSelected == true) {
+              e.isSelected = false;
+            } else {
+              e.isSelected = true;
+            }
+          }
+        }).toList();
+
+        //Method 2
+        // seatNameLists.map((e) {
+        //   if (e.seatName == seatName) {
+        //     e.isSelected = true;
+        //     print(e.seatName.toString());
+        //   } else {
+        //     e.isSelected = false;
+        //   }
+        // }).toList();
+      },
+    );
+  }
+
+  // addSeatId(List<MovieSeatListVO> mseats) {
+  //   for (int i = 0; i < mseats.length; i++) {
+  //     seatLists[i].seatId = i + 1;
+  //     seatLists[i].isSelected = false;
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -94,7 +135,10 @@ class _MovieSeatsPageState extends State<MovieSeatsPage> {
               MovieNameTimeAndCinemaSectionView(widget.movieDetails,
                   widget.cinemaName, widget.date, widget.time),
               const SizedBox(height: marginMedium1X),
-              MovieSeatsSectionView(seatListForRow, rowNumbersListForGridView),
+              MovieSeatsSectionView(seatListForRow, rowNumbersListForGridView,
+                  (seatName) {
+                _selectedSeat(seatName);
+              }),
               const SizedBox(height: marginMedium),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: marginMedium),
@@ -148,7 +192,9 @@ class _MovieSeatsPageState extends State<MovieSeatsPage> {
 class TotalTicketAndSeatsTextView extends StatelessWidget {
   final String text;
   final String value;
-  const TotalTicketAndSeatsTextView(this.text,this.value,{
+  const TotalTicketAndSeatsTextView(
+    this.text,
+    this.value, {
     Key? key,
   }) : super(key: key);
 
@@ -172,9 +218,9 @@ class TotalTicketAndSeatsTextView extends StatelessWidget {
   }
 }
 
-class MovieSeatsSectionView extends StatelessWidget {
+class MovieSeatsSectionView extends StatefulWidget {
   const MovieSeatsSectionView(
-      this.seatListForRow, this.rowNumbersListForGridView);
+      this.seatListForRow, this.rowNumbersListForGridView, this.selectedSeat);
   // const MovieSeatsSectionView({
   //   Key? key,
   //   required List<MovieSeatVO> movieSeats,
@@ -184,21 +230,28 @@ class MovieSeatsSectionView extends StatelessWidget {
   // final List<MovieSeatVO> _movieSeats;
   final List<MovieSeatListVO>? seatListForRow;
   final int? rowNumbersListForGridView;
+  final Function(String? seatName) selectedSeat;
 
   @override
+  State<MovieSeatsSectionView> createState() => _MovieSeatsSectionViewState();
+}
+
+class _MovieSeatsSectionViewState extends State<MovieSeatsSectionView> {
+  @override
   Widget build(BuildContext context) {
-    return (rowNumbersListForGridView != null)
+    return (widget.rowNumbersListForGridView != null)
         ? GridView.builder(
-            itemCount: seatListForRow?.length,
+            itemCount: widget.seatListForRow?.length,
             physics: const NeverScrollableScrollPhysics(),
             shrinkWrap: true,
             padding: const EdgeInsets.symmetric(horizontal: marginSmall),
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                 mainAxisSpacing: 2,
-                crossAxisCount: rowNumbersListForGridView!,
+                crossAxisCount: widget.rowNumbersListForGridView!,
                 childAspectRatio: 1),
             itemBuilder: (context, index) {
-              return MovieSeatItemView(seatListForRow?[index]);
+              return MovieSeatItemView(
+                  widget.seatListForRow?[index], widget.selectedSeat);
             },
           )
         : const Center(
