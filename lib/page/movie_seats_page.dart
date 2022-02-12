@@ -35,6 +35,8 @@ class _MovieSeatsPageState extends State<MovieSeatsPage> {
   List<List<MovieSeatListVO>>? allSeatPlanList;
   List<MovieSeatListVO>? seatListForRow;
   int? rowNumbersListForGridView;
+  List<String> selectedSeat = [];
+  double totalSelectedSeatPrice = 0.0;
 
   //for Method 2
   // List<MovieSeatListVO> seatNameLists = [];
@@ -82,8 +84,19 @@ class _MovieSeatsPageState extends State<MovieSeatsPage> {
               e.seatName == seatName) {
             if (e.isSelected == true) {
               e.isSelected = false;
+              selectedSeat.remove(e.seatName);
+              totalSelectedSeatPrice -= e.price!.toDouble();
+
+              // print(totalSelectedSeatPrice.toString());
+              // print("Remove seat $selectedSeat");
             } else {
               e.isSelected = true;
+              selectedSeat.add(e.seatName.toString());
+              totalSelectedSeatPrice += e.price!.toDouble();
+
+              // print("Selected seat $selectedSeat");
+              // print(e.seatName.toString());
+              // print(totalSelectedSeatPrice.toString());
             }
           }
         }).toList();
@@ -160,14 +173,16 @@ class _MovieSeatsPageState extends State<MovieSeatsPage> {
                 ),
               ),
               const SizedBox(height: marginMedium1X),
-              const Padding(
-                padding: EdgeInsets.symmetric(horizontal: marginMedium),
-                child: TotalTicketAndSeatsTextView("Tickets", "2"),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: marginMedium),
+                child: TotalTicketAndSeatsTextView(
+                    "Tickets", selectedSeat.length.toString()),
               ),
               const SizedBox(height: marginMedium),
-              const Padding(
-                padding: EdgeInsets.symmetric(horizontal: marginMedium),
-                child: TotalTicketAndSeatsTextView("Seats", "D Row/5,6"),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: marginMedium),
+                child: TotalTicketAndSeatsTextView(
+                    "Seats", selectedSeat.map((e) => e).toString()),
               ),
               const SizedBox(
                 height: marginMedium,
@@ -175,7 +190,7 @@ class _MovieSeatsPageState extends State<MovieSeatsPage> {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: marginMedium),
                 child: ConfirmButtonView(
-                  "Buy Ticket for \$20.00",
+                  "Buy Ticket for \$${totalSelectedSeatPrice.toString()}",
                   () {},
                   buttonBackgroundColor: primaryColor,
                 ),
@@ -205,13 +220,19 @@ class TotalTicketAndSeatsTextView extends StatelessWidget {
         Text(
           text,
           style: const TextStyle(
-              fontSize: textRegular3X, color: paymentCardIconColor),
+              fontSize: textRegular2X,
+              color: paymentCardIconColor,
+              fontWeight: FontWeight.bold),
         ),
         const Spacer(),
-        Text(
-          value,
-          style:
-              const TextStyle(fontSize: textRegular3X, color: Colors.black87),
+        Expanded(
+          child: Text(
+            value,
+            style: const TextStyle(
+                fontSize: textRegular,
+                color: Colors.black87,
+                fontWeight: FontWeight.bold),
+          ),
         ),
       ],
     );

@@ -2,7 +2,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:student_app/data/vos/movie_seat_list_vo.dart';
-import 'package:student_app/utils/constants.dart';
 
 import '../resources/colors.dart';
 
