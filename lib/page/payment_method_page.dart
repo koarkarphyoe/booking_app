@@ -8,26 +8,45 @@ import 'package:student_app/widgets/payment_method_title.dart';
 import 'package:student_app/widgets/title_text.dart';
 import 'package:student_app/widgets/title_text_bold.dart';
 
-class PaymentMethodPage extends StatelessWidget {
-  const PaymentMethodPage({Key? key}) : super(key: key);
+class PaymentMethodPage extends StatefulWidget {
+  final selectedSeatPrice;
+  final selectedSeatName;
+  const PaymentMethodPage(this.selectedSeatName, this.selectedSeatPrice,
+      {Key? key})
+      : super(key: key);
 
+  @override
+  State<PaymentMethodPage> createState() => _PaymentMethodPageState();
+}
+
+class _PaymentMethodPageState extends State<PaymentMethodPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        elevation: 0,
+        backgroundColor: Colors.white,
+        leading: GestureDetector(
+          onTap: () {
+            Navigator.pop(context);
+          },
+          child: const Icon(
+            Icons.chevron_left,
+            size: paymentPageBackButtonIconSize,
+            color: Colors.black,
+          ),
+        ),
+      ),
       body: Padding(
         padding: const EdgeInsets.only(
           left: marginMedium,
           right: marginMedium,
-          top: marginMedium2X,
+          top: marginForChip,
         ),
         child: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const ChevronBackButtonView(),
-              const SizedBox(
-                height: marginMedium,
-              ),
               const ComboSetView(comboSetMText, "15\$",
                   "Combo size M 22oz.Coke(XI) and medium popcorn (X1)", 0),
               const SizedBox(
@@ -51,7 +70,7 @@ class PaymentMethodPage extends StatelessWidget {
               const SizedBox(
                 height: marginMedium,
               ),
-              const SubTotalView(),
+              SubTotalView(widget.selectedSeatPrice.toString()),
               const SizedBox(
                 height: marginMedium1X,
               ),
@@ -111,21 +130,23 @@ class PaymentMethodPage extends StatelessWidget {
 }
 
 class SubTotalView extends StatelessWidget {
-  const SubTotalView({
+  final String totalAmount;
+  const SubTotalView(
+    this.totalAmount, {
     Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Row(
-      children: const [
-        TitleTextBold(
+      children: [
+        const TitleTextBold(
           subTotalText,
           textColor: subTotalColor,
           textSize: textRegular2X,
         ),
         TitleTextBold(
-          "40\$",
+          "$totalAmount\$",
           textColor: subTotalColor,
           textSize: textRegular2X,
         ),
@@ -176,21 +197,6 @@ class EnterPromoCodeView extends StatelessWidget {
             color: Colors.black38,
             fontStyle: FontStyle.italic),
       ),
-    );
-  }
-}
-
-class ChevronBackButtonView extends StatelessWidget {
-  const ChevronBackButtonView({
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return const Icon(
-      Icons.chevron_left,
-      size: paymentPageBackButtonIconSize,
-      color: Colors.black,
     );
   }
 }

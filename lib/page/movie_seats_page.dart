@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:student_app/data/model/data_models_impl.dart';
 import 'package:student_app/data/vos/movie_seat_list_vo.dart';
 import 'package:student_app/itemsview/movie_seat_item_view.dart';
+import 'package:student_app/page/payment_method_page.dart';
 import 'package:student_app/resources/colors.dart';
 import 'package:student_app/resources/dimens.dart';
 import 'package:student_app/widgets/confirm_button_view.dart';
@@ -128,16 +129,7 @@ class _MovieSeatsPageState extends State<MovieSeatsPage> {
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
-        leading: GestureDetector(
-          onTap: () {
-            Navigator.pop(context);
-          },
-          child: const Icon(
-            Icons.chevron_left,
-            size: paymentPageBackButtonIconSize,
-            color: Colors.black,
-          ),
-        ),
+        leading:const BackButtonView(),
       ),
       body: Container(
         width: MediaQuery.of(context).size.width,
@@ -191,7 +183,15 @@ class _MovieSeatsPageState extends State<MovieSeatsPage> {
                 padding: const EdgeInsets.symmetric(horizontal: marginMedium),
                 child: ConfirmButtonView(
                   "Buy Ticket for \$${totalSelectedSeatPrice.toString()}",
-                  () {},
+                  () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => PaymentMethodPage(
+                            selectedSeat, totalSelectedSeatPrice),
+                      ),
+                    );
+                  },
                   buttonBackgroundColor: primaryColor,
                 ),
               ),
@@ -199,6 +199,26 @@ class _MovieSeatsPageState extends State<MovieSeatsPage> {
             ],
           ),
         ),
+      ),
+    );
+  }
+}
+
+class BackButtonView extends StatelessWidget {
+  const BackButtonView({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () {
+        Navigator.pop(context);
+      },
+      child: const Icon(
+        Icons.chevron_left,
+        size: paymentPageBackButtonIconSize,
+        color: Colors.black,
       ),
     );
   }
