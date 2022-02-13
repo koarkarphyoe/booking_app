@@ -3,6 +3,7 @@ import 'package:student_app/data/vos/data_vo.dart';
 import 'package:student_app/data/vos/date_vo.dart';
 import 'package:student_app/data/vos/movie_details_vo.dart';
 import 'package:student_app/data/vos/movie_seat_list_vo.dart';
+import 'package:student_app/data/vos/snack_vo.dart';
 import 'package:student_app/data/vos/timeslotdata_vo.dart';
 import 'package:student_app/data/vos/user_vo.dart';
 import 'package:student_app/network/response/email_response.dart';
@@ -41,6 +42,7 @@ abstract class DataModels {
   Future<List<DataVO>?>? getComingSoonMovieFromDatabase();
   Future<DataVO>? getMovieFromDatabase(int movieId);
   Future<MovieDetailsVO?> getMovieDetailsFromDatabase(int movieId);
+  Future<List<SnackVO>>? getSnack();
   void deleteTokenFromDatabase();
   void deleteUserInfoFromDatabase();
 

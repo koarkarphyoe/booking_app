@@ -6,6 +6,7 @@ import 'package:student_app/network/response/email_response.dart';
 import 'package:student_app/network/response/movie_details_response.dart';
 import 'package:student_app/network/response/movie_response.dart';
 import 'package:student_app/network/response/movie_seats_response.dart';
+import 'package:student_app/network/response/snack_list_response.dart';
 import 'api_constants.dart';
 part 'register_api.g.dart';
 
@@ -48,14 +49,17 @@ abstract class RegisterApi {
 
   @GET(getCinemaDayTimeSlotEndPoint)
   Future<DayTimeslotsResponse> getCinemaNameAndTimeSlots(
-    @Header("Authorization") String token,
+    @Header(authorization) String token,
     @Query(date) String date,
   );
 
   @GET(getMovieSeatEndPoint)
   Future<MovieSeatsResponse> getMovieSeats(
-    @Header("Authorization") String token,
+    @Header(authorization) String token,
     @Query(cinemaDayTimeSlotId) String cinemadaytimeSlotId,
     @Query(bookingDate) String bookingdate,
   );
+
+  @GET(getSnackListEndPoint)
+  Future<SnackListResponse> getSnackList(@Header(authorization) String token);
 }

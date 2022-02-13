@@ -1,20 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:student_app/data/vos/snack_vo.dart';
 import 'package:student_app/resources/dimens.dart';
 import 'package:student_app/resources/strings.dart';
 import 'package:student_app/widgets/title_text.dart';
 
 class ComboSetView extends StatelessWidget {
   const ComboSetView(
-    this.comboTitle,
-    this.comboValue,
-    this.comboType,
-    this.comboCounterValue, {
+    this.snackTitle,
+    this.onTapSign, {
     Key? key,
   }) : super(key: key);
-  final String comboTitle;
-  final String comboValue;
-  final String comboType;
-  final int comboCounterValue;
+  final SnackVO? snackTitle;
+  final Function(int? snackId, String? signName) onTapSign;
+  // final Function(int? snackId) onTapPlus; for method 1
+  // final Function(int? snackid) onTapMinus; for method 1
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +22,7 @@ class ComboSetView extends StatelessWidget {
         Row(
           children: [
             TitleText(
-              comboTitle,
+              snackTitle!.name.toString(),
               textColor: Colors.black,
               textSize: textRegular1X,
             ),
@@ -31,7 +30,7 @@ class ComboSetView extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.only(right: marginMedium1XX),
               child: TitleText(
-                comboValue,
+                "${snackTitle!.price.toString()}\$",
                 textColor: Colors.black,
                 textSize: textRegular1X,
               ),
@@ -43,7 +42,7 @@ class ComboSetView extends StatelessWidget {
           children: [
             Expanded(
               child: TitleText(
-                comboType,
+                snackTitle!.description.toString(),
                 textColor: Colors.black38,
                 textSize: textRegular,
               ),
@@ -61,11 +60,17 @@ class ComboSetView extends StatelessWidget {
                           Radius.circular(comboSetButtonCirclularRadius),
                     ),
                   ),
-                  child: const Center(
-                    child: TitleText(
-                      minusSignInComboSet,
-                      textColor: Colors.black,
-                      textSize: textRegular5X,
+                  child: Center(
+                    child: GestureDetector(
+                      onTap: () {
+                        // onTapMinus(snackTitle!.id);for method 1
+                        onTapSign(snackTitle!.id,minusSignInComboSet);
+                      },
+                      child: const TitleText(
+                        minusSignInComboSet,
+                        textColor: Colors.black,
+                        textSize: textRegular5X,
+                      ),
                     ),
                   ),
                 ),
@@ -81,8 +86,10 @@ class ComboSetView extends StatelessWidget {
                   ),
                   child: Center(
                     child: TitleText(
-                      comboCounterValue.toString(),
-                      textColor: Colors.black38,
+                      snackTitle!.quantity.toString(),
+                      textColor: (snackTitle?.quantity == 0)
+                          ? Colors.black38
+                          : Colors.black,
                       textSize: textRegular2X,
                     ),
                   ),
@@ -98,17 +105,26 @@ class ComboSetView extends StatelessWidget {
                           Radius.circular(comboSetButtonCirclularRadius),
                     ),
                   ),
-                  child: const Center(
-                    child: TitleText(
-                      plusSignInComboSet,
-                      textColor: Colors.black,
-                      textSize: textRegular2X,
+                  child: Center(
+                    child: GestureDetector(
+                      onTap: () {
+                        onTapSign(snackTitle!.id,plusSignInComboSet);
+                        // onTapPlus(snackTitle!.id);for method 1
+                      },
+                      child: const TitleText(
+                        plusSignInComboSet,
+                        textColor: Colors.black,
+                        textSize: textRegular2X,
+                      ),
                     ),
                   ),
                 ),
               ],
             ),
           ],
+        ),
+        const SizedBox(
+          height: marginMedium1X,
         ),
       ],
     );

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:student_app/data/model/data_models_impl.dart';
+import 'package:student_app/data/vos/snack_vo.dart';
 import 'package:student_app/resources/colors.dart';
 import 'package:student_app/resources/dimens.dart';
 import 'package:student_app/resources/strings.dart';
@@ -20,6 +22,22 @@ class PaymentMethodPage extends StatefulWidget {
 }
 
 class _PaymentMethodPageState extends State<PaymentMethodPage> {
+  DataModelsImpl mDataModel = DataModelsImpl();
+
+  List<SnackVO>? snackList;
+  double? subtotal;
+
+  @override
+  void initState() {
+    super.initState();
+    subtotal = widget.selectedSeatPrice;
+    mDataModel.getSnack()?.then((value) {
+      setState(() {
+        snackList = value;
+      });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -47,21 +65,51 @@ class _PaymentMethodPageState extends State<PaymentMethodPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const ComboSetView(comboSetMText, "15\$",
-                  "Combo size M 22oz.Coke(XI) and medium popcorn (X1)", 0),
-              const SizedBox(
-                height: marginMedium1X,
-              ),
-              const ComboSetView(comboSetLText, "18\$",
-                  "Combo size M 32oz.Coke(XI) and medium popcorn (X1)", 0),
-              const SizedBox(
-                height: marginMedium1X,
-              ),
-              const ComboSetView(comboFor2Text, "20\$",
-                  "Combo size 2 32oz.Coke(X2) and medium popcorn (X1)", 1),
-              const SizedBox(
-                height: marginMediumX,
-              ),
+              (snackList != null)
+                  ? Column(
+                      children: snackList!
+                          .map((e) => ComboSetView(e, (snackId, signName) {
+                                    setState(() {
+                                      if (e.id == snackId) {
+                                        if (signName == "+") {
+                                          e.quantity = e.quantity! + 1;
+                                          // subtotal is very important
+                                          subtotal =
+                                              (subtotal! + e.price!.toDouble());
+                                        } else if (signName == "-" &&
+                                            e.quantity! > 0) {
+                                          e.quantity = e.quantity! - 1;
+                                          subtotal =
+                                              (subtotal! - e.price!.toDouble());
+                                        } else if (e.quantity == 0) {
+                                          e.quantity = 0;
+                                        }
+                                      }
+                                    });
+                                  })
+                              //Method 1 for Snack Choose
+                              // (e) => ComboSetView(
+                              //     e,
+                              //     (snackId) => _onTapPlus(snackId),
+                              //     (snackId) => _onTapMinus(snackId)),
+                              )
+                          .toList(),
+                    )
+                  : const Center(child: CircularProgressIndicator()),
+
+              // const ComboSetView(comboSetMText, "15\$",
+              //     "Combo size M 22oz.Coke(XI) and medium popcorn (X1)", 0),
+              // const SizedBox(
+              //   height: marginMedium1X,
+              // ),
+              // const ComboSetView(comboSetLText, "18\$",
+              //     "Combo size M 32oz.Coke(XI) and medium popcorn (X1)", 0),
+              // const SizedBox(
+              //   height: marginMedium1X,
+              // ),
+              // const ComboSetView(comboFor2Text, "20\$",
+              //     "Combo size 2 32oz.Coke(X2) and medium popcorn (X1)", 1),
+
               const EnterPromoCodeView(),
               const SizedBox(
                 height: marginXSmall,
@@ -70,7 +118,7 @@ class _PaymentMethodPageState extends State<PaymentMethodPage> {
               const SizedBox(
                 height: marginMedium,
               ),
-              SubTotalView(widget.selectedSeatPrice.toString()),
+              SubTotalView(subtotal.toString()),
               const SizedBox(
                 height: marginMedium1X,
               ),
@@ -113,7 +161,7 @@ class _PaymentMethodPageState extends State<PaymentMethodPage> {
                 height: marginMedium1X,
               ),
               ConfirmButtonView(
-                "Pay \$40.00",
+                "Pay \$$subtotal",
                 () {},
                 buttonBackgroundColor: primaryColor,
                 isGhostButton: true,
@@ -127,6 +175,30 @@ class _PaymentMethodPageState extends State<PaymentMethodPage> {
       ),
     );
   }
+
+//Method 1 for Snack choose
+//   _onTapPlus(int? snackId) {
+//     setState(() {
+//       snackList?.map((e) {
+//         if (e.id == snackId) {
+//           e.quantity = e.quantity! + 1;
+//           e.totalCharges = ((e.quantity)! * (e.price)!.toDouble());
+//           subtotal = (subtotal! + e.price!.toDouble());
+//         }
+//       }).toList();
+//     });
+//   }
+//   _onTapMinus(int? snackId) {
+//     setState(() {
+//       snackList?.map((e) {
+//         if (e.id == snackId) {
+//           e.quantity = e.quantity! - 1;
+//           e.totalCharges = ((e.quantity)! * (e.price)!.toDouble());
+//           subtotal = (subtotal! - e.price!.toDouble());
+//         }
+//       }).toList();
+//     });
+//   }
 }
 
 class SubTotalView extends StatelessWidget {

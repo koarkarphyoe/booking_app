@@ -77,11 +77,12 @@ class _MovieChooseTimeState extends State<MovieChooseTime> {
           if (date?.id == dateId) {
             date?.isSelected = true;
             dateForMovieSeatsPage = date?.dayMonthDate; //for single select
-            yMdForMovieSeatsPage = date?.yMd;
-            print("setState condition in UI after selecting by user");
-          }
-          return date;
-        }).toList();
+              yMdForMovieSeatsPage = date?.yMd;
+              print("setState condition in UI after selecting by user");
+            }
+            return date;
+          },
+        ).toList();
 
         //first method for date choosing
         // selectedDate = dateList!.firstWhere((element) => element.id == dateId);

@@ -1,6 +1,7 @@
 import 'package:student_app/data/vos/cinemas_vo.dart';
 import 'package:student_app/data/vos/data_vo.dart';
 import 'package:student_app/data/vos/movie_seat_list_vo.dart';
+import 'package:student_app/data/vos/snack_vo.dart';
 import 'package:student_app/data/vos/timeslotdata_vo.dart';
 import 'package:student_app/network/api_constants.dart';
 import 'package:student_app/network/register_api.dart';
@@ -8,6 +9,7 @@ import 'package:dio/dio.dart';
 import 'package:student_app/network/response/email_response.dart';
 import 'package:student_app/network/response/movie_details_response.dart';
 import 'package:student_app/network/response/movie_seats_response.dart';
+import 'package:student_app/network/response/snack_list_response.dart';
 
 import 'data_agents.dart';
 
@@ -98,9 +100,18 @@ class DataAgentsImpl extends DataAgents {
   Future<List<List<MovieSeatListVO>>?>? getMovieSeat(
       String token, int cinemaDayTimeslotId, String bookingDate) {
     return rApi
-        ?.getMovieSeats(token,cinemaDayTimeslotId.toString() , bookingDate)
+        ?.getMovieSeats(token, cinemaDayTimeslotId.toString(), bookingDate)
         .asStream()
         .map((event) => event.data)
+        .first;
+  }
+
+  @override
+  Future<List<SnackVO>>? getSnackList(String token) {
+    return rApi
+        ?.getSnackList(token)
+        .asStream()
+        .map((event) => event.snackList)
         .first;
   }
 }

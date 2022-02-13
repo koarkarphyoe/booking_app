@@ -5,6 +5,7 @@ import 'package:student_app/data/vos/data_vo.dart';
 import 'package:student_app/data/vos/date_vo.dart';
 import 'package:student_app/data/vos/movie_details_vo.dart';
 import 'package:student_app/data/vos/movie_seat_list_vo.dart';
+import 'package:student_app/data/vos/snack_vo.dart';
 import 'package:student_app/data/vos/timeslotdata_vo.dart';
 import 'package:student_app/data/vos/user_vo.dart';
 import 'package:student_app/network/api_constants.dart';
@@ -97,14 +98,13 @@ class DataModelsImpl extends DataModels {
         ?.then((value) => value);
   }
 
-
-    @override
+  @override
   Future<List<List<MovieSeatListVO>>?> getMovieSeat(
       int cinemaDayTimeslotId, String bookingDate) {
     return mDataAgent
         .getMovieSeat(
-           tokenDao.getToken().toString(), cinemaDayTimeslotId, bookingDate)
-        !.then((value) => value);
+            tokenDao.getToken().toString(), cinemaDayTimeslotId, bookingDate)!
+        .then((value) => value);
   }
 
   //Database
@@ -188,5 +188,12 @@ class DataModelsImpl extends DataModels {
   @override
   bool isLogIn() {
     return tokenDao.getToken()?.isNotEmpty ?? false;
+  }
+
+  @override
+  Future<List<SnackVO>>? getSnack() {
+    return mDataAgent
+        .getSnackList(tokenDao.getToken().toString())
+        ?.then((value) => value);
   }
 }
