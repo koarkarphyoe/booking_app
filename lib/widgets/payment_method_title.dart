@@ -15,7 +15,6 @@ class PaymentMethodTitle extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        // ignore: prefer_const_constructors
         cardIcon,
         const SizedBox(
           width: marginMedium1X,
@@ -32,8 +31,11 @@ class PaymentMethodTitle extends StatelessWidget {
               cardNameText,
               textColor: paymentCardIconColor,
               textSize: textRegular,
-            )
+            ),
           ],
+        ),
+        const SizedBox(
+          height: marginSmall,
         ),
       ],
     );

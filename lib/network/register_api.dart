@@ -1,11 +1,13 @@
 import 'package:retrofit/http.dart';
 import 'package:dio/dio.dart';
+import 'package:student_app/network/response/card_list_response.dart';
 import 'package:student_app/network/response/cinemas_response.dart';
 import 'package:student_app/network/response/day_timeslots_response.dart';
 import 'package:student_app/network/response/email_response.dart';
 import 'package:student_app/network/response/movie_details_response.dart';
 import 'package:student_app/network/response/movie_response.dart';
 import 'package:student_app/network/response/movie_seats_response.dart';
+import 'package:student_app/network/response/payment_method_response.dart';
 import 'package:student_app/network/response/snack_list_response.dart';
 import 'api_constants.dart';
 part 'register_api.g.dart';
@@ -62,4 +64,18 @@ abstract class RegisterApi {
 
   @GET(getSnackListEndPoint)
   Future<SnackListResponse> getSnackList(@Header(authorization) String token);
+
+  @GET(getPaymentMethodListEndPoint)
+  Future<PaymentMethodResponse> getPaymentList(
+    @Header(authorization) String token,
+  );
+
+  @POST(getCartListEndPoint)
+  Future<CardListResponse> getCardList(
+    @Header(authorization) String token,
+    @Field(cardHolder) String cardHolder,//can use with @Query()
+    @Field(cardNumber) String cardNumber,//can use with @Query()
+    @Field(expirationDate) String expirationDate,//can use with @Query()
+    @Field(cvc) String cvc,//can use with @Query()
+  );
 }

@@ -164,6 +164,46 @@ class _RegisterApi implements RegisterApi {
     return value;
   }
 
+  @override
+  Future<PaymentMethodResponse> getPaymentList(token) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{r'Authorization': token};
+    _headers.removeWhere((k, v) => v == null);
+    final _data = <String, dynamic>{};
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<PaymentMethodResponse>(
+            Options(method: 'GET', headers: _headers, extra: _extra)
+                .compose(_dio.options, '/api/v1/payment-methods',
+                    queryParameters: queryParameters, data: _data)
+                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = PaymentMethodResponse.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<CardListResponse> getCardList(
+      token, cardHolder, cardNumber, expirationDate, cvc) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{r'Authorization': token};
+    _headers.removeWhere((k, v) => v == null);
+    final _data = {
+      'card_holder': cardHolder,
+      'card_number': cardNumber,
+      'expiration_date': expirationDate,
+      'cvc': cvc
+    };
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<CardListResponse>(
+            Options(method: 'POST', headers: _headers, extra: _extra)
+                .compose(_dio.options, '/api/v1/card',
+                    queryParameters: queryParameters, data: _data)
+                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = CardListResponse.fromJson(_result.data!);
+    return value;
+  }
+
   RequestOptions _setStreamType<T>(RequestOptions requestOptions) {
     if (T != dynamic &&
         !(requestOptions.responseType == ResponseType.bytes ||

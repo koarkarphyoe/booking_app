@@ -12,6 +12,8 @@ const String getCinemasListEndPoint = "/api/v1/cinemas";
 const String getCinemaDayTimeSlotEndPoint = "/api/v1/cinema-day-timeslots";
 const String getMovieSeatEndPoint = "/api/v1/seat-plan";
 const String getSnackListEndPoint = "/api/v1/snacks";
+const String getPaymentMethodListEndPoint = "/api/v1/payment-methods";
+const String getCartListEndPoint = "/api/v1/card";
 
 //Body in api
 const String nameParam = "name";
@@ -22,6 +24,11 @@ const String googleAccessTokenParam = "google-access-token";
 const String facebookAccessTokenParam = "facebook-access-token";
 const String accept = "Accept";
 const String applicationJson = "application/json";
+
+const String cardNumber = "card_number";
+const String cardHolder = "card_holder";
+const String expirationDate = "expiration_date";
+const String cvc = "cvc";
 
 //Param Key
 
@@ -43,3 +50,7 @@ const String bookingDateValue = "2-7-2022";
 
 const String tokenTest = "Bearer 4412|eSoj7MFeu08DeutTSBqBl4dbv1r1es2BIJh2nf7c";
 const String dateTest = "2022-01-31";
+const String cardNumberTest = "1234.5678.9101.1121";
+const String cardHolderTest = "testci";
+const String expirationDateTest = "9/22";
+const int cvcTest = 123;

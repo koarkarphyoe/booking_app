@@ -9,7 +9,8 @@ import 'package:student_app/widgets/title_text.dart';
 import 'package:student_app/widgets/title_text_bold.dart';
 
 class PaymentCardPage extends StatefulWidget {
-  const PaymentCardPage({Key? key}) : super(key: key);
+  final subtotal;
+  const PaymentCardPage(this.subtotal,{Key? key}) : super(key: key);
 
   @override
   State<PaymentCardPage> createState() => _PaymentCardPageState();
@@ -17,6 +18,14 @@ class PaymentCardPage extends StatefulWidget {
 
 class _PaymentCardPageState extends State<PaymentCardPage> {
   TextEditingController textController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    setState(() {
+      print(widget.subtotal.toString());
+    });
+  }
 
   @override
   Widget build(BuildContext context) {

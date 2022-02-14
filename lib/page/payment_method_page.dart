@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:student_app/data/model/data_models_impl.dart';
+import 'package:student_app/data/vos/payment_method_vo.dart';
 import 'package:student_app/data/vos/snack_vo.dart';
+import 'package:student_app/page/paymethod_card_page.dart';
 import 'package:student_app/resources/colors.dart';
 import 'package:student_app/resources/dimens.dart';
 import 'package:student_app/resources/strings.dart';
@@ -25,6 +27,7 @@ class _PaymentMethodPageState extends State<PaymentMethodPage> {
   DataModelsImpl mDataModel = DataModelsImpl();
 
   List<SnackVO>? snackList;
+  List<PaymentMethodVO>? paymentMethodList;
   double? subtotal;
 
   @override
@@ -34,6 +37,12 @@ class _PaymentMethodPageState extends State<PaymentMethodPage> {
     mDataModel.getSnack()?.then((value) {
       setState(() {
         snackList = value;
+      });
+    });
+
+    mDataModel.getPaymentList()?.then((value) {
+      setState(() {
+        paymentMethodList = value;
       });
     });
   }
@@ -127,42 +136,66 @@ class _PaymentMethodPageState extends State<PaymentMethodPage> {
               const SizedBox(
                 height: marginMedium,
               ),
-              const PaymentMethodTitle(
-                creditCardText,
-                visaMasterJCBText,
-                Icon(
-                  Icons.card_membership,
-                  color: paymentCardIconColor,
-                ),
-              ),
-              const SizedBox(
-                height: marginSmall,
-              ),
-              const PaymentMethodTitle(
-                internetBankingATMText,
-                visaMasterJCBText,
-                Icon(
-                  Icons.credit_card,
-                  color: paymentCardIconColor,
-                ),
-              ),
-              const SizedBox(
-                height: marginSmall,
-              ),
-              const PaymentMethodTitle(
-                eWalletText,
-                payPalText,
-                Icon(
-                  Icons.login_outlined,
-                  color: paymentCardIconColor,
-                ),
-              ),
+              (paymentMethodList != null)
+                  ? Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: paymentMethodList!
+                          .map(
+                            (e) => PaymentMethodTitle(
+                              e.name.toString(),
+                              e.description.toString(),
+                              const Icon(
+                                Icons.credit_card,
+                                color: paymentCardIconColor,
+                              ),
+                            ),
+                          )
+                          .toList(),
+                    )
+                  : const Center(child: CircularProgressIndicator()),
+              // const PaymentMethodTitle(
+              //   creditCardText,
+              //   visaMasterJCBText,
+              //   Icon(
+              //     Icons.card_membership,
+              //     color: paymentCardIconColor,
+              //   ),
+              // ),
+              // const SizedBox(
+              //   height: marginSmall,
+              // ),
+              // const PaymentMethodTitle(
+              //   internetBankingATMText,
+              //   visaMasterJCBText,
+              //   Icon(
+              //     Icons.credit_card,
+              //     color: paymentCardIconColor,
+              //   ),
+              // ),
+              // const SizedBox(
+              //   height: marginSmall,
+              // ),
+              // const PaymentMethodTitle(
+              //   eWalletText,
+              //   payPalText,
+              //   Icon(
+              //     Icons.login_outlined,
+              //     color: paymentCardIconColor,
+              //   ),
+              // ),
               const SizedBox(
                 height: marginMedium1X,
               ),
               ConfirmButtonView(
                 "Pay \$$subtotal",
-                () {},
+                () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => PaymentCardPage(subtotal),
+                    ),
+                  );
+                },
                 buttonBackgroundColor: primaryColor,
                 isGhostButton: true,
               ),

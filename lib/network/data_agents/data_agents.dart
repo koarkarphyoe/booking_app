@@ -1,6 +1,8 @@
+import 'package:student_app/data/vos/card_vo.dart';
 import 'package:student_app/data/vos/cinemas_vo.dart';
 import 'package:student_app/data/vos/data_vo.dart';
 import 'package:student_app/data/vos/movie_seat_list_vo.dart';
+import 'package:student_app/data/vos/payment_method_vo.dart';
 import 'package:student_app/data/vos/snack_vo.dart';
 import 'package:student_app/data/vos/timeslotdata_vo.dart';
 import 'package:student_app/network/response/email_response.dart';
@@ -30,4 +32,9 @@ abstract class DataAgents {
       String token, int cinemaDayTimeslotId, String bookingDate);
 
   Future<List<SnackVO>>? getSnackList(String token);
+
+  Future<List<PaymentMethodVO>?>? getPaymentMethodList(String token);
+
+  Future<List<CardVO>?>? getCardList(String token,String cardHolder,String cardNumber,String expireDate,int cvc);
+
 }

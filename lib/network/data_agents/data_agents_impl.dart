@@ -1,6 +1,8 @@
+import 'package:student_app/data/vos/card_vo.dart';
 import 'package:student_app/data/vos/cinemas_vo.dart';
 import 'package:student_app/data/vos/data_vo.dart';
 import 'package:student_app/data/vos/movie_seat_list_vo.dart';
+import 'package:student_app/data/vos/payment_method_vo.dart';
 import 'package:student_app/data/vos/snack_vo.dart';
 import 'package:student_app/data/vos/timeslotdata_vo.dart';
 import 'package:student_app/network/api_constants.dart';
@@ -113,5 +115,19 @@ class DataAgentsImpl extends DataAgents {
         .asStream()
         .map((event) => event.snackList)
         .first;
+  }
+
+  @override
+  Future<List<PaymentMethodVO>?>? getPaymentMethodList(String token) {
+    return rApi
+        ?.getPaymentList(token)
+        .asStream()
+        .map((event) => event.data)
+        .first;
+  }
+
+  @override
+  Future<List<CardVO>?>? getCardList(String token,String cardHolder,String cardNumber,String expireDate,int cvc) {
+    return rApi?.getCardList(token,cardNumber,cardHolder,expireDate,cvc.toString()).asStream().map((event) => event.data).first;
   }
 }
