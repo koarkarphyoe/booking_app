@@ -6,7 +6,6 @@ import 'package:student_app/data/vos/movie_details_vo.dart';
 import 'package:student_app/page/home_page.dart';
 import 'package:student_app/page/splash_screen_page.dart';
 import 'package:student_app/persistence/hive_constants.dart';
-
 import 'data/vos/card_vo.dart';
 import 'data/vos/user_vo.dart';
 

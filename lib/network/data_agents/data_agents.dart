@@ -7,8 +7,6 @@ import 'package:student_app/data/vos/snack_vo.dart';
 import 'package:student_app/data/vos/timeslotdata_vo.dart';
 import 'package:student_app/network/response/email_response.dart';
 import 'package:student_app/network/response/movie_details_response.dart';
-import 'package:student_app/network/response/movie_seats_response.dart';
-import 'package:student_app/network/response/snack_list_response.dart';
 
 abstract class DataAgents {
   Future<EmailResponse>? postRegisterWithEmail(
@@ -35,6 +33,6 @@ abstract class DataAgents {
 
   Future<List<PaymentMethodVO>?>? getPaymentMethodList(String token);
 
-  Future<List<CardVO>?>? registerCardList(String token,String cardHolder,String cardNumber,String expireDate,String cvc);
-
+  Future<List<CardVO>?>? registerCardList(String token, String cardHolder,
+      String cardNumber, String expireDate, String cvc);
 }
