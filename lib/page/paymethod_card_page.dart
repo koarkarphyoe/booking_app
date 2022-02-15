@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:student_app/data/model/data_models_impl.dart';
 import 'package:student_app/resources/colors.dart';
 import 'package:student_app/resources/dimens.dart';
 import 'package:student_app/resources/strings.dart';
@@ -8,24 +9,16 @@ import 'package:student_app/widgets/title_and_text_field.dart';
 import 'package:student_app/widgets/title_text.dart';
 import 'package:student_app/widgets/title_text_bold.dart';
 
-class PaymentCardPage extends StatefulWidget {
+class PaymentCardPage extends StatelessWidget {
   final subtotal;
-  const PaymentCardPage(this.subtotal,{Key? key}) : super(key: key);
+  PaymentCardPage(this.subtotal, {Key? key}) : super(key: key);
 
-  @override
-  State<PaymentCardPage> createState() => _PaymentCardPageState();
-}
-
-class _PaymentCardPageState extends State<PaymentCardPage> {
-  TextEditingController textController = TextEditingController();
-
-  @override
-  void initState() {
-    super.initState();
-    setState(() {
-      print(widget.subtotal.toString());
-    });
-  }
+  final TextEditingController textController = TextEditingController();
+  final TextEditingController cardNumberController = TextEditingController();
+  final TextEditingController cardHolderController = TextEditingController();
+  final TextEditingController expirationDateController =
+      TextEditingController();
+  final TextEditingController cvcController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -33,10 +26,15 @@ class _PaymentCardPageState extends State<PaymentCardPage> {
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
-        leading: const Icon(
-          Icons.chevron_left,
-          size: 40,
-          color: Colors.black,
+        leading: GestureDetector(
+          onTap: () {
+            Navigator.pop(context);
+          },
+          child: const Icon(
+            Icons.chevron_left,
+            size: 40,
+            color: Colors.black,
+          ),
         ),
       ),
       body: SingleChildScrollView(
@@ -48,16 +46,16 @@ class _PaymentCardPageState extends State<PaymentCardPage> {
               padding: const EdgeInsets.symmetric(horizontal: marginMedium),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children: const [
-                  TitleText(
+                children: [
+                  const TitleText(
                     paymentAmount,
                     textColor: paymentCardIconColor,
                     textSize: textRegular,
                   ),
-                  SizedBox(height: marginXSmall),
-                  TitleTextBold("\$926.21",
+                  const SizedBox(height: marginXSmall),
+                  TitleTextBold("\$${subtotal.toString()}",
                       textColor: Colors.black, textSize: textRegular4X),
-                  SizedBox(height: marginMedium1X),
+                  const SizedBox(height: marginMedium1X),
                 ],
               ),
             ),
@@ -70,19 +68,28 @@ class _PaymentCardPageState extends State<PaymentCardPage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  TitleAndTextFieldView(cardNumbarText, textController),
+                  TitleAndTextFieldView(cardNumbarText, cardNumberController),
                   const SizedBox(
                     height: marginMedium1X,
                   ),
-                  TitleAndTextFieldView(cardHolder, textController),
+                  TitleAndTextFieldView(cardHolder, cardHolderController),
                   const SizedBox(
                     height: marginMedium1X,
                   ),
-                  ExpirationDateAndCVC(textController),
+                  ExpirationDateAndCVC(expirationDateController, cvcController),
                   const SizedBox(
                     height: marginMedium1X,
                   ),
-                  const AddNewCard(),
+                  GestureDetector(
+                    onTap: () {
+                      _addNewCard(
+                          cardHolderController.text,
+                          cardNumberController.text,
+                          expirationDateController.text,
+                          cvcController.text);
+                    },
+                    child: const AddNewCard(),
+                  ),
                   const SizedBox(
                     height: marginMedium1X,
                   ),
@@ -102,6 +109,11 @@ class _PaymentCardPageState extends State<PaymentCardPage> {
         ),
       ),
     );
+  }
+
+  void _addNewCard(String text, String text2, String text3, String text4) {
+    DataModelsImpl mModel = DataModelsImpl();
+    mModel.registerCardList(text, text2, text3, text4);
   }
 }
 
@@ -130,19 +142,22 @@ class AddNewCard extends StatelessWidget {
 }
 
 class ExpirationDateAndCVC extends StatelessWidget {
-  final TextEditingController textController;
-  const ExpirationDateAndCVC(this.textController);
+  final TextEditingController textControllerExpireDate;
+  final TextEditingController textEditingControllerCVC;
+  const ExpirationDateAndCVC(
+      this.textControllerExpireDate, this.textEditingControllerCVC);
 
   @override
   Widget build(BuildContext context) {
     return Row(
       children: [
         Expanded(
-          child: TitleAndTextFieldView(expirationDate, textController),
+          child:
+              TitleAndTextFieldView(expirationDate, textControllerExpireDate),
         ),
         const SizedBox(width: marginMedium1X),
         Flexible(
-          child: TitleAndTextFieldView(cVcText, textController),
+          child: TitleAndTextFieldView(cVcText, textEditingControllerCVC),
         ),
       ],
     );

@@ -10,7 +10,7 @@ class ConfirmButtonView extends StatelessWidget {
   final Color buttonBackgroundColor;
   final double textSize;
   final Color borderColor;
-  final Function onTapButton;
+  final Function() onTapButton;
   const ConfirmButtonView(this.buttonText, this.onTapButton,
       {this.textColor = Colors.white,
       this.buttonBackgroundColor = Colors.transparent,

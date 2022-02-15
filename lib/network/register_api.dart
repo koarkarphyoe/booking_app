@@ -71,7 +71,7 @@ abstract class RegisterApi {
   );
 
   @POST(getCartListEndPoint)
-  Future<CardListResponse> getCardList(
+  Future<CardListResponse> registerCardList(
     @Header(authorization) String token,
     @Field(cardHolder) String cardHolder,//can use with @Query()
     @Field(cardNumber) String cardNumber,//can use with @Query()

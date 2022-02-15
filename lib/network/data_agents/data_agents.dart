@@ -35,6 +35,6 @@ abstract class DataAgents {
 
   Future<List<PaymentMethodVO>?>? getPaymentMethodList(String token);
 
-  Future<List<CardVO>?>? getCardList(String token,String cardHolder,String cardNumber,String expireDate,int cvc);
+  Future<List<CardVO>?>? registerCardList(String token,String cardHolder,String cardNumber,String expireDate,String cvc);
 
 }

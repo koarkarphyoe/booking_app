@@ -127,7 +127,7 @@ class DataAgentsImpl extends DataAgents {
   }
 
   @override
-  Future<List<CardVO>?>? getCardList(String token,String cardHolder,String cardNumber,String expireDate,int cvc) {
-    return rApi?.getCardList(token,cardNumber,cardHolder,expireDate,cvc.toString()).asStream().map((event) => event.data).first;
+  Future<List<CardVO>?>? registerCardList(String token,String cardHolder,String cardNumber,String expireDate,String cvc) {
+    return rApi?.registerCardList(token,cardNumber,cardHolder,expireDate,cvc.toString()).asStream().map((event) => event.data).first;
   }
 }

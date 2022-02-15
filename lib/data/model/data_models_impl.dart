@@ -1,5 +1,6 @@
 import 'package:intl/intl.dart';
 import 'package:student_app/data/model/data_models.dart';
+import 'package:student_app/data/vos/card_vo.dart';
 import 'package:student_app/data/vos/cinemas_vo.dart';
 import 'package:student_app/data/vos/data_vo.dart';
 import 'package:student_app/data/vos/date_vo.dart';
@@ -203,5 +204,14 @@ class DataModelsImpl extends DataModels {
   @override
   bool isLogIn() {
     return tokenDao.getToken()?.isNotEmpty ?? false;
+  }
+
+  @override
+  Future<List<CardVO>?>? registerCardList(
+      String cardHolder, String cardNumber, String expireDate, String cvc) {
+    return mDataAgent
+        .registerCardList(tokenDao.getToken().toString(), cardHolder,
+            cardNumber, expireDate, cvc)
+        ?.then((value) => value);
   }
 }

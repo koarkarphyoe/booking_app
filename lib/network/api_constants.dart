@@ -53,4 +53,4 @@ const String dateTest = "2022-01-31";
 const String cardNumberTest = "1234.5678.9101.1121";
 const String cardHolderTest = "testci";
 const String expirationDateTest = "9/22";
-const int cvcTest = 123;
+const String cvcTest = "123";

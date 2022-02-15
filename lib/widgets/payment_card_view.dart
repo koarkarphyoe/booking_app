@@ -1,68 +1,106 @@
+
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:student_app/data/model/data_models_impl.dart';
+import 'package:student_app/data/vos/card_vo.dart';
 import 'package:student_app/resources/colors.dart';
 import 'package:student_app/resources/dimens.dart';
 import 'package:student_app/resources/strings.dart';
 import 'package:student_app/widgets/title_text.dart';
 import 'package:student_app/widgets/title_text_bold.dart';
 
-class PaymentCardView extends StatelessWidget {
+class PaymentCardView extends StatefulWidget {
   const PaymentCardView({Key? key}) : super(key: key);
 
   @override
+  State<PaymentCardView> createState() => _PaymentCardViewState();
+}
+
+class _PaymentCardViewState extends State<PaymentCardView> {
+  DataModelsImpl mDataModel = DataModelsImpl();
+
+  List<CardVO>? cardList;
+
+  @override
+  void initState() {
+    super.initState();
+    
+    mDataModel.getUserInfoFromDatabase()?.then((value) {
+      setState(() {
+        cardList = value.cards;
+      });
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return CarouselSlider(
-      items: [
-        Container(
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(carouselBorderCircularRadius),
-            gradient: const LinearGradient(
-                colors: [paymentCardTopLeftColor, paymentCardButtonRightColor],
-                begin: Alignment.topLeft,
-                end: Alignment.bottomLeft),
-          ),
-          child: Padding(
-            padding: const EdgeInsets.all(marginMedium),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: const [
-                CardName(),
-                SizedBox(
-                  height: marginMedium1XX,
-                ),
-                CardNumber(),
-                Spacer(),
-                CardHolderAndExpireText(),
-                NameAndDateText(),
-              ],
+    return (cardList != null)
+        ? CarouselSlider(
+            items: cardList?.map((e) => CardView(e)).toList(),
+            options: CarouselOptions(
+              height: carouselOptionHeight,
+              enlargeCenterPage: true,
             ),
-          ),
+          )
+        : const Center(child: CircularProgressIndicator());
+  }
+}
+
+class CardView extends StatelessWidget {
+  final CardVO? card;
+  const CardView(this.card, {Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(carouselBorderCircularRadius),
+        gradient: const LinearGradient(
+            colors: [paymentCardTopLeftColor, paymentCardButtonRightColor],
+            begin: Alignment.topLeft,
+            end: Alignment.bottomLeft),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(marginMedium),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            CardName(card!.cardType.toString()),
+            const SizedBox(
+              height: marginMedium1XX,
+            ),
+            CardNumber(card!.cardNumber.toString()),
+            const Spacer(),
+            const CardHolderAndExpireText(),
+            NameAndDateText(
+                card!.cardHolder.toString(), card!.expirationDate.toString()),
+          ],
         ),
-      ],
-      options: CarouselOptions(
-        height: carouselOptionHeight,
-        enlargeCenterPage: true,
       ),
     );
   }
 }
 
 class NameAndDateText extends StatelessWidget {
-  const NameAndDateText({
+  final String cardHolder;
+  final String expireDate;
+  const NameAndDateText(
+    this.cardHolder,
+    this.expireDate, {
     Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Row(
-      children: const [
+      children: [
         TitleText(
-          "Lily johnson",
+          cardHolder,
           textSize: textRegular,
         ),
-        Spacer(),
+        const Spacer(),
         TitleText(
-          "08/21",
+          expireDate,
           textSize: textRegular,
         )
       ],
@@ -96,15 +134,17 @@ class CardHolderAndExpireText extends StatelessWidget {
 }
 
 class CardNumber extends StatelessWidget {
-  const CardNumber({
+  final String cardNumber;
+  const CardNumber(
+    this.cardNumber, {
     Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return const Center(
+    return Center(
       child: TitleText(
-        "****     ****     ****     8014",
+        cardNumber,
         textSize: textRegular3X,
       ),
     );
@@ -112,17 +152,19 @@ class CardNumber extends StatelessWidget {
 }
 
 class CardName extends StatelessWidget {
-  const CardName({
+  final String cardType;
+  const CardName(
+    this.cardType, {
     Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Row(
-      children: const [
-        TitleTextBold("VISA", textSize: textRegular2X),
-        Spacer(),
-        Icon(
+      children: [
+        TitleTextBold(cardType, textSize: textRegular2X),
+        const Spacer(),
+        const Icon(
           Icons.more_horiz,
           color: Colors.white,
           size: 30,

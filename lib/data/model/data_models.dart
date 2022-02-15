@@ -1,3 +1,4 @@
+import 'package:student_app/data/vos/card_vo.dart';
 import 'package:student_app/data/vos/cinemas_vo.dart';
 import 'package:student_app/data/vos/data_vo.dart';
 import 'package:student_app/data/vos/date_vo.dart';
@@ -37,6 +38,7 @@ abstract class DataModels {
       int cinemaDayTimeslotId, String bookingDate);
   Future<List<SnackVO>>? getSnack();
   Future<List<PaymentMethodVO>?>? getPaymentList();
+  Future<List<CardVO>?>? registerCardList(String cardHolder,String cardNumber,String expireDate,String cvc );
 
   //Database
 

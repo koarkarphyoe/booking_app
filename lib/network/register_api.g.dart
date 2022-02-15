@@ -182,7 +182,7 @@ class _RegisterApi implements RegisterApi {
   }
 
   @override
-  Future<CardListResponse> getCardList(
+  Future<CardListResponse> registerCardList(
       token, cardHolder, cardNumber, expirationDate, cvc) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
