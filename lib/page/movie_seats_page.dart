@@ -137,7 +137,7 @@ class _MovieSeatsPageState extends State<MovieSeatsPage> {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              MovieNameTimeAndCinemaSectionView(widget.movieDetails,
+              MovieNameTimeAndCinemaSectionView(widget.movieDetails.originalTitle,
                   widget.cinemaName, widget.date, widget.time),
               const SizedBox(height: marginMedium1X),
               MovieSeatsSectionView(seatListForRow, rowNumbersListForGridView,
@@ -188,7 +188,7 @@ class _MovieSeatsPageState extends State<MovieSeatsPage> {
                       context,
                       MaterialPageRoute(
                         builder: (context) => PaymentMethodPage(
-                            selectedSeat, totalSelectedSeatPrice),
+                            selectedSeat, totalSelectedSeatPrice,),
                       ),
                     );
                   },

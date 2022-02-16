@@ -57,6 +57,8 @@ const logOutText = "Log out";
 const movieSeatAvailable = "Available";
 const movieSeatReserved = "Reserved";
 const movieSeatYourSelection = "Your Selection";
+const createNewCard = "Create new card!";
+const chooseYourCard = "Choose your card!";
 
 
 

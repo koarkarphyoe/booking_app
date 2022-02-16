@@ -45,10 +45,11 @@ const movieTicketTopSizedBoxHeight = 300.0;
 const movieTicketImageHeight = 200.0;
 const movieTicketImageCircularRadius = 20.0;
 const movieTicketBarCodeHeight = 80.0;
-const paymentPageBackButtonIconSize = 50.0;
+const paymentPageBackButtonIconSize = 40.0;
 const comboSetButtonHeight = 40.0;
 const comboSetButtonCirclularRadius = 10.0;
 const carouselOptionHeight = 210.0;
 const carouselBorderCircularRadius = 10.0;
 const addIconInPaymentCard = 30.0;
 const movieDateChooseContainerHeight = 80.0;
+

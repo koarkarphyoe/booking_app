@@ -90,9 +90,12 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
-        leading: const Icon(
-          Icons.menu,
-          color: Colors.black,
+        leading: GestureDetector(
+          onTap: () {},
+          child: const Icon(
+            Icons.menu,
+            color: Colors.black,
+          ),
         ),
         actions: const [
           Padding(

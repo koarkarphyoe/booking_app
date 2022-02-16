@@ -373,7 +373,7 @@ class MovieDetailsScreenBackButtonView extends StatelessWidget {
       },
       child: const Icon(
         Icons.chevron_left,
-        size: 50,
+        size: paymentPageBackButtonIconSize,
         color: Colors.white,
       ),
     );

@@ -71,12 +71,13 @@ class _MovieChooseTimeState extends State<MovieChooseTime> {
     setState(
       () {
         //second method for time choosing
-        dateList = dateList?.map((date) {
-          date?.isSelected = false;
-          print("setState condition in UI before selecting by user");
-          if (date?.id == dateId) {
-            date?.isSelected = true;
-            dateForMovieSeatsPage = date?.dayMonthDate; //for single select
+        dateList = dateList?.map(
+          (date) {
+            date?.isSelected = false;
+            print("setState condition in UI before selecting by user");
+            if (date?.id == dateId) {
+              date?.isSelected = true;
+              dateForMovieSeatsPage = date?.dayMonthDate; //for single select
               yMdForMovieSeatsPage = date?.yMd;
               print("setState condition in UI after selecting by user");
             }
@@ -249,8 +250,8 @@ class _MovieChooseTimeState extends State<MovieChooseTime> {
     return Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => MovieSeatsPage(widget.movieDetails.originalTitle,
-            cinemaName, date, time, cinemaId, yMd),
+        builder: (context) => MovieSeatsPage(
+            widget.movieDetails, cinemaName, date, time, cinemaId, yMd),
       ),
     );
   }
