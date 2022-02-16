@@ -15,7 +15,12 @@ import 'package:student_app/widgets/title_text_bold.dart';
 class PaymentMethodPage extends StatefulWidget {
   final selectedSeatPrice;
   final selectedSeatName;
+  final movieDetails;
+  final time;
+  final yMd;
+  final cinemaId;
   const PaymentMethodPage(this.selectedSeatName, this.selectedSeatPrice,
+      this.movieDetails, this.time, this.yMd, this.cinemaId,
       {Key? key})
       : super(key: key);
 
@@ -27,6 +32,7 @@ class _PaymentMethodPageState extends State<PaymentMethodPage> {
   DataModelsImpl mDataModel = DataModelsImpl();
 
   List<SnackVO>? snackList;
+  List<SnackVO>? selectedSnackList = [];
   List<PaymentMethodVO>? paymentMethodList;
   double? subtotal;
 
@@ -85,11 +91,20 @@ class _PaymentMethodPageState extends State<PaymentMethodPage> {
                                           // subtotal is very important
                                           subtotal =
                                               (subtotal! + e.price!.toDouble());
+                                          selectedSnackList?.add(e);
+                                          print(selectedSnackList!
+                                              .map((e) => {e.id, e.quantity})
+                                              .toList());
                                         } else if (signName == "-" &&
                                             e.quantity! > 0) {
                                           e.quantity = e.quantity! - 1;
                                           subtotal =
                                               (subtotal! - e.price!.toDouble());
+                                          // selectedSnackList?.removeWhere((e)=>e.id==snackId);
+                                          selectedSnackList?.remove(e);
+                                          print(selectedSnackList!
+                                              .map((e) => {e.id, e.quantity})
+                                              .toString());
                                         } else if (e.quantity == 0) {
                                           e.quantity = 0;
                                         }
@@ -192,7 +207,13 @@ class _PaymentMethodPageState extends State<PaymentMethodPage> {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => PaymentCardPage(subtotal),
+                      builder: (context) => PaymentCardPage(
+                          subtotal,
+                          widget.movieDetails,
+                          widget.time,
+                          widget.yMd,
+                          widget.cinemaId,
+                          widget.selectedSeatName),
                     ),
                   );
                 },

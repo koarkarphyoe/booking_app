@@ -1,7 +1,6 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:student_app/data/vos/card_vo.dart';
-import 'package:student_app/data/vos/movie_details_vo.dart';
 import 'package:student_app/page/create_new_card_page.dart';
 import 'package:student_app/resources/colors.dart';
 import 'package:student_app/resources/dimens.dart';
@@ -15,7 +14,15 @@ import '../data/model/data_models_impl.dart';
 
 class PaymentCardPage extends StatefulWidget {
   final subtotal;
-  const PaymentCardPage(this.subtotal, {Key? key}) : super(key: key);
+  final movieDetails;
+  final time;
+  final yMd;
+  final cinemaId;
+  final selectedSeatName;
+  const PaymentCardPage(this.subtotal, this.movieDetails, this.time, this.yMd,
+      this.cinemaId, this.selectedSeatName,
+      {Key? key})
+      : super(key: key);
 
   @override
   State<PaymentCardPage> createState() => _PaymentCardPageState();
@@ -122,6 +129,11 @@ class _PaymentCardPageState extends State<PaymentCardPage> {
                 () {
                   print(selectedCard?.id.toString());
                   print(widget.subtotal.toString());
+                  print(widget.movieDetails.id.toString());
+                  print(widget.time.toString());
+                  print(widget.yMd.toString());
+                  print(widget.cinemaId.toString());
+                  print(widget.selectedSeatName.toString());
                 },
                 isGhostButton: true,
                 buttonBackgroundColor: primaryColor,

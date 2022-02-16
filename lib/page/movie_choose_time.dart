@@ -11,6 +11,7 @@ import 'package:student_app/widgets/confirm_button_view.dart';
 import 'package:student_app/widgets/title_text_bold.dart';
 
 class MovieChooseTime extends StatefulWidget {
+  // ignore: prefer_typing_uninitialized_variables
   final movieDetails;
   const MovieChooseTime(this.movieDetails, {Key? key}) : super(key: key);
 
@@ -74,12 +75,12 @@ class _MovieChooseTimeState extends State<MovieChooseTime> {
         dateList = dateList?.map(
           (date) {
             date?.isSelected = false;
-            print("setState condition in UI before selecting by user");
+            // print("setState condition in UI before selecting by user");
             if (date?.id == dateId) {
               date?.isSelected = true;
               dateForMovieSeatsPage = date?.dayMonthDate; //for single select
               yMdForMovieSeatsPage = date?.yMd;
-              print("setState condition in UI after selecting by user");
+              // print("setState condition in UI after selecting by user");
             }
             return date;
           },
@@ -251,7 +252,7 @@ class _MovieChooseTimeState extends State<MovieChooseTime> {
       context,
       MaterialPageRoute(
         builder: (context) => MovieSeatsPage(
-            widget.movieDetails, cinemaName, date, time, cinemaId, yMd),
+            widget.movieDetails, cinemaName, date, time, cinemaId, yMdForMovieSeatsPage),
       ),
     );
   }
