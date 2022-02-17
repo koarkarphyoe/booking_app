@@ -5,7 +5,7 @@ import 'package:student_app/resources/dimens.dart';
 
 class TitleAndTextFieldView extends StatelessWidget {
   final String textTitle;
-  final TextEditingController textController;
+  final TextEditingController? textController;
   const TitleAndTextFieldView(this.textTitle, this.textController);
 
   @override

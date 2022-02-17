@@ -16,11 +16,11 @@ class CreateNewCardPage extends StatefulWidget {
 }
 
 class _CreateNewCardPageState extends State<CreateNewCardPage> {
-  final TextEditingController cardNumberController = TextEditingController();
-  final TextEditingController cardHolderController = TextEditingController();
-  final TextEditingController expirationDateController =
+  final TextEditingController? cardNumberController = TextEditingController();
+  final TextEditingController? cardHolderController = TextEditingController();
+  final TextEditingController? expirationDateController =
       TextEditingController();
-  final TextEditingController cvcController = TextEditingController();
+  final TextEditingController? cvcController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -58,26 +58,28 @@ class _CreateNewCardPageState extends State<CreateNewCardPage> {
               ),
               GestureDetector(
                 onTap: () {
-                  if (cardHolderController.text == null &&
-                      cardNumberController.text == null &&
-                      expirationDateController.text == null &&
-                      cvcController.text == null) {
-                    showDialog(
-                        context: context,
-                        builder: (context) {
-                          return const AlertDialog(
-                            title: Text("Alert!"),
-                            content:
-                                Text("Please check and fill the valid data!"),
-                          );
-                        });
-                  } else {
-                    _createNewCard(
-                        cardHolderController.text,
-                        cardNumberController.text,
-                        expirationDateController.text,
-                        cvcController.text);
-                  }
+                  setState(() {
+                    if (cardHolderController!.text.isEmpty &&
+                        cardNumberController!.text.isEmpty &&
+                        expirationDateController!.text.isEmpty &&
+                        cvcController!.text.isEmpty) {
+                      showDialog(
+                          context: context,
+                          builder: (context) {
+                            return const AlertDialog(
+                              title: Text("Sorry!"),
+                              content:
+                                  Text("Please check and fill card information!"),
+                            );
+                          });
+                    } else {
+                      _createNewCard(
+                          cardHolderController!.text,
+                          cardNumberController!.text,
+                          expirationDateController!.text,
+                          cvcController!.text);
+                    }
+                  });
                 },
                 child: const CreateNewCard(),
               ),
@@ -104,7 +106,6 @@ class _CreateNewCardPageState extends State<CreateNewCardPage> {
 
   void _createNewCard(String text, String text2, String text3, String text4) {
     DataModelsImpl mModel = DataModelsImpl();
-
     mModel.registerCardList(text, text2, text3, text4);
   }
 }

@@ -19,8 +19,10 @@ class PaymentCardPage extends StatefulWidget {
   final yMd;
   final cinemaId;
   final selectedSeatName;
+  final finalSelectedSnackListResult;
+
   const PaymentCardPage(this.subtotal, this.movieDetails, this.time, this.yMd,
-      this.cinemaId, this.selectedSeatName,
+      this.cinemaId, this.selectedSeatName, this.finalSelectedSnackListResult,
       {Key? key})
       : super(key: key);
 
@@ -92,7 +94,7 @@ class _PaymentCardPageState extends State<PaymentCardPage> {
                           (e) => CardView(e, (cardId) {
                             if (e.id == cardId) {
                               selectedCard = e;
-                              print(selectedCard!.id.toString());
+                              // print(selectedCard!.id.toString());
                             }
                           }),
                         )
@@ -134,6 +136,7 @@ class _PaymentCardPageState extends State<PaymentCardPage> {
                   print(widget.yMd.toString());
                   print(widget.cinemaId.toString());
                   print(widget.selectedSeatName.toString());
+                  print(widget.finalSelectedSnackListResult.toString());
                 },
                 isGhostButton: true,
                 buttonBackgroundColor: primaryColor,

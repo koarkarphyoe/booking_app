@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:student_app/data/model/data_models_impl.dart';
 import 'package:student_app/data/vos/payment_method_vo.dart';
@@ -35,6 +37,10 @@ class _PaymentMethodPageState extends State<PaymentMethodPage> {
   List<SnackVO>? selectedSnackList = [];
   List<PaymentMethodVO>? paymentMethodList;
   double? subtotal;
+
+  //for selectedSnackId and Qty List
+  List selectedSnackListToString = [];
+  List finalSelectedSnackListResult = [];
 
   @override
   void initState() {
@@ -85,30 +91,8 @@ class _PaymentMethodPageState extends State<PaymentMethodPage> {
                       children: snackList!
                           .map((e) => ComboSetView(e, (snackId, signName) {
                                     setState(() {
-                                      if (e.id == snackId) {
-                                        if (signName == "+") {
-                                          e.quantity = e.quantity! + 1;
-                                          // subtotal is very important
-                                          subtotal =
-                                              (subtotal! + e.price!.toDouble());
-                                          selectedSnackList?.add(e);
-                                          print(selectedSnackList!
-                                              .map((e) => {e.id, e.quantity})
-                                              .toList());
-                                        } else if (signName == "-" &&
-                                            e.quantity! > 0) {
-                                          e.quantity = e.quantity! - 1;
-                                          subtotal =
-                                              (subtotal! - e.price!.toDouble());
-                                          // selectedSnackList?.removeWhere((e)=>e.id==snackId);
-                                          selectedSnackList?.remove(e);
-                                          print(selectedSnackList!
-                                              .map((e) => {e.id, e.quantity})
-                                              .toString());
-                                        } else if (e.quantity == 0) {
-                                          e.quantity = 0;
-                                        }
-                                      }
+                                      _selectedSnackListAndQty(
+                                          e, snackId, signName);
                                     });
                                   })
                               //Method 1 for Snack Choose
@@ -213,7 +197,8 @@ class _PaymentMethodPageState extends State<PaymentMethodPage> {
                           widget.time,
                           widget.yMd,
                           widget.cinemaId,
-                          widget.selectedSeatName),
+                          widget.selectedSeatName,
+                          finalSelectedSnackListResult),
                     ),
                   );
                 },
@@ -228,6 +213,34 @@ class _PaymentMethodPageState extends State<PaymentMethodPage> {
         ),
       ),
     );
+  }
+
+  void _selectedSnackListAndQty(SnackVO e, int? snackId, String? signName) {
+    if (e.id == snackId) {
+      if (signName == "+") {
+        e.quantity = e.quantity! + 1;
+        subtotal = (subtotal! + e.price!.toDouble());
+        selectedSnackList?.add(e);
+        // convert each item to a string by using JSON encoding and remove duplicate objects
+        selectedSnackListToString =
+            selectedSnackList!.map((e) => jsonEncode(e)).toSet().toList();
+        finalSelectedSnackListResult =
+            selectedSnackListToString.map((e) => jsonDecode(e)).toList();
+        // print(finalSelectedSnackListResult);
+      } else if (signName == "-" && e.quantity! > 0) {
+        e.quantity = e.quantity! - 1;
+        subtotal = (subtotal! - e.price!.toDouble());
+        selectedSnackList?.remove(e);
+        // convert each item to a string by using JSON encoding and remove duplicate objects
+        selectedSnackListToString =
+            selectedSnackList!.map((e) => jsonEncode(e)).toSet().toList();
+        finalSelectedSnackListResult =
+            selectedSnackListToString.map((e) => jsonDecode(e)).toList();
+        // print(finalSelectedSnackListResult);
+      } else if (e.quantity == 0) {
+        e.quantity = 0;
+      }
+    }
   }
 
 //Method 1 for Snack choose

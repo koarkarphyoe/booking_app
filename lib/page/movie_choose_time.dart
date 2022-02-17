@@ -214,10 +214,9 @@ class _MovieChooseTimeState extends State<MovieChooseTime> {
                                 context: context,
                                 builder: (context) {
                                   return const AlertDialog(
-                                    title: Center(
-                                      child: Text(
-                                          "Sorry,you need to choose time from one of the Cineam ! "),
-                                    ),
+                                    title: Text("Sorry!"),
+                                    content: Text(
+                                        "Please choose time from one of the Cineam !"),
                                   );
                                 },
                               );
@@ -251,8 +250,8 @@ class _MovieChooseTimeState extends State<MovieChooseTime> {
     return Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => MovieSeatsPage(
-            widget.movieDetails, cinemaName, date, time, cinemaId, yMdForMovieSeatsPage),
+        builder: (context) => MovieSeatsPage(widget.movieDetails, cinemaName,
+            date, time, cinemaId, yMdForMovieSeatsPage),
       ),
     );
   }
