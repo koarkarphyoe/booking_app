@@ -15,14 +15,15 @@ import '../itemsview/movie_seats_status.dart';
 import '../resources/strings.dart';
 
 class MovieSeatsPage extends StatefulWidget {
-  final movieDetails;
-  final cinemaName;
-  final date;
-  final time;
-  final cinemaId;
-  final yMd;
+  final dynamic movieDetails;
+  final dynamic cinemaName;
+  final dynamic date;
+  final dynamic time;
+  final dynamic cinemaId;
+  final dynamic yMd;
+  final dynamic timeSlotsId;
   const MovieSeatsPage(this.movieDetails, this.cinemaName, this.date, this.time,
-      this.cinemaId, this.yMd,
+      this.cinemaId, this.yMd,this.timeSlotsId,
       {Key? key})
       : super(key: key);
 
@@ -129,7 +130,7 @@ class _MovieSeatsPageState extends State<MovieSeatsPage> {
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
-        leading:const BackButtonView(),
+        leading: const BackButtonView(),
       ),
       body: Container(
         width: MediaQuery.of(context).size.width,
@@ -137,8 +138,11 @@ class _MovieSeatsPageState extends State<MovieSeatsPage> {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              MovieNameTimeAndCinemaSectionView(widget.movieDetails.originalTitle,
-                  widget.cinemaName, widget.date, widget.time),
+              MovieNameTimeAndCinemaSectionView(
+                  widget.movieDetails.originalTitle,
+                  widget.cinemaName,
+                  widget.date,
+                  widget.time),
               const SizedBox(height: marginMedium1X),
               MovieSeatsSectionView(seatListForRow, rowNumbersListForGridView,
                   (seatName) {
@@ -188,7 +192,14 @@ class _MovieSeatsPageState extends State<MovieSeatsPage> {
                       context,
                       MaterialPageRoute(
                         builder: (context) => PaymentMethodPage(
-                            selectedSeat.join(","), totalSelectedSeatPrice,widget.movieDetails,widget.yMd,widget.time,widget.cinemaId,),
+                          selectedSeat.join(","),
+                          totalSelectedSeatPrice,
+                          widget.movieDetails,
+                          widget.yMd,
+                          widget.time,
+                          widget.cinemaId,
+                          widget.timeSlotsId,
+                        ),
                       ),
                     );
                   },

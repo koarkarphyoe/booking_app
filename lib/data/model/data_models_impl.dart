@@ -185,10 +185,10 @@ class DataModelsImpl extends DataModels {
       String dayMonthDate =
           DateFormat.MMMMEEEEd().format(DateTime.now().add(Duration(days: i)));
 
-      String yMd =
+      String yMMMMd =
           DateFormat.yMd().format(DateTime.now().add(Duration(days: i)));
 
-      var dateVo = DateVO(i, day, date, dayMonthDate, yMd);
+      var dateVo = DateVO(i, day, date, dayMonthDate, yMMMMd);
       dateList.add(dateVo);
     }
 

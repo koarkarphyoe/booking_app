@@ -32,7 +32,8 @@ class _MovieChooseTimeState extends State<MovieChooseTime> {
   String? dateForMovieSeatsPage;
   String? timeForMovieSeatsPage;
   String? cinemaNameForMovieSeatsPage;
-  int? cinemaTimeSlotIdForMovieSeatsPage;
+  int? cinemaIdForMovieSeatsPage;
+  int? cinemaTimeSlotsIdForMovieSeatsPage;
   String? yMdForMovieSeatsPage;
 
   // TimeSlotDataVO? selectedCinemaTime;//it is need to use ,when use method 2 in time choosing
@@ -127,7 +128,9 @@ class _MovieChooseTimeState extends State<MovieChooseTime> {
                   timeSlots?.isSelected = true;
                   timeForMovieSeatsPage = timeSlots?.startTime;
                   cinemaNameForMovieSeatsPage = cinema.cinema;
-                  cinemaTimeSlotIdForMovieSeatsPage = cinema.cinemaId;
+                  cinemaIdForMovieSeatsPage = cinema.cinemaId;
+                  cinemaTimeSlotsIdForMovieSeatsPage = timeSlotsId;
+                  print(cinemaTimeSlotsIdForMovieSeatsPage);
                 }
               },
             ).toList();
@@ -209,7 +212,7 @@ class _MovieChooseTimeState extends State<MovieChooseTime> {
                           buttonNextText,
                           () {
                             if (cinemaNameForMovieSeatsPage == null &&
-                                cinemaTimeSlotIdForMovieSeatsPage == null) {
+                                cinemaIdForMovieSeatsPage == null) {
                               showDialog(
                                 context: context,
                                 builder: (context) {
@@ -226,8 +229,9 @@ class _MovieChooseTimeState extends State<MovieChooseTime> {
                                   cinemaNameForMovieSeatsPage,
                                   dateForMovieSeatsPage,
                                   timeForMovieSeatsPage,
-                                  cinemaTimeSlotIdForMovieSeatsPage,
-                                  yMdForMovieSeatsPage);
+                                  cinemaIdForMovieSeatsPage,
+                                  yMdForMovieSeatsPage,
+                                  cinemaTimeSlotsIdForMovieSeatsPage);
                             }
                           },
                           isGhostButton: true,
@@ -246,12 +250,12 @@ class _MovieChooseTimeState extends State<MovieChooseTime> {
   }
 
   _navigateToMovieSeatsPage(BuildContext context, String? cinemaName,
-      String? date, String? time, int? cinemaId, String? yMd) {
+      String? date, String? time, int? cinemaId, String? yMd,int? timeSlotId) {
     return Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) => MovieSeatsPage(widget.movieDetails, cinemaName,
-            date, time, cinemaId, yMdForMovieSeatsPage),
+            date, time, cinemaId, yMdForMovieSeatsPage,cinemaTimeSlotsIdForMovieSeatsPage),
       ),
     );
   }

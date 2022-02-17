@@ -15,14 +15,15 @@ import 'package:student_app/widgets/title_text.dart';
 import 'package:student_app/widgets/title_text_bold.dart';
 
 class PaymentMethodPage extends StatefulWidget {
-  final selectedSeatPrice;
-  final selectedSeatName;
-  final movieDetails;
-  final time;
-  final yMd;
-  final cinemaId;
+  final dynamic selectedSeatPrice;
+  final dynamic selectedSeatName;
+  final dynamic movieDetails;
+  final dynamic time;
+  final dynamic yMd;
+  final dynamic cinemaId;
+  final dynamic timeSlotsId;
   const PaymentMethodPage(this.selectedSeatName, this.selectedSeatPrice,
-      this.movieDetails, this.time, this.yMd, this.cinemaId,
+      this.movieDetails, this.time, this.yMd, this.cinemaId,this.timeSlotsId,
       {Key? key})
       : super(key: key);
 
@@ -198,7 +199,8 @@ class _PaymentMethodPageState extends State<PaymentMethodPage> {
                           widget.yMd,
                           widget.cinemaId,
                           widget.selectedSeatName,
-                          finalSelectedSnackListResult),
+                          finalSelectedSnackListResult,
+                          widget.timeSlotsId),
                     ),
                   );
                 },

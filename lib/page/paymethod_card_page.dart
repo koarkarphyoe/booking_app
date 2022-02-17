@@ -3,9 +3,10 @@ import 'dart:convert';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:student_app/data/vos/card_vo.dart';
-import 'package:student_app/data/vos/voucher_vo.dart';
+import 'package:student_app/general_functions.dart';
 import 'package:student_app/network/requests/checkout_request.dart';
 import 'package:student_app/page/create_new_card_page.dart';
+import 'package:student_app/page/ticket_view_page.dart';
 import 'package:student_app/resources/colors.dart';
 import 'package:student_app/resources/dimens.dart';
 import 'package:student_app/resources/strings.dart';
@@ -17,16 +18,24 @@ import 'package:student_app/widgets/title_text_bold.dart';
 import '../data/model/data_models_impl.dart';
 
 class PaymentCardPage extends StatefulWidget {
-  final subtotal;
-  final movieDetails;
-  final time;
-  final yMd;
-  final cinemaId;
-  final selectedSeatName;
-  final finalSelectedSnackListResult;
+  final dynamic subtotal;
+  final dynamic movieDetails;
+  final dynamic time;
+  final dynamic yMd;
+  final dynamic cinemaId;
+  final dynamic selectedSeatName;
+  final dynamic finalSelectedSnackListResult;
+  final dynamic timeSlotsId;
 
-  const PaymentCardPage(this.subtotal, this.movieDetails, this.time, this.yMd,
-      this.cinemaId, this.selectedSeatName, this.finalSelectedSnackListResult,
+  const PaymentCardPage(
+      this.subtotal,
+      this.movieDetails,
+      this.time,
+      this.yMd,
+      this.cinemaId,
+      this.selectedSeatName,
+      this.finalSelectedSnackListResult,
+      this.timeSlotsId,
       {Key? key})
       : super(key: key);
 
@@ -40,8 +49,8 @@ class _PaymentCardPageState extends State<PaymentCardPage> {
   List<CardVO>? cardList;
   CardVO? selectedCard;
 
+  //Change the require variable to Json for CheckOut api request
   CheckoutRequest checkoutRequest = CheckoutRequest();
-
   String? encodedJson;
 
   @override
@@ -138,28 +147,12 @@ class _PaymentCardPageState extends State<PaymentCardPage> {
                 comfirmBtnText,
                 () {
                   setState(() {
-                    // String? bookingDateAndTime = "${widget.time} ${widget.yMd}";
-                    checkoutRequest.cardId = selectedCard?.id;
-                    checkoutRequest.bookingDate = widget.time;
-                    checkoutRequest.cinemaDayTimeslotId = widget.cinemaId;
-                    checkoutRequest.movieId = widget.movieDetails.id;
-                    checkoutRequest.seatNumber =
-                        widget.selectedSeatName.toString();
-                    checkoutRequest.snacks =
-                        widget.finalSelectedSnackListResult;
-
-                     encodedJson = jsonEncode(checkoutRequest);
-
-                    print(encodedJson);
+                    _createCheckOutVOForApiRequest();
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const TicketViewPage()));
                   });
-                  // print(selectedCard?.id.toString());
-                  // print(widget.subtotal.toString());
-                  // print(widget.movieDetails.id.toString());
-                  // print(widget.time.toString());
-                  // print(widget.yMd.toString());
-                  // print(widget.cinemaId.toString());
-                  // print(widget.selectedSeatName.toString());
-                  // print(widget.finalSelectedSnackListResult.toString());
                 },
                 isGhostButton: true,
                 buttonBackgroundColor: primaryColor,
@@ -169,6 +162,17 @@ class _PaymentCardPageState extends State<PaymentCardPage> {
         ),
       ),
     );
+  }
+
+  void _createCheckOutVOForApiRequest() {
+    checkoutRequest.cardId = selectedCard?.id;
+    checkoutRequest.bookingDate = Functions().formatDate(widget.time);
+    checkoutRequest.cinemaDayTimeslotId = widget.timeSlotsId;
+    checkoutRequest.movieId = widget.movieDetails.id;
+    checkoutRequest.seatNumber = widget.selectedSeatName.toString();
+    checkoutRequest.snacks = widget.finalSelectedSnackListResult;
+    encodedJson = jsonEncode(checkoutRequest);
+    print(encodedJson);
   }
 }
 
