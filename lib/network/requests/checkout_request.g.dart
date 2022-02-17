@@ -13,9 +13,7 @@ CheckoutRequest _$CheckoutRequestFromJson(Map<String, dynamic> json) =>
       bookingDate: json['booking_date'] as String?,
       movieId: json['movie_id'] as int?,
       cardId: json['card_id'] as int?,
-      snacks: (json['snacks'] as List<dynamic>?)
-          ?.map((e) => SnackRequest.fromJson(e as Map<String, dynamic>))
-          .toList(),
+      snacks: json['snacks'] as List<dynamic>?,
     );
 
 Map<String, dynamic> _$CheckoutRequestToJson(CheckoutRequest instance) =>

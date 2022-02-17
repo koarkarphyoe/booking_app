@@ -188,7 +188,7 @@ class _MovieSeatsPageState extends State<MovieSeatsPage> {
                       context,
                       MaterialPageRoute(
                         builder: (context) => PaymentMethodPage(
-                            selectedSeat, totalSelectedSeatPrice,widget.movieDetails,widget.yMd,widget.time,widget.cinemaId,),
+                            selectedSeat.join(","), totalSelectedSeatPrice,widget.movieDetails,widget.yMd,widget.time,widget.cinemaId,),
                       ),
                     );
                   },

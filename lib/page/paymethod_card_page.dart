@@ -1,6 +1,10 @@
+import 'dart:convert';
+
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:student_app/data/vos/card_vo.dart';
+import 'package:student_app/data/vos/voucher_vo.dart';
+import 'package:student_app/network/requests/checkout_request.dart';
 import 'package:student_app/page/create_new_card_page.dart';
 import 'package:student_app/resources/colors.dart';
 import 'package:student_app/resources/dimens.dart';
@@ -35,6 +39,10 @@ class _PaymentCardPageState extends State<PaymentCardPage> {
 
   List<CardVO>? cardList;
   CardVO? selectedCard;
+
+  CheckoutRequest checkoutRequest = CheckoutRequest();
+
+  String? encodedJson;
 
   @override
   void initState() {
@@ -129,14 +137,29 @@ class _PaymentCardPageState extends State<PaymentCardPage> {
               child: ConfirmButtonView(
                 comfirmBtnText,
                 () {
-                  print(selectedCard?.id.toString());
-                  print(widget.subtotal.toString());
-                  print(widget.movieDetails.id.toString());
-                  print(widget.time.toString());
-                  print(widget.yMd.toString());
-                  print(widget.cinemaId.toString());
-                  print(widget.selectedSeatName.toString());
-                  print(widget.finalSelectedSnackListResult.toString());
+                  setState(() {
+                    // String? bookingDateAndTime = "${widget.time} ${widget.yMd}";
+                    checkoutRequest.cardId = selectedCard?.id;
+                    checkoutRequest.bookingDate = widget.time;
+                    checkoutRequest.cinemaDayTimeslotId = widget.cinemaId;
+                    checkoutRequest.movieId = widget.movieDetails.id;
+                    checkoutRequest.seatNumber =
+                        widget.selectedSeatName.toString();
+                    checkoutRequest.snacks =
+                        widget.finalSelectedSnackListResult;
+
+                     encodedJson = jsonEncode(checkoutRequest);
+
+                    print(encodedJson);
+                  });
+                  // print(selectedCard?.id.toString());
+                  // print(widget.subtotal.toString());
+                  // print(widget.movieDetails.id.toString());
+                  // print(widget.time.toString());
+                  // print(widget.yMd.toString());
+                  // print(widget.cinemaId.toString());
+                  // print(widget.selectedSeatName.toString());
+                  // print(widget.finalSelectedSnackListResult.toString());
                 },
                 isGhostButton: true,
                 buttonBackgroundColor: primaryColor,

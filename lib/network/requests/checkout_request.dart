@@ -1,9 +1,8 @@
 import 'package:json_annotation/json_annotation.dart';
-import 'package:student_app/network/requests/snack_request.dart';
 part 'checkout_request.g.dart';
 
 @JsonSerializable()
-class CheckoutRequest{
+class CheckoutRequest {
   @JsonKey(name: "cinema_day_timeslot_id")
   int? cinemaDayTimeslotId;
 
@@ -20,7 +19,7 @@ class CheckoutRequest{
   int? cardId;
 
   @JsonKey(name: "snacks")
-  List<SnackRequest>? snacks;
+  List<dynamic>? snacks;
 
   CheckoutRequest(
       {this.cinemaDayTimeslotId,
@@ -30,13 +29,13 @@ class CheckoutRequest{
       this.cardId,
       this.snacks});
 
-
   @override
   String toString() {
     return 'CheckoutRequest{cinemaDayTimeslotId: $cinemaDayTimeslotId, seatNumber: $seatNumber, bookingDate: $bookingDate, movieId: $movieId, cardId: $cardId, snacks: $snacks}';
   }
 
-  factory CheckoutRequest.fromJson(Map<String, dynamic> json) => _$CheckoutRequestFromJson(json);
+  factory CheckoutRequest.fromJson(Map<String, dynamic> json) =>
+      _$CheckoutRequestFromJson(json);
 
   Map<String, dynamic> toJson() => _$CheckoutRequestToJson(this);
 }

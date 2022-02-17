@@ -5,6 +5,7 @@ part 'snack_vo.g.dart';
 class SnackVO {
   @JsonKey(name: "id")
   int? id;
+  
   @JsonKey(name: "name")
   String? name;
 
@@ -17,12 +18,17 @@ class SnackVO {
   @JsonKey(name: "image")
   String? image;
 
+  @JsonKey(name:"unit_price")
+  double? unitPrice;
+
+  @JsonKey(name: "quantity")
   int? quantity;
 
-  double? totalCharges;
+  @JsonKey(name: "total_price")
+  double? totalPrice;
 
-  SnackVO(this.id, this.name, this.description, this.price, this.image,
-      {this.quantity = 0, this.totalCharges = 0.0});
+  SnackVO(this.id, this.name, this.description, this.price, this.image,this.unitPrice,
+      {this.quantity = 0, this.totalPrice = 0.0});
 
   factory SnackVO.fromJson(Map<String, dynamic> json) =>
       _$SnackVOFromJson(json);
