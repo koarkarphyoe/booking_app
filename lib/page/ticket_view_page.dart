@@ -1,4 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:student_app/data/model/data_models.dart';
+import 'package:student_app/data/model/data_models_impl.dart';
+import 'package:student_app/data/vos/movie_details_vo.dart';
+import 'package:student_app/data/vos/voucher_vo.dart';
+import 'package:student_app/page/home_page.dart';
 import 'package:student_app/resources/dimens.dart';
 import 'package:student_app/resources/strings.dart';
 import 'package:student_app/widgets/movie_booking_voucher_text.dart';
@@ -6,93 +11,159 @@ import 'package:student_app/widgets/title_text.dart';
 import 'package:student_app/widgets/title_text_bold.dart';
 import 'package:syncfusion_flutter_barcodes/barcodes.dart';
 
-class TicketViewPage extends StatelessWidget {
-  const TicketViewPage({Key? key}) : super(key: key);
+import '../network/api_constants.dart';
+
+class TicketViewPage extends StatefulWidget {
+  final dynamic checkoutRequest;
+
+  const TicketViewPage(this.checkoutRequest, {Key? key}) : super(key: key);
+
+  @override
+  State<TicketViewPage> createState() => _TicketViewPageState();
+}
+
+class _TicketViewPageState extends State<TicketViewPage> {
+  DataModels mDataModel = DataModelsImpl();
+  VoucherVO? voucher;
+  MovieDetailsVO? mMovie;
+
+  @override
+  void initState() {
+    setState(() {
+      //Method 1
+      // mDataModel.postCheckOutRequest(widget.checkoutRequest.toJson())?.then((value) {
+      //   setState(() {
+      //     voucher = value.data;
+      //     // print(voucher?.movieId.toString());
+      //     mDataModel.getMovieDetails(voucher!.movieId!.toInt())?.then((value) {
+      //       setState(() {
+      //         mMovie = value;
+      //       });
+      //     });
+      //   });
+      // });
+
+      //Method 2
+      mDataModel.checkOut(widget.checkoutRequest)?.then((value) {
+        setState(() {
+          voucher = value.data;
+          // print(voucher?.movieId.toString());
+          mDataModel.getMovieDetails(voucher!.movieId!.toInt())?.then((value) {
+            setState(() {
+              mMovie = value;
+            });
+          });
+        });
+      });
+    });
+
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        toolbarHeight: moveiTicketToolBarHeight,
+        leading: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: marginMedium),
+          child: GestureDetector(
+            onTap: () {
+              _navigateToHomePage(context);
+            },
+            child: const Icon(
+              Icons.close,
+              color: Colors.black,
+              size: comboSetButtonHeight,
+            ),
+          ),
+        ),
         backgroundColor: Colors.white,
         elevation: 0,
         centerTitle: true,
-        title: Padding(
-          padding:
-              const EdgeInsets.only(top: marginMedium, bottom: marginMedium),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: const [
-              CloseIcomView(),
-              TitleTextBoldView(),
-              SizedBox(height: marginXSmall),
-              TitleTextNormalView(),
-            ],
-          ),
-        ),
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            SizedBox(
-              height: movieTicketTopSizedBoxHeight,
-              child: Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: marginMediumXXX),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: const [
-                    MovieTicketImageView(),
-                    SizedBox(height: marginSmall),
-                    Padding(
-                      padding: EdgeInsets.only(left: marginMedium),
-                      child: MovieTitleNameInTicketView(),
+      body: (voucher != null && mMovie != null)
+          ? SingleChildScrollView(
+              child: Column(
+                children: [
+                  TitleTextBoldView(mMovie?.originalTitle.toString()),
+                  const SizedBox(height: marginXSmall),
+                  TitleTextNormalView(voucher?.username),
+                  const SizedBox(height: marginXSmall),
+                  SizedBox(
+                    height: movieTicketTopSizedBoxHeight,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: marginMediumXXX),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          MovieTicketImageView(mMovie),
+                          SizedBox(height: marginSmall),
+                          Padding(
+                            padding: EdgeInsets.only(left: marginMedium),
+                            child: MovieTitleNameInTicketView(
+                                mMovie!.originalTitle.toString(),
+                                mMovie!.runtime.toString()),
+                          ),
+                        ],
+                      ),
                     ),
-                  ],
-                ),
+                  ),
+                  SizedBox(
+                    height: 250,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: marginMediumXXXX),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          MovieBookingVoucherView(
+                              bookingNoText, voucher!.bookingNo.toString()),
+                          const SizedBox(height: marginMedium),
+                          MovieBookingVoucherView(showTimeAndDateText,
+                              "${voucher!.timeslot?.startTime}  ${voucher!.bookingDate}"),
+                          const SizedBox(height: marginMedium),
+                          MovieBookingVoucherView(
+                              theaterText, voucher!.cinemaId.toString()),
+                          // SizedBox(height: marginMedium),
+                          // MovieBookingVoucherView(screenText, "2"),
+                          const SizedBox(height: marginMedium),
+                          MovieBookingVoucherView(
+                              rowText, voucher!.row.toString()),
+                          const SizedBox(height: marginMedium),
+                          MovieBookingVoucherView(
+                              seatText, voucher!.seat.toString()),
+                          const SizedBox(height: marginMedium),
+                          MovieBookingVoucherView(
+                              priceText, "${voucher!.total}"),
+                        ],
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(marginMedium),
+                    child: BarCodeView(voucher!.bookingNo),
+                  ),
+                ],
               ),
-            ),
-            SizedBox(
-              height: 250,
-              child: Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: marginMediumXXXX),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: const [
-                    MovieBookingVoucherView(bookingNoText, "GC1547219308"),
-                    SizedBox(height: marginMedium),
-                    MovieBookingVoucherView(
-                        showTimeAndDateText, "7:00 PM -10 May"),
-                    SizedBox(height: marginMedium),
-                    MovieBookingVoucherView(
-                        theaterText, "Galaxy Cinema - Golden City"),
-                    SizedBox(height: marginMedium),
-                    MovieBookingVoucherView(screenText, "2"),
-                    SizedBox(height: marginMedium),
-                    MovieBookingVoucherView(rowText, "D"),
-                    SizedBox(height: marginMedium),
-                    MovieBookingVoucherView(seatText, "5,6"),
-                    SizedBox(height: marginMedium),
-                    MovieBookingVoucherView(priceText, "\$40.00"),
-                  ],
-                ),
-              ),
-            ),
-            const Padding(
-              padding: EdgeInsets.all(marginMedium),
-              child: BarCodeView(),
-            ),
-          ],
-        ),
-      ),
+            )
+          : const Center(child: CircularProgressIndicator()),
     );
+  }
+
+  void _navigateToHomePage(BuildContext context) {
+    Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(builder: (context) => const HomePage()),
+        (route) => false);
   }
 }
 
 class BarCodeView extends StatelessWidget {
-  const BarCodeView({
+  String? barCode;
+  BarCodeView(
+    this.barCode, {
     Key? key,
   }) : super(key: key);
 
@@ -101,14 +172,18 @@ class BarCodeView extends StatelessWidget {
     return SizedBox(
       height: movieTicketBarCodeHeight,
       child: SfBarcodeGenerator(
-        value: 'www.syncfusion.com',
+        value: barCode,
       ),
     );
   }
 }
 
 class MovieTitleNameInTicketView extends StatelessWidget {
-  const MovieTitleNameInTicketView({
+  final String? title;
+  final String? length;
+  const MovieTitleNameInTicketView(
+    this.title,
+    this.length, {
     Key? key,
   }) : super(key: key);
 
@@ -116,25 +191,27 @@ class MovieTitleNameInTicketView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      children: const [
+      children: [
         TitleText(
-          "Detective Pikachu",
+          title!,
           textColor: Colors.black,
           textSize: textRegular1X,
         ),
-        SizedBox(height: marginXSmall),
+        const SizedBox(height: marginXSmall),
         TitleText(
-          "105m -IMAX",
+          "$length m",
           textColor: Colors.black54,
           textSize: textRegular,
-        )
+        ),
       ],
     );
   }
 }
 
 class MovieTicketImageView extends StatelessWidget {
-  const MovieTicketImageView({
+  final MovieDetailsVO? mMovie;
+  const MovieTicketImageView(
+    this.mMovie, {
     Key? key,
   }) : super(key: key);
 
@@ -143,13 +220,12 @@ class MovieTicketImageView extends StatelessWidget {
     return Container(
       height: movieTicketImageHeight,
       width: MediaQuery.of(context).size.width,
-      decoration: const BoxDecoration(
+      decoration: BoxDecoration(
         image: DecorationImage(
-          image: NetworkImage(
-              "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTcrsg63dcaAKqyZO_gAke2rkymE4ZddnVs5Aoq_CbK7PAoM6MAB_0M8icUnNrWCpozB2o&usqp=CAU"),
+          image: NetworkImage("$moviePosterBaseUrl${mMovie!.posterPath}"),
           fit: BoxFit.cover,
         ),
-        borderRadius: BorderRadius.only(
+        borderRadius: const BorderRadius.only(
           topLeft: Radius.circular(movieTicketImageCircularRadius),
           topRight: Radius.circular(movieTicketImageCircularRadius),
         ),
@@ -159,15 +235,17 @@ class MovieTicketImageView extends StatelessWidget {
 }
 
 class TitleTextNormalView extends StatelessWidget {
-  const TitleTextNormalView({
+  final String? text;
+  const TitleTextNormalView(
+    this.text, {
     Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return const Center(
+    return Center(
       child: TitleText(
-        thisIsYourTicketText,
+        "This is $text's ticket!",
         textColor: Colors.black26,
         textSize: textRegular,
       ),
@@ -176,33 +254,20 @@ class TitleTextNormalView extends StatelessWidget {
 }
 
 class TitleTextBoldView extends StatelessWidget {
-  const TitleTextBoldView({
+  final String? title;
+  const TitleTextBoldView(
+    this.title, {
     Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return const Center(
+    return Center(
       child: TitleTextBold(
-        awesomeTitleText,
+        title!,
         textColor: Colors.black,
         textSize: textRegular4X,
       ),
-    );
-  }
-}
-
-class CloseIcomView extends StatelessWidget {
-  const CloseIcomView({
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return const Icon(
-      Icons.close,
-      color: Colors.black,
-      size: movieTicketCloseIconSize,
     );
   }
 }

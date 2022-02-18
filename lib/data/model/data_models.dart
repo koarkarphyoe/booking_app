@@ -8,6 +8,8 @@ import 'package:student_app/data/vos/payment_method_vo.dart';
 import 'package:student_app/data/vos/snack_vo.dart';
 import 'package:student_app/data/vos/timeslotdata_vo.dart';
 import 'package:student_app/data/vos/user_vo.dart';
+import 'package:student_app/network/requests/checkout_request.dart';
+import 'package:student_app/network/response/check_out_response.dart';
 import 'package:student_app/network/response/email_response.dart';
 import 'package:student_app/page/payment_method_page.dart';
 
@@ -39,6 +41,8 @@ abstract class DataModels {
   Future<List<SnackVO>>? getSnack();
   Future<List<PaymentMethodVO>?>? getPaymentList();
   Future<List<CardVO>?>? registerCardList(String cardHolder,String cardNumber,String expireDate,String cvc );
+  Future<CheckOutResponse>? postCheckOutRequest(Map<String,dynamic> checkoutRequest);
+  Future<CheckOutResponse>? checkOut(CheckoutRequest checkoutRequest);
 
   //Database
 

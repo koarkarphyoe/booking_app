@@ -14,6 +14,7 @@ const String getMovieSeatEndPoint = "/api/v1/seat-plan";
 const String getSnackListEndPoint = "/api/v1/snacks";
 const String getPaymentMethodListEndPoint = "/api/v1/payment-methods";
 const String getCartListEndPoint = "/api/v1/card";
+const String getCheckOutEndPoint = "/api/v1/checkout";
 
 //Body in api
 const String nameParam = "name";

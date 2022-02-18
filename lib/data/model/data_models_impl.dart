@@ -10,14 +10,16 @@ import 'package:student_app/data/vos/payment_method_vo.dart';
 import 'package:student_app/data/vos/snack_vo.dart';
 import 'package:student_app/data/vos/timeslotdata_vo.dart';
 import 'package:student_app/data/vos/user_vo.dart';
-import 'package:student_app/network/api_constants.dart';
 import 'package:student_app/network/data_agents/data_agents.dart';
 import 'package:student_app/network/data_agents/data_agents_impl.dart';
+import 'package:student_app/network/response/check_out_response.dart';
 import 'package:student_app/network/response/email_response.dart';
 import 'package:student_app/persistence/daos/movie_dao.dart';
 import 'package:student_app/persistence/daos/movie_details_dao.dart';
 import 'package:student_app/persistence/daos/token_dao.dart';
 import 'package:student_app/persistence/daos/user_dao.dart';
+
+import '../../network/requests/checkout_request.dart';
 
 class DataModelsImpl extends DataModels {
   DataAgents mDataAgent = DataAgentsImpl();
@@ -123,6 +125,13 @@ class DataModelsImpl extends DataModels {
         ?.then((value) => value);
   }
 
+  @override
+  Future<CheckOutResponse>? postCheckOutRequest(Map<String, dynamic> json) {
+    return mDataAgent
+        .postCheckOut(TokenDao().getToken().toString(), json)
+        ?.then((value) => value);
+  }
+
   //Database
 
   @override
@@ -212,6 +221,14 @@ class DataModelsImpl extends DataModels {
     return mDataAgent
         .registerCardList(tokenDao.getToken().toString(), cardHolder,
             cardNumber, expireDate, cvc)
+        ?.then((value) => value);
+  }
+
+
+  @override
+  Future<CheckOutResponse>? checkOut(CheckoutRequest checkoutRequest) {
+    return mDataAgent
+        .checkOut(tokenDao.getToken().toString(), checkoutRequest)
         ?.then((value) => value);
   }
 }

@@ -5,6 +5,8 @@ import 'package:student_app/data/vos/movie_seat_list_vo.dart';
 import 'package:student_app/data/vos/payment_method_vo.dart';
 import 'package:student_app/data/vos/snack_vo.dart';
 import 'package:student_app/data/vos/timeslotdata_vo.dart';
+import 'package:student_app/network/requests/checkout_request.dart';
+import 'package:student_app/network/response/check_out_response.dart';
 import 'package:student_app/network/response/email_response.dart';
 import 'package:student_app/network/response/movie_details_response.dart';
 
@@ -35,4 +37,12 @@ abstract class DataAgents {
 
   Future<List<CardVO>?>? registerCardList(String token, String cardHolder,
       String cardNumber, String expireDate, String cvc);
+
+  Future<CheckOutResponse>? postCheckOut(
+      String token, Map<String,dynamic> json);
+
+       Future<CheckOutResponse>? checkOut(
+      String token, CheckoutRequest checkoutRequest);
+      
+
 }

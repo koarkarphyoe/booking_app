@@ -3,8 +3,11 @@ import 'dart:convert';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:student_app/data/vos/card_vo.dart';
+import 'package:student_app/data/vos/data_vo.dart';
+import 'package:student_app/data/vos/voucher_vo.dart';
 import 'package:student_app/general_functions.dart';
 import 'package:student_app/network/requests/checkout_request.dart';
+import 'package:student_app/network/response/check_out_response.dart';
 import 'package:student_app/page/create_new_card_page.dart';
 import 'package:student_app/page/ticket_view_page.dart';
 import 'package:student_app/resources/colors.dart';
@@ -16,6 +19,7 @@ import 'package:student_app/widgets/title_text.dart';
 import 'package:student_app/widgets/title_text_bold.dart';
 
 import '../data/model/data_models_impl.dart';
+import '../network/data_agents/data_agents_impl.dart';
 
 class PaymentCardPage extends StatefulWidget {
   final dynamic subtotal;
@@ -45,12 +49,17 @@ class PaymentCardPage extends StatefulWidget {
 
 class _PaymentCardPageState extends State<PaymentCardPage> {
   DataModelsImpl mDataModel = DataModelsImpl();
+  CheckoutRequest checkoutRequest = CheckoutRequest();
 
   List<CardVO>? cardList;
   CardVO? selectedCard;
+  CheckOutResponse? checkOutResponse;
+  VoucherVO? voucher;
+  DataVO? mMovie;
+  int? movieId;
 
   //Change the require variable to Json for CheckOut api request
-  CheckoutRequest checkoutRequest = CheckoutRequest();
+  // CheckoutRequest checkoutRequest = CheckoutRequest(); // changed to Modal class
   String? encodedJson;
 
   @override
@@ -63,6 +72,7 @@ class _PaymentCardPageState extends State<PaymentCardPage> {
         selectedCard = cardList?.first;
       });
     });
+    _createCheckOutVOForApiRequest();
   }
 
   @override
@@ -151,7 +161,8 @@ class _PaymentCardPageState extends State<PaymentCardPage> {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => const TicketViewPage()));
+                            builder: (context) =>
+                                TicketViewPage(checkoutRequest)));
                   });
                 },
                 isGhostButton: true,
@@ -171,8 +182,9 @@ class _PaymentCardPageState extends State<PaymentCardPage> {
     checkoutRequest.movieId = widget.movieDetails.id;
     checkoutRequest.seatNumber = widget.selectedSeatName.toString();
     checkoutRequest.snacks = widget.finalSelectedSnackListResult;
-    encodedJson = jsonEncode(checkoutRequest);
-    print(encodedJson);
+    // This step is to confirm Json object is working or not in Postman
+    // encodedJson = jsonEncode(checkoutRequest);
+    // print(encodedJson);
   }
 }
 

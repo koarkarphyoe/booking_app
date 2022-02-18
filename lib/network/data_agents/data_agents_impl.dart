@@ -8,6 +8,8 @@ import 'package:student_app/data/vos/timeslotdata_vo.dart';
 import 'package:student_app/network/api_constants.dart';
 import 'package:student_app/network/register_api.dart';
 import 'package:dio/dio.dart';
+import 'package:student_app/network/response/check_out_response.dart';
+import 'package:student_app/network/requests/checkout_request.dart';
 import 'package:student_app/network/response/email_response.dart';
 import 'package:student_app/network/response/movie_details_response.dart';
 import 'package:student_app/network/response/movie_seats_response.dart';
@@ -127,7 +129,33 @@ class DataAgentsImpl extends DataAgents {
   }
 
   @override
-  Future<List<CardVO>?>? registerCardList(String token,String cardHolder,String cardNumber,String expireDate,String cvc) {
-    return rApi?.registerCardList(token,cardNumber,cardHolder,expireDate,cvc.toString()).asStream().map((event) => event.data).first;
+  Future<List<CardVO>?>? registerCardList(String token, String cardHolder,
+      String cardNumber, String expireDate, String cvc) {
+    return rApi
+        ?.registerCardList(
+            token, cardNumber, cardHolder, expireDate, cvc.toString())
+        .asStream()
+        .map((event) => event.data)
+        .first;
+  }
+
+  @override
+  Future<CheckOutResponse>? postCheckOut(
+      String token, Map<String, dynamic> json) {
+    return rApi
+        ?.postCheckOutRequest(token, json)
+        .asStream()
+        .map((event) => event)
+        .first;
+  }
+
+  @override
+  Future<CheckOutResponse>? checkOut(
+      String token, CheckoutRequest checkoutRequest) {
+    return rApi
+        ?.checkOut(token, checkoutRequest)
+        .asStream()
+        .map((event) => event)
+        .first;
   }
 }
