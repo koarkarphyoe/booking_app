@@ -21,10 +21,21 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-//   final GlobalKey<ScaffoldState> _drawerKey = GlobalKey();
-//  void _openDrawer() {
-//     _drawerKey.currentState!.openDrawer();
-//   }
+  //for Navigation Drawer Section ,it is need key and openDrawer()
+  final GlobalKey<ScaffoldState> _drawerKey = GlobalKey();
+  void openDrawer() {
+    _drawerKey.currentState!.openDrawer();
+  }
+  //  GestureDetector(
+  //         onTap: () {
+  //           if(scaffoldKey.currentState.isDrawerOpen){
+  //             scaffoldKey.currentState.openEndDrawer();
+  //           }else{
+  //             scaffoldKey.currentState.openDrawer();
+  //           }
+  //         },
+  //         child:  LeadingIcon(icon: Icons.menu),//your button
+  //       ),
 
   DataModels userModels = DataModelsImpl();
 
@@ -88,10 +99,15 @@ class _HomePageState extends State<HomePage> {
       "Rate us"
     ];
     return Scaffold(
+      key: _drawerKey, //for Navigation Drawer Section
+      backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.white,
         leading: GestureDetector(
-          onTap: () {},
+          onTap: () {
+            //for Navigation Drawer Section
+            openDrawer();
+          },
           child: const Icon(
             Icons.menu,
             color: Colors.black,
@@ -109,75 +125,8 @@ class _HomePageState extends State<HomePage> {
         ],
         elevation: 0,
       ),
-      drawer: SizedBox(
-        width: MediaQuery.of(context).size.width * 0.9,
-        child: Drawer(
-          child: Container(
-            color: primaryColor,
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: marginMedium),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  DrawerHeaderSectionView(userVO: mUser),
-                  Column(
-                    children: menuItems.map((menu) {
-                      return Container(
-                        margin: const EdgeInsets.only(top: marginMedium),
-                        child: ListTile(
-                          leading: const Icon(Icons.help, color: Colors.white),
-                          title: Text(
-                            menu,
-                            style: const TextStyle(
-                              fontSize: textRegular,
-                              color: Colors.white,
-                            ),
-                          ),
-                        ),
-                      );
-                    }).toList(),
-                  ),
-                  const Spacer(),
-                  GestureDetector(
-                    onTap: () {
-                      userModels.logOut();
-                      Navigator.pushAndRemoveUntil(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const SplashScreen(),
-                          ),
-                          (route) => false);
-                      // Navigator.push(
-                      //   context,
-                      //   MaterialPageRoute(
-                      //     builder: (context) => const SplashScreen(),
-                      //   )
-                      // );
-                    },
-                    child: const ListTile(
-                      leading: Icon(
-                        Icons.logout,
-                        color: Colors.white,
-                      ),
-                      title: Text(
-                        logOutText,
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: textRegular,
-                        ),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(
-                    height: marginMedium,
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ),
-      ),
+      drawer: DrawerSectionView(
+          mUser: mUser, menuItems: menuItems, userModels: userModels),
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -206,6 +155,92 @@ class _HomePageState extends State<HomePage> {
       context,
       MaterialPageRoute(
         builder: (context) => MovieDetailsPage(movieId, token),
+      ),
+    );
+  }
+}
+
+class DrawerSectionView extends StatelessWidget {
+  const DrawerSectionView({
+    Key? key,
+    required this.mUser,
+    required this.menuItems,
+    required this.userModels,
+  }) : super(key: key);
+
+  final UserVO? mUser;
+  final List<String> menuItems;
+  final DataModels userModels;
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: MediaQuery.of(context).size.width * 0.9,
+      child: Drawer(
+        child: Container(
+          color: primaryColor,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: marginMedium),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                DrawerHeaderSectionView(userVO: mUser),
+                Column(
+                  children: menuItems.map((menu) {
+                    return Container(
+                      margin: const EdgeInsets.only(top: marginMedium),
+                      child: ListTile(
+                        leading: const Icon(Icons.help, color: Colors.white),
+                        title: Text(
+                          menu,
+                          style: const TextStyle(
+                            fontSize: textRegular,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                    );
+                  }).toList(),
+                ),
+                const Spacer(),
+                GestureDetector(
+                  onTap: () {
+                    userModels.logOut();
+                    Navigator.pushAndRemoveUntil(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const SplashScreen(),
+                        ),
+                        (route) => false);
+                    // Navigator.push(
+                    //   context,
+                    //   MaterialPageRoute(
+                    //     builder: (context) => const SplashScreen(),
+                    //   )
+                    // );
+                  },
+                  child: const ListTile(
+                    leading: Icon(
+                      Icons.logout,
+                      color: Colors.white,
+                    ),
+                    title: Text(
+                      logOutText,
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: textRegular,
+                      ),
+                    ),
+                  ),
+                ),
+                const SizedBox(
+                  height: marginMedium,
+                ),
+              ],
+            ),
+          ),
+        ),
       ),
     );
   }
