@@ -44,6 +44,7 @@ dependencies:
   hive: ^2.0.4
   hive_flutter: ^1.1.0
   intl: ^0.17.0
+  flutter_facebook_auth: ^1.0.2+2
   
 
 dev_dependencies:

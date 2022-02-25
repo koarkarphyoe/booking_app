@@ -69,7 +69,8 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
                         Align(
                           alignment: Alignment.topLeft,
                           child: Padding(
-                            padding: const EdgeInsets.only(top: marginMedium2X, left: marginMedium),
+                            padding: const EdgeInsets.only(
+                                top: marginMedium2X, left: marginMedium),
                             child: MovieDetailsScreenBackButtonView(
                               onTapBack: () {
                                 navigateToPreviousPage(context);

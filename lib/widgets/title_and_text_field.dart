@@ -6,7 +6,9 @@ import 'package:student_app/resources/dimens.dart';
 class TitleAndTextFieldView extends StatelessWidget {
   final String textTitle;
   final TextEditingController? textController;
-  const TitleAndTextFieldView(this.textTitle, this.textController);
+  final bool obScureText;
+  const TitleAndTextFieldView(this.textTitle, this.textController,
+      {this.obScureText = false});
 
   @override
   Widget build(BuildContext context) {
@@ -19,6 +21,7 @@ class TitleAndTextFieldView extends StatelessWidget {
               color: paymentCardIconColor, fontSize: textRegular1X),
         ),
         TextField(
+            obscureText: obScureText,
             controller: textController,
             inputFormatters: [LengthLimitingTextInputFormatter(19)],
             decoration: const InputDecoration(

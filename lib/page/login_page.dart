@@ -176,10 +176,10 @@ class _LoginPageState extends State<LoginPage> {
             facebookAccessToken, googleAccessToken)!
         .then(
       (value) {
-        print(value.message);
-        print(value.code);
-        print(value.data);
-        print(value.token);
+        // print(value.message);
+        // print(value.code);
+        // print(value.data);
+        // print(value.token);
       },
     );
   }
@@ -214,7 +214,7 @@ class RegisterScreenView extends StatelessWidget {
           const SizedBox(height: marginMedium1X),
           TitleAndTextFieldView(emailText, emailTextController),
           const SizedBox(height: marginMedium1X),
-          TitleAndTextFieldView(passwordText, passwordTextController),
+          TitleAndTextFieldView(passwordText, passwordTextController,obScureText: true,),
           const SizedBox(height: marginMedium1X),
           TitleAndTextFieldView(
               phoneNumberTextField, phoneNumberTextController),
@@ -265,7 +265,7 @@ class LoginScreenView extends StatelessWidget {
           const SizedBox(height: marginMedium1X),
           TitleAndTextFieldView(emailText, emailTextController),
           const SizedBox(height: marginMedium1X),
-          TitleAndTextFieldView(passwordText, passwordTextController),
+          TitleAndTextFieldView(passwordText, passwordTextController,obScureText: true,),
           const SizedBox(height: marginMedium1X),
           const Align(
             alignment: Alignment.centerRight,

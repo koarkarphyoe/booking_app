@@ -34,11 +34,11 @@ class CardView extends StatelessWidget {
               const SizedBox(
                 height: marginMedium1XX,
               ),
-              CardNumber(card!.cardNumber.toString()),
+              CardNumber(card!.cardHolder.toString()),
               const Spacer(),
               const CardHolderAndExpireText(),
               NameAndDateText(
-                  card!.cardHolder.toString(), card!.expirationDate.toString()),
+                  card!.cardNumber.toString(), card!.expirationDate.toString()),
             ],
           ),
         ),
