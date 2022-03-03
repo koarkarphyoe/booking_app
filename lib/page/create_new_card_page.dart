@@ -44,7 +44,11 @@ class _CreateNewCardPageState extends State<CreateNewCardPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              TitleAndTextFieldView(cardNumbarText, cardNumberController),
+              TitleAndTextFieldView(
+                cardNumbarText,
+                cardNumberController,
+                isLengthLimit: true,
+              ),
               const SizedBox(
                 height: marginMedium1X,
               ),
@@ -68,8 +72,8 @@ class _CreateNewCardPageState extends State<CreateNewCardPage> {
                           builder: (context) {
                             return const AlertDialog(
                               title: Text("Sorry!"),
-                              content:
-                                  Text("Please check and fill card information!"),
+                              content: Text(
+                                  "Please check and fill card information!"),
                             );
                           });
                     } else {

@@ -7,8 +7,9 @@ class TitleAndTextFieldView extends StatelessWidget {
   final String textTitle;
   final TextEditingController? textController;
   final bool obScureText;
+  final bool isLengthLimit;
   const TitleAndTextFieldView(this.textTitle, this.textController,
-      {this.obScureText = false});
+      {this.obScureText = false,this.isLengthLimit=false});
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +24,8 @@ class TitleAndTextFieldView extends StatelessWidget {
         TextField(
             obscureText: obScureText,
             controller: textController,
-            inputFormatters: [LengthLimitingTextInputFormatter(19)],
+            inputFormatters:
+                (isLengthLimit) ? [LengthLimitingTextInputFormatter(19)] : null,
             decoration: const InputDecoration(
               hintStyle: TextStyle(),
             ),
