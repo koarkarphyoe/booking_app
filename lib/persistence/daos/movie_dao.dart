@@ -1,5 +1,6 @@
 import 'package:hive/hive.dart';
 import 'package:student_app/data/vos/data_vo.dart';
+import 'package:student_app/network/api_constants.dart';
 import 'package:student_app/persistence/hive_constants.dart';
 
 class MovieDao {
@@ -32,6 +33,13 @@ class MovieDao {
 
   DataVO? getSingleMovie(int movieId) {
     return getMovieBox().get(movieId);
+  }
+
+
+  ///Reactive Programming 
+  ///
+  Stream<void> getAllMovieEventStream() {
+    return getMovieBox().watch();
   }
 
   Box<DataVO> getMovieBox() {
