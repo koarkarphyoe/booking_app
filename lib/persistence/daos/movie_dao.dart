@@ -35,11 +35,13 @@ class MovieDao {
     return getMovieBox().get(movieId);
   }
 
-
-  ///Reactive Programming 
-  ///
+  ///Reactive Programming
   Stream<void> getAllMovieEventStream() {
     return getMovieBox().watch();
+  }
+
+  Stream<List<DataVO>> getAllMovieListStream() {
+    return Stream.value(getAllMovie().toList());
   }
 
   Box<DataVO> getMovieBox() {
