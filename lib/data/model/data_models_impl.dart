@@ -1,4 +1,5 @@
 import 'package:intl/intl.dart';
+import 'package:stream_transform/stream_transform.dart';
 import 'package:student_app/data/model/data_models.dart';
 import 'package:student_app/data/vos/card_vo.dart';
 import 'package:student_app/data/vos/cinemas_vo.dart';
@@ -10,6 +11,7 @@ import 'package:student_app/data/vos/payment_method_vo.dart';
 import 'package:student_app/data/vos/snack_vo.dart';
 import 'package:student_app/data/vos/timeslotdata_vo.dart';
 import 'package:student_app/data/vos/user_vo.dart';
+import 'package:student_app/network/api_constants.dart';
 import 'package:student_app/network/data_agents/data_agents.dart';
 import 'package:student_app/network/data_agents/data_agents_impl.dart';
 import 'package:student_app/network/response/check_out_response.dart';
@@ -60,8 +62,8 @@ class DataModelsImpl extends DataModels {
   }
 
   @override
-  Future<List<DataVO>?>? getNowShowingMovie(String status) {
-    return mDataAgent.getNowShowingMovie(status)?.then((value) async {
+  void getNowShowingMovie(String status) {
+    mDataAgent.getNowShowingMovie(status)?.then((value) async {
       List<DataVO> nowShowingMovie = value!.map((e) {
         e.isCurrentMovie = true;
         e.isComingSoonMovie = false;
@@ -73,8 +75,8 @@ class DataModelsImpl extends DataModels {
   }
 
   @override
-  Future<List<DataVO>?>? getComingSoonMovie(String status) {
-    return mDataAgent.getComingSoonMovie(status)?.then((value) async {
+  void getComingSoonMovie(String status) {
+     mDataAgent.getComingSoonMovie(status)?.then((value) async {
       List<DataVO> comingSoonMovie = value!.map((e) {
         e.isComingSoonMovie = true;
         e.isCurrentMovie = false;
@@ -146,18 +148,22 @@ class DataModelsImpl extends DataModels {
 
   @override
   Future<List<DataVO>?>? getNowShowingMovieFromDatabase() {
-    return Future.value(movieDao
-        .getAllMovie()
-        .where((element) => element.isCurrentMovie ?? true)
-        .toList());
+    getNowShowingMovie(statusValue1);
+    return movieDao
+        .getAllMovieEventStream()
+        .combineLatest(movieDao.getNowShowingMovieListStream(),
+            (p0, p1) => p1 as List<DataVO>)
+        .first;
   }
 
   @override
   Future<List<DataVO>?>? getComingSoonMovieFromDatabase() {
-    return Future.value(movieDao
-        .getAllMovie()
-        .where((element) => element.isComingSoonMovie ?? true)
-        .toList());
+    getComingSoonMovie(statusValue2);
+    return movieDao
+        .getAllMovieEventStream()
+        .combineLatest(movieDao.getCommingSoonMovieListStream(),
+            (p0, p1) => p1 as List<DataVO>)
+        .first;
   }
 
   @override
@@ -223,7 +229,6 @@ class DataModelsImpl extends DataModels {
             cardNumber, expireDate, cvc)
         ?.then((value) => value);
   }
-
 
   @override
   Future<CheckOutResponse>? checkOut(CheckoutRequest checkoutRequest) {

@@ -29,8 +29,8 @@ abstract class DataModels {
     String password,
   );
 
-  Future<List<DataVO>?>? getNowShowingMovie(String status);
-  Future<List<DataVO>?>? getComingSoonMovie(String status);
+  void getNowShowingMovie(String status);
+  void getComingSoonMovie(String status);
   Future<MovieDetailsVO?>? getMovieDetails(int movieId);
   Future<List<CinemasVO>?>? getCinemasList();
   Future<List<TimeSlotDataVO>?>? getCinemaNameAndTimeSlots(String? date);

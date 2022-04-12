@@ -1,6 +1,5 @@
 import 'package:hive/hive.dart';
 import 'package:student_app/data/vos/data_vo.dart';
-import 'package:student_app/network/api_constants.dart';
 import 'package:student_app/persistence/hive_constants.dart';
 
 class MovieDao {
@@ -42,6 +41,18 @@ class MovieDao {
 
   Stream<List<DataVO>> getAllMovieListStream() {
     return Stream.value(getAllMovie().toList());
+  }
+
+  Stream<List<DataVO>> getNowShowingMovieListStream() {
+    return Stream.value(getAllMovie()
+        .where((element) => element.isCurrentMovie ?? false)
+        .toList());
+  }
+
+  Stream<List<DataVO>> getCommingSoonMovieListStream() {
+    return Stream.value(getAllMovie()
+        .where((element) => element.isComingSoonMovie ?? false)
+        .toList());
   }
 
   Box<DataVO> getMovieBox() {

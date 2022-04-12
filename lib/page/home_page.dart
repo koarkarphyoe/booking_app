@@ -48,12 +48,12 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    // From network
-    userModels.getNowShowingMovie("current")?.then((value) {
-      setState(() {
-        movie = value;
-      });
-    });
+    // From network before integrating Reactive Programming
+    // userModels.getNowShowingMovie("current")?.then((value) {
+    //   setState(() {
+    //     movie = value;
+    //   });
+    // });
 
     // From database
     userModels.getNowShowingMovieFromDatabase()?.then((value) {
@@ -62,12 +62,12 @@ class _HomePageState extends State<HomePage> {
       });
     });
 
-    // From network
-    userModels.getComingSoonMovie("comingsoon")?.then((value) {
-      setState(() {
-        comingSoonMovie = value;
-      });
-    });
+    // From network befor integrating Reactive Programming 
+    // userModels.getComingSoonMovie("comingsoon")?.then((value) {
+    //   setState(() {
+    //     comingSoonMovie = value;
+    //   });
+    // });
 
     // From database
     userModels.getComingSoonMovieFromDatabase()?.then((value) {
