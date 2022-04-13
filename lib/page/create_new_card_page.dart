@@ -5,25 +5,23 @@ import 'package:student_app/widgets/confirm_button_view.dart';
 import 'package:student_app/widgets/title_and_text_field.dart';
 import 'package:student_app/widgets/title_text_bold.dart';
 
-import '../data/model/data_models_impl.dart';
 import '../resources/strings.dart';
 
-class CreateNewCardPage extends StatefulWidget {
-  const CreateNewCardPage({Key? key}) : super(key: key);
+class CreateNewCardPage extends StatelessWidget {
+  final Function(String, String, String, String) createNewCard;
 
-  @override
-  State<CreateNewCardPage> createState() => _CreateNewCardPageState();
-}
+  CreateNewCardPage(this.createNewCard, {Key? key}) : super(key: key);
 
-class _CreateNewCardPageState extends State<CreateNewCardPage> {
   final TextEditingController? cardNumberController = TextEditingController();
   final TextEditingController? cardHolderController = TextEditingController();
   final TextEditingController? expirationDateController =
       TextEditingController();
   final TextEditingController? cvcController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
@@ -60,43 +58,19 @@ class _CreateNewCardPageState extends State<CreateNewCardPage> {
               const SizedBox(
                 height: marginMedium1X,
               ),
-              GestureDetector(
+              InkWell(
                 onTap: () {
-                  setState(() {
-                    if (cardHolderController!.text.isEmpty &&
-                        cardNumberController!.text.isEmpty &&
-                        expirationDateController!.text.isEmpty &&
-                        cvcController!.text.isEmpty) {
-                      showDialog(
-                          context: context,
-                          builder: (context) {
-                            return const AlertDialog(
-                              title: Text("Sorry!"),
-                              content: Text(
-                                  "Please check and fill card information!"),
-                            );
-                          });
-                    } else {
-                      _createNewCard(
-                          cardHolderController!.text,
-                          cardNumberController!.text,
-                          expirationDateController!.text,
-                          cvcController!.text);
-                    }
-                  });
+                  createNewCard(
+                      cardHolderController!.text,
+                      cardNumberController!.text,
+                      expirationDateController!.text,
+                      cvcController!.text);
+                  Navigator.pop(context);
                 },
                 child: const CreateNewCard(),
               ),
               const SizedBox(
                 height: marginMedium1X,
-              ),
-              ConfirmButtonView(
-                chooseYourCard,
-                () {
-                  Navigator.pop(context);
-                },
-                isGhostButton: true,
-                buttonBackgroundColor: primaryColor,
               ),
               const SizedBox(
                 height: marginMedium1X,
@@ -106,11 +80,6 @@ class _CreateNewCardPageState extends State<CreateNewCardPage> {
         ),
       ),
     );
-  }
-
-  void _createNewCard(String text, String text2, String text3, String text4) {
-    DataModelsImpl mModel = DataModelsImpl();
-    mModel.registerCardList(text, text2, text3, text4);
   }
 }
 

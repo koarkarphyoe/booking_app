@@ -14,7 +14,7 @@ import 'package:student_app/widgets/payment_method_title.dart';
 import 'package:student_app/widgets/title_text.dart';
 import 'package:student_app/widgets/title_text_bold.dart';
 
-class PaymentMethodPage extends StatefulWidget {
+class ChooseSnackListPage extends StatefulWidget {
   final dynamic selectedSeatPrice;
   final dynamic selectedSeatName;
   final dynamic movieDetails;
@@ -22,16 +22,16 @@ class PaymentMethodPage extends StatefulWidget {
   final dynamic yMd;
   final dynamic cinemaId;
   final dynamic timeSlotsId;
-  const PaymentMethodPage(this.selectedSeatName, this.selectedSeatPrice,
+  const ChooseSnackListPage(this.selectedSeatName, this.selectedSeatPrice,
       this.movieDetails, this.time, this.yMd, this.cinemaId,this.timeSlotsId,
       {Key? key})
       : super(key: key);
 
   @override
-  State<PaymentMethodPage> createState() => _PaymentMethodPageState();
+  State<ChooseSnackListPage> createState() => _ChooseSnackListPageState();
 }
 
-class _PaymentMethodPageState extends State<PaymentMethodPage> {
+class _ChooseSnackListPageState extends State<ChooseSnackListPage> {
   DataModelsImpl mDataModel = DataModelsImpl();
 
   List<SnackVO>? snackList;
@@ -63,6 +63,7 @@ class _PaymentMethodPageState extends State<PaymentMethodPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         elevation: 0,
         backgroundColor: Colors.white,

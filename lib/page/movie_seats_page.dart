@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:student_app/data/model/data_models_impl.dart';
 import 'package:student_app/data/vos/movie_seat_list_vo.dart';
 import 'package:student_app/itemsview/movie_seat_item_view.dart';
-import 'package:student_app/page/payment_method_page.dart';
+import 'package:student_app/page/choose_snack_list_page.dart';
 import 'package:student_app/resources/colors.dart';
 import 'package:student_app/resources/dimens.dart';
 import 'package:student_app/widgets/confirm_button_view.dart';
@@ -191,7 +191,7 @@ class _MovieSeatsPageState extends State<MovieSeatsPage> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => PaymentMethodPage(
+                        builder: (context) => ChooseSnackListPage(
                           selectedSeat.join(","),
                           totalSelectedSeatPrice,
                           widget.movieDetails,

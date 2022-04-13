@@ -63,6 +63,7 @@ class _TicketViewPageState extends State<TicketViewPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         leading: Padding(
           padding: const EdgeInsets.symmetric(horizontal: marginMedium),

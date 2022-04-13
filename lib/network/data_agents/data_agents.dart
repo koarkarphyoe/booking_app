@@ -5,6 +5,7 @@ import 'package:student_app/data/vos/movie_seat_list_vo.dart';
 import 'package:student_app/data/vos/payment_method_vo.dart';
 import 'package:student_app/data/vos/snack_vo.dart';
 import 'package:student_app/data/vos/timeslotdata_vo.dart';
+import 'package:student_app/data/vos/user_vo.dart';
 import 'package:student_app/network/requests/checkout_request.dart';
 import 'package:student_app/network/response/check_out_response.dart';
 import 'package:student_app/network/response/email_response.dart';
@@ -20,7 +21,7 @@ abstract class DataAgents {
       String googleAccessToken);
 
   Future<EmailResponse>? postLoginWithEmail(String email, String password);
-
+  Future<UserVO>? getUserProfileData(String token);
   Future<List<DataVO>?>? getNowShowingMovie(String status);
   Future<List<DataVO>?>? getComingSoonMovie(String status);
   Future<MovieDetailsResponse>? getMovieDetails(int movieId);
@@ -35,7 +36,7 @@ abstract class DataAgents {
 
   Future<List<PaymentMethodVO>?>? getPaymentMethodList(String token);
 
-  Future<List<CardVO>?>? registerCardList(String token, String cardHolder,
+  Future<List<CardVO>?>? registerPaymentCard(String token, String cardHolder,
       String cardNumber, String expireDate, String cvc);
 
   Future<CheckOutResponse>? postCheckOut(

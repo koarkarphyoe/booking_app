@@ -13,12 +13,21 @@ class UserDao {
     await getUserInfoBox().add(userInfo!);
   }
 
-  UserVO? getUserInfo() {
+  UserVO getUserInfo() {
     return getUserInfoBox().values.last;
   }
 
   Box<UserVO> getUserInfoBox() {
     return Hive.box<UserVO>(boxNameUserVO);
+  }
+
+  ///Reactive Programming
+  Stream<void> getUserInfoEventStream() {
+    return getUserInfoBox().watch();
+  }
+
+  Stream<UserVO> getUserInfoStream() {
+    return Stream.value(getUserInfo());
   }
 
   void deleteUserUnfo() {

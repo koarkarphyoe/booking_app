@@ -5,6 +5,7 @@ import 'package:student_app/data/vos/movie_seat_list_vo.dart';
 import 'package:student_app/data/vos/payment_method_vo.dart';
 import 'package:student_app/data/vos/snack_vo.dart';
 import 'package:student_app/data/vos/timeslotdata_vo.dart';
+import 'package:student_app/data/vos/user_vo.dart';
 import 'package:student_app/network/api_constants.dart';
 import 'package:student_app/network/register_api.dart';
 import 'package:dio/dio.dart';
@@ -53,6 +54,15 @@ class DataAgentsImpl extends DataAgents {
   Future<EmailResponse>? postLoginWithEmail(String email, String password) {
     return rApi
         ?.postLoginWithEmail(email, password)
+        .asStream()
+        .map((event) => event)
+        .first;
+  }
+
+  @override
+  Future<UserVO>? getUserProfileData(String token) {
+    return rApi
+        ?.getUserProfileData(token)
         .asStream()
         .map((event) => event)
         .first;
@@ -129,10 +139,10 @@ class DataAgentsImpl extends DataAgents {
   }
 
   @override
-  Future<List<CardVO>?>? registerCardList(String token, String cardHolder,
+  Future<List<CardVO>?>? registerPaymentCard(String token, String cardHolder,
       String cardNumber, String expireDate, String cvc) {
     return rApi
-        ?.registerCardList(
+        ?.registerPaymentCard(
             token, cardNumber, cardHolder, expireDate, cvc.toString())
         .asStream()
         .map((event) => event.data)

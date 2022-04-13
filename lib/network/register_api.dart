@@ -1,5 +1,6 @@
 import 'package:retrofit/http.dart';
 import 'package:dio/dio.dart';
+import 'package:student_app/data/vos/user_vo.dart';
 import 'package:student_app/network/requests/checkout_request.dart';
 import 'package:student_app/network/response/card_list_response.dart';
 import 'package:student_app/network/response/check_out_response.dart';
@@ -38,6 +39,11 @@ abstract class RegisterApi {
     @Field(passwordParam) String password,
   );
 
+  @GET(getUserProfileDataEndPoint)
+  Future<UserVO> getUserProfileData(
+    @Header(authorization) String token,
+  );
+
   @GET(getNowShowingMovieEndPoint)
   Future<MovieResponse> getMovies(
     @Query(statusKey) String status,
@@ -73,7 +79,7 @@ abstract class RegisterApi {
   );
 
   @POST(getCartListEndPoint)
-  Future<CardListResponse> registerCardList(
+  Future<CardListResponse> registerPaymentCard(
     @Header(authorization) String token,
     @Field(cardHolder) String cardHolder, //can use with @Query()
     @Field(cardNumber) String cardNumber, //can use with @Query()

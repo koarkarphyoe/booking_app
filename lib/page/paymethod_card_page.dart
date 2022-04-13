@@ -51,7 +51,7 @@ class _PaymentCardPageState extends State<PaymentCardPage> {
   DataModelsImpl mDataModel = DataModelsImpl();
   CheckoutRequest checkoutRequest = CheckoutRequest();
 
-  List<CardVO>? cardList;
+  List<CardVO>? cardList = [];
   CardVO? selectedCard;
   CheckOutResponse? checkOutResponse;
   VoucherVO? voucher;
@@ -67,6 +67,7 @@ class _PaymentCardPageState extends State<PaymentCardPage> {
     super.initState();
 
     mDataModel.getUserInfoFromDatabase()?.then((value) {
+      mDataModel.getUserProfileData;
       setState(() {
         cardList = value.cards;
         selectedCard = cardList?.first;
@@ -75,9 +76,19 @@ class _PaymentCardPageState extends State<PaymentCardPage> {
     _createCheckOutVOForApiRequest();
   }
 
+  void _createNewCard(String text, String text2, String text3, String text4) {
+    DataModelsImpl mModel = DataModelsImpl();
+    mModel.registerPaymentCard(text, text2, text3, text4)?.then((value) {
+      setState(() {
+        cardList = value;
+      });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
@@ -140,7 +151,7 @@ class _PaymentCardPageState extends State<PaymentCardPage> {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => const CreateNewCardPage(),
+                      builder: (context) => CreateNewCardPage(_createNewCard),
                     ));
               },
               child: const Padding(

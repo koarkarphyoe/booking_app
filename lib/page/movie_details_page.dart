@@ -51,6 +51,7 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
   Widget build(BuildContext context) {
     return (movieDetails != null && castImage != null)
         ? Scaffold(
+            backgroundColor: Colors.white,
             body: SizedBox(
               // height: MediaQuery.of(context).size.height,
               child: CustomScrollView(

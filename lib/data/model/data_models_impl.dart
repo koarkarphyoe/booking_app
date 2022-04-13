@@ -76,7 +76,7 @@ class DataModelsImpl extends DataModels {
 
   @override
   void getComingSoonMovie(String status) {
-     mDataAgent.getComingSoonMovie(status)?.then((value) async {
+    mDataAgent.getComingSoonMovie(status)?.then((value) async {
       List<DataVO> comingSoonMovie = value!.map((e) {
         e.isComingSoonMovie = true;
         e.isCurrentMovie = false;
@@ -85,6 +85,13 @@ class DataModelsImpl extends DataModels {
       movieDao.saveAllMovie(comingSoonMovie);
       return Future.value(value);
     });
+  }
+
+  @override
+  void getUserProfileData() {
+    mDataAgent
+        .getUserProfileData(tokenDao.getToken().toString())
+        ?.then((value) => value);
   }
 
   @override
@@ -128,6 +135,15 @@ class DataModelsImpl extends DataModels {
   }
 
   @override
+  Future<List<CardVO>?>? registerPaymentCard(
+      String cardHolder, String cardNumber, String expireDate, String cvc) {
+    return mDataAgent
+        .registerPaymentCard(tokenDao.getToken().toString(), cardHolder,
+            cardNumber, expireDate, cvc)
+        ?.then((value) => value);
+  }
+
+  @override
   Future<CheckOutResponse>? postCheckOutRequest(Map<String, dynamic> json) {
     return mDataAgent
         .postCheckOut(TokenDao().getToken().toString(), json)
@@ -138,7 +154,12 @@ class DataModelsImpl extends DataModels {
 
   @override
   Future<UserVO>? getUserInfoFromDatabase() {
-    return Future.value(userDao.getUserInfo());
+    this.getUserProfileData();
+    return userDao
+        .getUserInfoEventStream()
+        .startWith(userDao.getUserInfoStream())
+        .combineLatest(userDao.getUserInfoStream(), (p0, p1) => p1 as UserVO)
+        .first;
   }
 
   @override
@@ -148,9 +169,10 @@ class DataModelsImpl extends DataModels {
 
   @override
   Future<List<DataVO>?>? getNowShowingMovieFromDatabase() {
-    getNowShowingMovie(statusValue1);
+    this.getNowShowingMovie(statusValue1);
     return movieDao
         .getAllMovieEventStream()
+        .startWith(movieDao.getNowShowingMovieListStream())
         .combineLatest(movieDao.getNowShowingMovieListStream(),
             (p0, p1) => p1 as List<DataVO>)
         .first;
@@ -158,9 +180,10 @@ class DataModelsImpl extends DataModels {
 
   @override
   Future<List<DataVO>?>? getComingSoonMovieFromDatabase() {
-    getComingSoonMovie(statusValue2);
+    this.getComingSoonMovie(statusValue2);
     return movieDao
         .getAllMovieEventStream()
+        .startWith(movieDao.getCommingSoonMovieListStream())
         .combineLatest(movieDao.getCommingSoonMovieListStream(),
             (p0, p1) => p1 as List<DataVO>)
         .first;
@@ -177,6 +200,13 @@ class DataModelsImpl extends DataModels {
   }
 
   @override
+  Future<CheckOutResponse>? checkOut(CheckoutRequest checkoutRequest) {
+    return mDataAgent
+        .checkOut(tokenDao.getToken().toString(), checkoutRequest)
+        ?.then((value) => value);
+  }
+
+  @override
   void deleteTokenFromDatabase() {
     tokenDao.deleteToken();
   }
@@ -185,6 +215,7 @@ class DataModelsImpl extends DataModels {
   void deleteUserInfoFromDatabase() {
     userDao.deleteUserUnfo();
   }
+  
 
   //Other
 
@@ -206,7 +237,6 @@ class DataModelsImpl extends DataModels {
       var dateVo = DateVO(i, day, date, dayMonthDate, yMMMMd);
       dateList.add(dateVo);
     }
-
     return dateList;
   }
 
@@ -220,20 +250,4 @@ class DataModelsImpl extends DataModels {
   bool isLogIn() {
     return tokenDao.getToken()?.isNotEmpty ?? false;
   }
-
-  @override
-  Future<List<CardVO>?>? registerCardList(
-      String cardHolder, String cardNumber, String expireDate, String cvc) {
-    return mDataAgent
-        .registerCardList(tokenDao.getToken().toString(), cardHolder,
-            cardNumber, expireDate, cvc)
-        ?.then((value) => value);
-  }
-
-  @override
-  Future<CheckOutResponse>? checkOut(CheckoutRequest checkoutRequest) {
-    return mDataAgent
-        .checkOut(tokenDao.getToken().toString(), checkoutRequest)
-        ?.then((value) => value);
-  }
-}
+ }

@@ -6,6 +6,7 @@ const String moviePosterBaseUrl = "http://image.tmdb.org/t/p/w400";
 //EndPoint
 const String registerWithEmailEndPoint = "/api/v1/register";
 const String loginWithEmailEndPoint = "/api/v1/email-login";
+const String getUserProfileDataEndPoint = "/api/v1/profile";
 const String getNowShowingMovieEndPoint = "/api/v1/movies";
 const String getMovieDetailsEndPoint = "/api/v1/movies";
 const String getCinemasListEndPoint = "/api/v1/cinemas";

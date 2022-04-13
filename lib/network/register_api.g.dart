@@ -62,6 +62,23 @@ class _RegisterApi implements RegisterApi {
   }
 
   @override
+  Future<UserVO> getUserProfileData(token) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{r'Authorization': token};
+    _headers.removeWhere((k, v) => v == null);
+    final _data = <String, dynamic>{};
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<UserVO>(
+            Options(method: 'GET', headers: _headers, extra: _extra)
+                .compose(_dio.options, '/api/v1/profile',
+                    queryParameters: queryParameters, data: _data)
+                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = UserVO.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
   Future<MovieResponse> getMovies(status) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{r'status': status};
@@ -182,7 +199,7 @@ class _RegisterApi implements RegisterApi {
   }
 
   @override
-  Future<CardListResponse> registerCardList(
+  Future<CardListResponse> registerPaymentCard(
       token, cardHolder, cardNumber, expirationDate, cvc) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};

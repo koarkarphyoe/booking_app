@@ -11,11 +11,10 @@ import 'package:student_app/data/vos/user_vo.dart';
 import 'package:student_app/network/requests/checkout_request.dart';
 import 'package:student_app/network/response/check_out_response.dart';
 import 'package:student_app/network/response/email_response.dart';
-import 'package:student_app/page/payment_method_page.dart';
 
 abstract class DataModels {
-  // Network
 
+  // Network
   Future<EmailResponse>? postRegisterWithEmail(
       String name,
       String email,
@@ -31,6 +30,7 @@ abstract class DataModels {
 
   void getNowShowingMovie(String status);
   void getComingSoonMovie(String status);
+  void getUserProfileData();
   Future<MovieDetailsVO?>? getMovieDetails(int movieId);
   Future<List<CinemasVO>?>? getCinemasList();
   Future<List<TimeSlotDataVO>?>? getCinemaNameAndTimeSlots(String? date);
@@ -40,9 +40,12 @@ abstract class DataModels {
       int cinemaDayTimeslotId, String bookingDate);
   Future<List<SnackVO>>? getSnack();
   Future<List<PaymentMethodVO>?>? getPaymentList();
-  Future<List<CardVO>?>? registerCardList(String cardHolder,String cardNumber,String expireDate,String cvc );
-  Future<CheckOutResponse>? postCheckOutRequest(Map<String,dynamic> checkoutRequest);
+  Future<List<CardVO>?>? registerPaymentCard(
+      String cardHolder, String cardNumber, String expireDate, String cvc);
+  Future<CheckOutResponse>? postCheckOutRequest(
+      Map<String, dynamic> checkoutRequest);
   Future<CheckOutResponse>? checkOut(CheckoutRequest checkoutRequest);
+
 
   //Database
 
