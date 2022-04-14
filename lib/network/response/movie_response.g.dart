@@ -11,7 +11,7 @@ MovieResponse _$MovieResponseFromJson(Map<String, dynamic> json) =>
       json['code'] as int?,
       json['message'] as String?,
       (json['data'] as List<dynamic>?)
-          ?.map((e) => DataVO.fromJson(e as Map<String, dynamic>))
+          ?.map((e) => MovieVO.fromJson(e as Map<String, dynamic>))
           .toList(),
     );
 

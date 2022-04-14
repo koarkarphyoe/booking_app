@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:student_app/data/vos/card_vo.dart';
-import 'package:student_app/data/vos/data_vo.dart';
+import 'package:student_app/data/vos/movie_vo.dart';
 import 'package:student_app/data/vos/voucher_vo.dart';
 import 'package:student_app/general_functions.dart';
 import 'package:student_app/network/requests/checkout_request.dart';
@@ -55,7 +55,7 @@ class _PaymentCardPageState extends State<PaymentCardPage> {
   CardVO? selectedCard;
   CheckOutResponse? checkOutResponse;
   VoucherVO? voucher;
-  DataVO? mMovie;
+  MovieVO? mMovie;
   int? movieId;
 
   //Change the require variable to Json for CheckOut api request
@@ -66,8 +66,8 @@ class _PaymentCardPageState extends State<PaymentCardPage> {
   void initState() {
     super.initState();
 
+
     mDataModel.getUserInfoFromDatabase()?.then((value) {
-      mDataModel.getUserProfileData;
       setState(() {
         cardList = value.cards;
         selectedCard = cardList?.first;

@@ -1,6 +1,6 @@
 import 'package:student_app/data/vos/card_vo.dart';
 import 'package:student_app/data/vos/cinemas_vo.dart';
-import 'package:student_app/data/vos/data_vo.dart';
+import 'package:student_app/data/vos/movie_vo.dart';
 import 'package:student_app/data/vos/movie_seat_list_vo.dart';
 import 'package:student_app/data/vos/payment_method_vo.dart';
 import 'package:student_app/data/vos/snack_vo.dart';
@@ -22,9 +22,9 @@ abstract class DataAgents {
 
   Future<EmailResponse>? postLoginWithEmail(String email, String password);
   Future<UserVO>? getUserProfileData(String token);
-  Future<List<DataVO>?>? getNowShowingMovie(String status);
-  Future<List<DataVO>?>? getComingSoonMovie(String status);
-  Future<MovieDetailsResponse>? getMovieDetails(int movieId);
+  Future<List<MovieVO>?>? getNowShowingMovie(String status);
+  Future<List<MovieVO>?>? getComingSoonMovie(String status);
+  Future<MovieVO?>? getMovieDetails(int movieId);
   Future<List<CinemasVO>?>? getCinemasList();
   Future<List<TimeSlotDataVO>?>? getCinemaNameAndTimeSlots(
       String token, String? date);

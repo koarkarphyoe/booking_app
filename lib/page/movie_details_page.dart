@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:student_app/data/model/data_models.dart';
 import 'package:student_app/data/model/data_models_impl.dart';
 import 'package:student_app/data/vos/casts_vo.dart';
-import 'package:student_app/data/vos/data_vo.dart';
-import 'package:student_app/data/vos/movie_details_vo.dart';
+import 'package:student_app/data/vos/movie_vo.dart';
 import 'package:student_app/network/api_constants.dart';
 import 'package:student_app/page/movie_choose_time.dart';
 import 'package:student_app/resources/colors.dart';
@@ -18,20 +17,21 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 class MovieDetailsPage extends StatefulWidget {
   final int movieId;
   final String? token;
-  const MovieDetailsPage(this.movieId, this.token);
-
+  const MovieDetailsPage(this.movieId,this.token,{Key? key}) : super(key: key);
   @override
   State<MovieDetailsPage> createState() => _MovieDetailsPageState();
 }
 
 class _MovieDetailsPageState extends State<MovieDetailsPage> {
   DataModels movieModels = DataModelsImpl();
-  MovieDetailsVO? movieDetails;
-  List<CastsVO>? castImage;
+  MovieVO? movieDetails;
+  List<CastsVO?>? castImage;
 
   @override
   void initState() {
     super.initState();
+    // Network 
+
     movieModels.getMovieDetails(widget.movieId)?.then((value) {
       setState(() {
         movieDetails = value;
@@ -39,10 +39,11 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
       });
     });
 
-    movieModels.getMovieDetailsFromDatabase(widget.movieId).then((value) {
+    //Database
+    movieModels.getMovieDetailsFromDatabase(widget.movieId)?.then((value) {
       setState(() {
         movieDetails = value;
-        castImage = value?.casts;
+        castImage = value.casts;
       });
     });
   }
@@ -192,7 +193,7 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
 }
 
 class PlotSummarySectionView extends StatelessWidget {
-  final MovieDetailsVO? movieDetails;
+  final MovieVO? movieDetails;
   const PlotSummarySectionView(
     this.movieDetails, {
     Key? key,
@@ -228,8 +229,8 @@ class PlotSummarySectionView extends StatelessWidget {
 }
 
 class MovieDetailScreenTitleAndRatingView extends StatelessWidget {
-  final MovieDetailsVO? movieDetails;
-  final DataVO? genreList;
+  final MovieVO? movieDetails;
+  final MovieVO? genreList;
   const MovieDetailScreenTitleAndRatingView(this.genreList, this.movieDetails);
 
   @override
@@ -348,7 +349,7 @@ class MovieDetailsScreenPlayButtonView extends StatelessWidget {
 }
 
 class MovieDetailsScreenImageView extends StatelessWidget {
-  final DataVO? movie;
+  final MovieVO? movie;
   const MovieDetailsScreenImageView(
     this.movie, {
     Key? key,
@@ -383,7 +384,7 @@ class MovieDetailsScreenBackButtonView extends StatelessWidget {
 }
 
 class MovieDetailsImageView extends StatelessWidget {
-  final DataVO? movie;
+  final MovieVO? movie;
   const MovieDetailsImageView(
     this.movie, {
     Key? key,

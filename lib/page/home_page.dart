@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:student_app/data/model/data_models.dart';
 import 'package:student_app/data/model/data_models_impl.dart';
-import 'package:student_app/data/vos/data_vo.dart';
+import 'package:student_app/data/vos/movie_vo.dart';
 import 'package:student_app/data/vos/user_vo.dart';
 import 'package:student_app/itemsview/horizontal_movie_list_view.dart';
 import 'package:student_app/network/api_constants.dart';
@@ -41,8 +41,8 @@ class _HomePageState extends State<HomePage> {
 
   UserVO? mUser;
   String? token;
-  List<DataVO>? movie;
-  List<DataVO>? comingSoonMovie;
+  List<MovieVO>? movie;
+  List<MovieVO>? comingSoonMovie;
 
   // call network data again from this page
   @override

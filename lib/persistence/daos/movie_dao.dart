@@ -1,5 +1,5 @@
 import 'package:hive/hive.dart';
-import 'package:student_app/data/vos/data_vo.dart';
+import 'package:student_app/data/vos/movie_vo.dart';
 import 'package:student_app/persistence/hive_constants.dart';
 
 class MovieDao {
@@ -12,25 +12,25 @@ class MovieDao {
   MovieDao._internal();
 
   // save and get all movie to peristence
-  void saveAllMovie(List<DataVO> movieList) async {
+  void saveAllMovie(List<MovieVO> movieList) async {
     // Map<int, DataVO> movieMap = {
     //   for (var movie in movieList) movie.id!.toInt(): movie
     // };
-    Map<int, DataVO> movieMap = Map.fromIterable(movieList,
+    Map<int, MovieVO> movieMap = Map.fromIterable(movieList,
         key: (movie) => movie.id, value: (movie) => movie);
     await getMovieBox().putAll(movieMap);
   }
 
-  List<DataVO> getAllMovie() {
+  List<MovieVO> getAllMovie() {
     return getMovieBox().values.toList();
   }
 
   //save and get single movie by id
-  void saveSingleMovie(DataVO movie) async {
+  void saveSingleMovie(MovieVO movie) async {
     await getMovieBox().put(movie.id, movie);
   }
 
-  DataVO? getSingleMovie(int movieId) {
+  MovieVO? getSingleMovie(int movieId) {
     return getMovieBox().get(movieId);
   }
 
@@ -39,23 +39,23 @@ class MovieDao {
     return getMovieBox().watch();
   }
 
-  Stream<List<DataVO>> getAllMovieListStream() {
+  Stream<List<MovieVO>> getAllMovieListStream() {
     return Stream.value(getAllMovie().toList());
   }
 
-  Stream<List<DataVO>> getNowShowingMovieListStream() {
+  Stream<List<MovieVO>> getNowShowingMovieListStream() {
     return Stream.value(getAllMovie()
         .where((element) => element.isCurrentMovie ?? false)
         .toList());
   }
 
-  Stream<List<DataVO>> getCommingSoonMovieListStream() {
+  Stream<List<MovieVO>> getCommingSoonMovieListStream() {
     return Stream.value(getAllMovie()
         .where((element) => element.isComingSoonMovie ?? false)
         .toList());
   }
 
-  Box<DataVO> getMovieBox() {
-    return Hive.box<DataVO>(boxNameDataVO);
+  Box<MovieVO> getMovieBox() {
+    return Hive.box<MovieVO>(boxNameMovieVO);
   }
 }

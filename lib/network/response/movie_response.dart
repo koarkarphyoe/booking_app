@@ -1,5 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
-import 'package:student_app/data/vos/data_vo.dart';
+import 'package:student_app/data/vos/movie_vo.dart';
 
 part 'movie_response.g.dart';
 
@@ -12,7 +12,7 @@ class MovieResponse {
   String? message;
 
   @JsonKey(name: "data")
-  List<DataVO>? data;
+  List<MovieVO>? data;
 
   MovieResponse(this.code, this.message, this.data);
 

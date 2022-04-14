@@ -3,9 +3,8 @@ import 'package:stream_transform/stream_transform.dart';
 import 'package:student_app/data/model/data_models.dart';
 import 'package:student_app/data/vos/card_vo.dart';
 import 'package:student_app/data/vos/cinemas_vo.dart';
-import 'package:student_app/data/vos/data_vo.dart';
+import 'package:student_app/data/vos/movie_vo.dart';
 import 'package:student_app/data/vos/date_vo.dart';
-import 'package:student_app/data/vos/movie_details_vo.dart';
 import 'package:student_app/data/vos/movie_seat_list_vo.dart';
 import 'package:student_app/data/vos/payment_method_vo.dart';
 import 'package:student_app/data/vos/snack_vo.dart';
@@ -17,7 +16,6 @@ import 'package:student_app/network/data_agents/data_agents_impl.dart';
 import 'package:student_app/network/response/check_out_response.dart';
 import 'package:student_app/network/response/email_response.dart';
 import 'package:student_app/persistence/daos/movie_dao.dart';
-import 'package:student_app/persistence/daos/movie_details_dao.dart';
 import 'package:student_app/persistence/daos/token_dao.dart';
 import 'package:student_app/persistence/daos/user_dao.dart';
 
@@ -37,7 +35,6 @@ class DataModelsImpl extends DataModels {
   UserDao userDao = UserDao();
   TokenDao tokenDao = TokenDao();
   MovieDao movieDao = MovieDao();
-  MovieDetailsDao movieDetailsDao = MovieDetailsDao();
 
   @override
   Future<EmailResponse>? postRegisterWithEmail(
@@ -64,26 +61,26 @@ class DataModelsImpl extends DataModels {
   @override
   void getNowShowingMovie(String status) {
     mDataAgent.getNowShowingMovie(status)?.then((value) async {
-      List<DataVO> nowShowingMovie = value!.map((e) {
+      List<MovieVO> nowShowingMovie = value!.map((e) {
         e.isCurrentMovie = true;
         e.isComingSoonMovie = false;
         return e;
       }).toList();
       movieDao.saveAllMovie(nowShowingMovie);
-      return Future.value(value);
+      // return Future.value(value);
     });
   }
 
   @override
   void getComingSoonMovie(String status) {
     mDataAgent.getComingSoonMovie(status)?.then((value) async {
-      List<DataVO> comingSoonMovie = value!.map((e) {
+      List<MovieVO> comingSoonMovie = value!.map((e) {
         e.isComingSoonMovie = true;
         e.isCurrentMovie = false;
         return e;
       }).toList();
       movieDao.saveAllMovie(comingSoonMovie);
-      return Future.value(value);
+      // return Future.value(value);
     });
   }
 
@@ -95,8 +92,11 @@ class DataModelsImpl extends DataModels {
   }
 
   @override
-  Future<MovieDetailsVO?>? getMovieDetails(int movieId) {
-    return mDataAgent.getMovieDetails(movieId)?.then((value) => value.data);
+  Future<MovieVO?>? getMovieDetails(int movieId) {
+    return mDataAgent.getMovieDetails(movieId)?.then((value) async {
+      movieDao.saveSingleMovie(value!);
+      return Future.value(value);
+    });
   }
 
   @override
@@ -168,35 +168,30 @@ class DataModelsImpl extends DataModels {
   }
 
   @override
-  Future<List<DataVO>?>? getNowShowingMovieFromDatabase() {
+  Future<List<MovieVO>?>? getNowShowingMovieFromDatabase() {
     this.getNowShowingMovie(statusValue1);
     return movieDao
         .getAllMovieEventStream()
         .startWith(movieDao.getNowShowingMovieListStream())
         .combineLatest(movieDao.getNowShowingMovieListStream(),
-            (p0, p1) => p1 as List<DataVO>)
+            (p0, p1) => p1 as List<MovieVO>)
         .first;
   }
 
   @override
-  Future<List<DataVO>?>? getComingSoonMovieFromDatabase() {
+  Future<List<MovieVO>?>? getComingSoonMovieFromDatabase() {
     this.getComingSoonMovie(statusValue2);
     return movieDao
         .getAllMovieEventStream()
         .startWith(movieDao.getCommingSoonMovieListStream())
         .combineLatest(movieDao.getCommingSoonMovieListStream(),
-            (p0, p1) => p1 as List<DataVO>)
+            (p0, p1) => p1 as List<MovieVO>)
         .first;
   }
 
   @override
-  Future<DataVO>? getMovieFromDatabase(int movieId) {
+  Future<MovieVO> getMovieDetailsFromDatabase(int movieId) {
     return Future.value(movieDao.getSingleMovie(movieId));
-  }
-
-  @override
-  Future<MovieDetailsVO?> getMovieDetailsFromDatabase(int movieId) {
-    return Future.value(movieDetailsDao.getMovieDetails(movieId));
   }
 
   @override
@@ -215,7 +210,6 @@ class DataModelsImpl extends DataModels {
   void deleteUserInfoFromDatabase() {
     userDao.deleteUserUnfo();
   }
-  
 
   //Other
 
@@ -250,4 +244,4 @@ class DataModelsImpl extends DataModels {
   bool isLogIn() {
     return tokenDao.getToken()?.isNotEmpty ?? false;
   }
- }
+}

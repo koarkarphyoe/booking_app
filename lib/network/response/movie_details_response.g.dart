@@ -13,7 +13,7 @@ MovieDetailsResponse _$MovieDetailsResponseFromJson(
       json['message'] as String?,
       json['data'] == null
           ? null
-          : MovieDetailsVO.fromJson(json['data'] as Map<String, dynamic>),
+          : MovieVO.fromJson(json['data'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$MovieDetailsResponseToJson(

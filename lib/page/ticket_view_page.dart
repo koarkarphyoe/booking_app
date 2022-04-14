@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:student_app/data/model/data_models.dart';
 import 'package:student_app/data/model/data_models_impl.dart';
-import 'package:student_app/data/vos/movie_details_vo.dart';
+import 'package:student_app/data/vos/movie_vo.dart';
 import 'package:student_app/data/vos/voucher_vo.dart';
 import 'package:student_app/page/home_page.dart';
 import 'package:student_app/resources/dimens.dart';
@@ -25,7 +25,7 @@ class TicketViewPage extends StatefulWidget {
 class _TicketViewPageState extends State<TicketViewPage> {
   DataModels mDataModel = DataModelsImpl();
   VoucherVO? voucher;
-  MovieDetailsVO? mMovie;
+  MovieVO? mMovie;
 
   @override
   void initState() {
@@ -48,7 +48,17 @@ class _TicketViewPageState extends State<TicketViewPage> {
         setState(() {
           voucher = value.data;
           // print(voucher?.movieId.toString());
-          mDataModel.getMovieDetails(voucher!.movieId!.toInt())?.then((value) {
+
+          //Before implementation Reactive programming in Model
+          // mDataModel.getMovieDetails(voucher!.movieId!.toInt())?.then((value) {
+          //   setState(() {
+          //     mMovie = value;
+          //   });
+
+          //After implementation Reactive programming in Model ,so no need to call network directly
+          mDataModel
+              .getMovieDetailsFromDatabase(voucher!.movieId!.toInt())
+              ?.then((value) {
             setState(() {
               mMovie = value;
             });
@@ -210,7 +220,7 @@ class MovieTitleNameInTicketView extends StatelessWidget {
 }
 
 class MovieTicketImageView extends StatelessWidget {
-  final MovieDetailsVO? mMovie;
+  final MovieVO? mMovie;
   const MovieTicketImageView(
     this.mMovie, {
     Key? key,

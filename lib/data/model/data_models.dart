@@ -1,8 +1,7 @@
 import 'package:student_app/data/vos/card_vo.dart';
 import 'package:student_app/data/vos/cinemas_vo.dart';
-import 'package:student_app/data/vos/data_vo.dart';
+import 'package:student_app/data/vos/movie_vo.dart';
 import 'package:student_app/data/vos/date_vo.dart';
-import 'package:student_app/data/vos/movie_details_vo.dart';
 import 'package:student_app/data/vos/movie_seat_list_vo.dart';
 import 'package:student_app/data/vos/payment_method_vo.dart';
 import 'package:student_app/data/vos/snack_vo.dart';
@@ -31,7 +30,7 @@ abstract class DataModels {
   void getNowShowingMovie(String status);
   void getComingSoonMovie(String status);
   void getUserProfileData();
-  Future<MovieDetailsVO?>? getMovieDetails(int movieId);
+  Future<MovieVO?>? getMovieDetails(int movieId);
   Future<List<CinemasVO>?>? getCinemasList();
   Future<List<TimeSlotDataVO>?>? getCinemaNameAndTimeSlots(String? date);
   void logOut();
@@ -51,10 +50,9 @@ abstract class DataModels {
 
   Future<UserVO>? getUserInfoFromDatabase();
   Future<String?>? getTokenFromDatabase();
-  Future<List<DataVO>?>? getNowShowingMovieFromDatabase();
-  Future<List<DataVO>?>? getComingSoonMovieFromDatabase();
-  Future<DataVO>? getMovieFromDatabase(int movieId);
-  Future<MovieDetailsVO?> getMovieDetailsFromDatabase(int movieId);
+  Future<List<MovieVO>?>? getNowShowingMovieFromDatabase();
+  Future<List<MovieVO>?>? getComingSoonMovieFromDatabase();
+  Future<MovieVO>? getMovieDetailsFromDatabase(int movieId);
   void deleteTokenFromDatabase();
   void deleteUserInfoFromDatabase();
 

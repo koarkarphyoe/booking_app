@@ -1,6 +1,6 @@
 import 'package:student_app/data/vos/card_vo.dart';
 import 'package:student_app/data/vos/cinemas_vo.dart';
-import 'package:student_app/data/vos/data_vo.dart';
+import 'package:student_app/data/vos/movie_vo.dart';
 import 'package:student_app/data/vos/movie_seat_list_vo.dart';
 import 'package:student_app/data/vos/payment_method_vo.dart';
 import 'package:student_app/data/vos/snack_vo.dart';
@@ -69,7 +69,7 @@ class DataAgentsImpl extends DataAgents {
   }
 
   @override
-  Future<List<DataVO>?>? getNowShowingMovie(String status) {
+  Future<List<MovieVO>?>? getNowShowingMovie(String status) {
     return rApi
         ?.getMovies(statusValue1) //for NowShowing api
         .asStream()
@@ -78,7 +78,7 @@ class DataAgentsImpl extends DataAgents {
   }
 
   @override
-  Future<List<DataVO>?>? getComingSoonMovie(String status) {
+  Future<List<MovieVO>?>? getComingSoonMovie(String status) {
     return rApi
         ?.getMovies(statusValue2) //for ComingSoon api
         .asStream()
@@ -87,11 +87,11 @@ class DataAgentsImpl extends DataAgents {
   }
 
   @override
-  Future<MovieDetailsResponse>? getMovieDetails(int movieId) {
+  Future<MovieVO?>? getMovieDetails(int movieId) {
     return rApi
         ?.getMovieDetails(movieId.toString())
         .asStream()
-        .map((event) => event)
+        .map((event) => event.data)
         .first;
   }
 

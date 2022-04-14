@@ -3,11 +3,11 @@ import 'package:json_annotation/json_annotation.dart';
 import 'package:student_app/persistence/hive_constants.dart';
 
 import 'casts_vo.dart';
-part 'data_vo.g.dart';
+part 'movie_vo.g.dart';
 
 @JsonSerializable()
-@HiveType(typeId: hiveTypeIdMovieVO, adapterName: "DataVOAdapter")
-class DataVO {
+@HiveType(typeId: hiveTypeIdMovieVO, adapterName: "MovieVOAdapter")
+class MovieVO {
   @JsonKey(name: "id")
   @HiveField(0)
   int? id;
@@ -35,10 +35,26 @@ class DataVO {
   @HiveField(6)
   bool? isComingSoonMovie;
 
-  DataVO(this.id, this.originalTitle, this.releaseDate, this.genres,
+  @JsonKey(name: "rating")
+  @HiveField(7)
+  double? rating;
+
+  @JsonKey(name: "runtime")
+  @HiveField(8)
+  int? runtime;
+
+  @JsonKey(name: "overview")
+  @HiveField(9)
+  String? overview;
+
+  @JsonKey(name: "casts")
+  @HiveField(10)
+  List<CastsVO>? casts;
+
+  MovieVO(this.id, this.originalTitle, this.releaseDate, this.genres,
       this.posterPath, this.isCurrentMovie, this.isComingSoonMovie);
 
-  factory DataVO.fromJson(Map<String, dynamic> json) => _$DataVOFromJson(json);
+  factory MovieVO.fromJson(Map<String, dynamic> json) => _$MovieVOFromJson(json);
 
-  Map<String, dynamic> toJson() => _$DataVOToJson(this);
+  Map<String, dynamic> toJson() => _$MovieVOToJson(this);
 }
