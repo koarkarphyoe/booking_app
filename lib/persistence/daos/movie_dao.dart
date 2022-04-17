@@ -55,6 +55,10 @@ class MovieDao {
         .toList());
   }
 
+  Stream<MovieVO> getMovieDetailsStream(int movieId) {
+    return Stream.value(getSingleMovie(movieId)!);
+  }
+
   Box<MovieVO> getMovieBox() {
     return Hive.box<MovieVO>(boxNameMovieVO);
   }

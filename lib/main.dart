@@ -9,7 +9,6 @@ import 'package:student_app/page/home_page.dart';
 import 'package:student_app/page/splash_screen_page.dart';
 import 'package:student_app/persistence/hive_constants.dart';
 
-
 void main() async {
   //check from DataAgents
   // DataAgentsImpl()

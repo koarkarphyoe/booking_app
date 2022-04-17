@@ -92,10 +92,10 @@ class DataModelsImpl extends DataModels {
   }
 
   @override
-  Future<MovieVO?>? getMovieDetails(int movieId) {
-    return mDataAgent.getMovieDetails(movieId)?.then((value) async {
+  void getMovieDetails(int movieId) {
+    mDataAgent.getMovieDetails(movieId)?.then((value) {
       movieDao.saveSingleMovie(value!);
-      return Future.value(value);
+      // return Future.value(value); before migrate Reactive Programming
     });
   }
 
@@ -154,7 +154,7 @@ class DataModelsImpl extends DataModels {
 
   @override
   Future<UserVO>? getUserInfoFromDatabase() {
-    this.getUserProfileData();
+    getUserProfileData();
     return userDao
         .getUserInfoEventStream()
         .startWith(userDao.getUserInfoStream())
@@ -169,7 +169,7 @@ class DataModelsImpl extends DataModels {
 
   @override
   Future<List<MovieVO>?>? getNowShowingMovieFromDatabase() {
-    this.getNowShowingMovie(statusValue1);
+    getNowShowingMovie(statusValue1);
     return movieDao
         .getAllMovieEventStream()
         .startWith(movieDao.getNowShowingMovieListStream())
@@ -180,7 +180,7 @@ class DataModelsImpl extends DataModels {
 
   @override
   Future<List<MovieVO>?>? getComingSoonMovieFromDatabase() {
-    this.getComingSoonMovie(statusValue2);
+    getComingSoonMovie(statusValue2);
     return movieDao
         .getAllMovieEventStream()
         .startWith(movieDao.getCommingSoonMovieListStream())
@@ -189,9 +189,22 @@ class DataModelsImpl extends DataModels {
         .first;
   }
 
+  //Before migrate Reactive Programming
+  // @override
+  // Future<MovieVO> getMovieDetailsFromDatabase(int movieId) {
+  //   return Future.value(movieDao.getSingleMovie(movieId));
+  // }
+
+  //After migrate Reactive Programming
   @override
   Future<MovieVO> getMovieDetailsFromDatabase(int movieId) {
-    return Future.value(movieDao.getSingleMovie(movieId));
+    getMovieDetails(movieId);
+    return movieDao
+        .getAllMovieEventStream()
+        .startWith(movieDao.getMovieDetailsStream(movieId))
+        .combineLatest(
+            movieDao.getMovieDetailsStream(movieId), (p0, p1) => p1 as MovieVO)
+        .first;
   }
 
   @override

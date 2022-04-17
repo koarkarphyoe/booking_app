@@ -56,6 +56,17 @@ class _TicketViewPageState extends State<TicketViewPage> {
           //   });
 
           //After implementation Reactive programming in Model ,so no need to call network directly
+        //   mDataModel
+        //       .getMovieDetailsFromDatabase(voucher!.movieId!.toInt())
+        //       ?.then((value) {
+        //     setState(() {
+        //       mMovie = value;
+        //     });
+        //   });
+        // });
+      });
+
+       //After implementation Reactive programming in Model ,so no need to call network directly
           mDataModel
               .getMovieDetailsFromDatabase(voucher!.movieId!.toInt())
               ?.then((value) {
@@ -64,7 +75,6 @@ class _TicketViewPageState extends State<TicketViewPage> {
             });
           });
         });
-      });
     });
 
     super.initState();

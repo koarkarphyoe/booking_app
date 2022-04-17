@@ -17,7 +17,8 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 class MovieDetailsPage extends StatefulWidget {
   final int movieId;
   final String? token;
-  const MovieDetailsPage(this.movieId,this.token,{Key? key}) : super(key: key);
+  const MovieDetailsPage(this.movieId, this.token, {Key? key})
+      : super(key: key);
   @override
   State<MovieDetailsPage> createState() => _MovieDetailsPageState();
 }
@@ -30,16 +31,15 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
   @override
   void initState() {
     super.initState();
-    // Network 
+    // Network used before migrate to Reactive Programming
+    // movieModels.getMovieDetails(widget.movieId)?.then((value) {
+    //   setState(() {
+    //     movieDetails = value;
+    //     castImage = value?.casts;
+    //   });
+    // });
 
-    movieModels.getMovieDetails(widget.movieId)?.then((value) {
-      setState(() {
-        movieDetails = value;
-        castImage = value?.casts;
-      });
-    });
-
-    //Database
+    //Database used after migrate to Reactive Programming
     movieModels.getMovieDetailsFromDatabase(widget.movieId)?.then((value) {
       setState(() {
         movieDetails = value;
@@ -50,7 +50,7 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
 
   @override
   Widget build(BuildContext context) {
-    return (movieDetails != null && castImage != null)
+    return (movieDetails != null)
         ? Scaffold(
             backgroundColor: Colors.white,
             body: SizedBox(
@@ -141,9 +141,7 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
                                   return (castImage != null)
                                       ? MovieDetailsCastImageView(
                                           castImage?[index])
-                                      : const Center(
-                                          child: CircularProgressIndicator(),
-                                        );
+                                      : Container();
                                 },
                               ),
                             ),

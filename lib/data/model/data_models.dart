@@ -30,7 +30,7 @@ abstract class DataModels {
   void getNowShowingMovie(String status);
   void getComingSoonMovie(String status);
   void getUserProfileData();
-  Future<MovieVO?>? getMovieDetails(int movieId);
+  void getMovieDetails(int movieId);
   Future<List<CinemasVO>?>? getCinemasList();
   Future<List<TimeSlotDataVO>?>? getCinemaNameAndTimeSlots(String? date);
   void logOut();
