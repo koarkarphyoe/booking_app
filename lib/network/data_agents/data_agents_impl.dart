@@ -12,9 +12,6 @@ import 'package:dio/dio.dart';
 import 'package:student_app/network/response/check_out_response.dart';
 import 'package:student_app/network/requests/checkout_request.dart';
 import 'package:student_app/network/response/email_response.dart';
-import 'package:student_app/network/response/movie_details_response.dart';
-import 'package:student_app/network/response/movie_seats_response.dart';
-import 'package:student_app/network/response/snack_list_response.dart';
 
 import 'data_agents.dart';
 
@@ -69,29 +66,29 @@ class DataAgentsImpl extends DataAgents {
   }
 
   @override
-  Future<List<MovieVO>?>? getNowShowingMovie(String status) {
+  Future<List<MovieVO>> getNowShowingMovie() {
     return rApi
-        ?.getMovies(statusValue1) //for NowShowing api
+        !.getMovies(statusValue1) //for NowShowing api
         .asStream()
-        .map((event) => event.data)
+        .map((event) => event.data!)
         .first;
   }
 
   @override
-  Future<List<MovieVO>?>? getComingSoonMovie(String status) {
+  Future<List<MovieVO>> getComingSoonMovie() {
     return rApi
-        ?.getMovies(statusValue2) //for ComingSoon api
+        !.getMovies(statusValue2) //for ComingSoon api
         .asStream()
-        .map((event) => event.data)
+        .map((event) => event.data!)
         .first;
   }
 
   @override
-  Future<MovieVO?>? getMovieDetails(int movieId) {
+  Future<MovieVO> getMovieDetails(int movieId) {
     return rApi
-        ?.getMovieDetails(movieId.toString())
+        !.getMovieDetails(movieId.toString())
         .asStream()
-        .map((event) => event.data)
+        .map((event) => event.data!)
         .first;
   }
 

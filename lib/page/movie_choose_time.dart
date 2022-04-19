@@ -130,6 +130,7 @@ class _MovieChooseTimeState extends State<MovieChooseTime> {
                   cinemaNameForMovieSeatsPage = cinema.cinema;
                   cinemaIdForMovieSeatsPage = cinema.cinemaId;
                   cinemaTimeSlotsIdForMovieSeatsPage = timeSlotsId;
+                  // ignore: avoid_print
                   print(cinemaTimeSlotsIdForMovieSeatsPage);
                 }
               },
@@ -266,7 +267,8 @@ class _MovieChooseTimeState extends State<MovieChooseTime> {
 class ChooseItemGridSectionView extends StatelessWidget {
   final List<TimeSlotDataVO>? cinemaList;
   final Function(int?, int?) selectTime;
-  const ChooseItemGridSectionView(this.cinemaList, this.selectTime);
+  const ChooseItemGridSectionView(this.cinemaList, this.selectTime, {Key? key})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -280,7 +282,8 @@ class ChooseItemGridSectionView extends StatelessWidget {
 }
 
 class CinemaNameView extends StatefulWidget {
-  const CinemaNameView(this.cinema, this.selectedTime);
+  const CinemaNameView(this.cinema, this.selectedTime, {Key? key})
+      : super(key: key);
   final TimeSlotDataVO? cinema;
   final Function(int?, int?) selectedTime;
 

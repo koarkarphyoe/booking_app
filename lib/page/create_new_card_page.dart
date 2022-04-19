@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:student_app/resources/colors.dart';
 import 'package:student_app/resources/dimens.dart';
-import 'package:student_app/widgets/confirm_button_view.dart';
 import 'package:student_app/widgets/title_and_text_field.dart';
 import 'package:student_app/widgets/title_text_bold.dart';
 
@@ -87,7 +86,9 @@ class ExpirationDateAndCVC extends StatelessWidget {
   final TextEditingController? textControllerExpireDate;
   final TextEditingController? textEditingControllerCVC;
   const ExpirationDateAndCVC(
-      this.textControllerExpireDate, this.textEditingControllerCVC);
+      this.textControllerExpireDate, this.textEditingControllerCVC,
+      {Key? key})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {

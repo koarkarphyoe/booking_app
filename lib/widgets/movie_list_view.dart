@@ -9,7 +9,9 @@ import 'title_text.dart';
 class MovieListView extends StatelessWidget {
   final MovieVO? mMovie;
   final Function(int) onTapImage;
-  const MovieListView(this.mMovie, this.onTapImage);
+
+  const MovieListView(this.mMovie, this.onTapImage, {Key? key})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {

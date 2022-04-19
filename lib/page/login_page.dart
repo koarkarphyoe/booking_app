@@ -159,6 +159,7 @@ class _LoginPageState extends State<LoginPage> {
       //   // );
       // }
     }).catchError((error) {
+      // ignore: avoid_print, unnecessary_string_interpolations
       print("${error.toString()}");
     });
   }
@@ -260,7 +261,9 @@ class LoginScreenView extends StatelessWidget {
   const LoginScreenView(
       {required this.emailTextController,
       required this.passwordTextController,
-      required this.onTapButton});
+      required this.onTapButton,
+      Key? key})
+      : super(key: key);
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(

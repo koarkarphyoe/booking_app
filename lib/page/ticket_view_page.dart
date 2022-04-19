@@ -56,25 +56,25 @@ class _TicketViewPageState extends State<TicketViewPage> {
           //   });
 
           //After implementation Reactive programming in Model ,so no need to call network directly
-        //   mDataModel
-        //       .getMovieDetailsFromDatabase(voucher!.movieId!.toInt())
-        //       ?.then((value) {
-        //     setState(() {
-        //       mMovie = value;
-        //     });
-        //   });
-        // });
-      });
+          //   mDataModel
+          //       .getMovieDetailsFromDatabase(voucher!.movieId!.toInt())
+          //       ?.then((value) {
+          //     setState(() {
+          //       mMovie = value;
+          //     });
+          //   });
+          // });
+        });
 
-       //After implementation Reactive programming in Model ,so no need to call network directly
-          mDataModel
-              .getMovieDetailsFromDatabase(voucher!.movieId!.toInt())
-              ?.then((value) {
-            setState(() {
-              mMovie = value;
-            });
+        //After implementation Reactive programming in Model ,so no need to call network directly
+        mDataModel
+            .getMovieDetailsFromDatabase(voucher!.movieId!.toInt())
+            ?.then((value) {
+          setState(() {
+            mMovie = value;
           });
         });
+      });
     });
 
     super.initState();
@@ -119,9 +119,9 @@ class _TicketViewPageState extends State<TicketViewPage> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           MovieTicketImageView(mMovie),
-                          SizedBox(height: marginSmall),
+                          const SizedBox(height: marginSmall),
                           Padding(
-                            padding: EdgeInsets.only(left: marginMedium),
+                            padding: const EdgeInsets.only(left: marginMedium),
                             child: MovieTitleNameInTicketView(
                                 mMovie!.originalTitle.toString(),
                                 mMovie!.runtime.toString()),
@@ -182,8 +182,8 @@ class _TicketViewPageState extends State<TicketViewPage> {
 }
 
 class BarCodeView extends StatelessWidget {
-  String? barCode;
-  BarCodeView(
+  final String? barCode;
+  const BarCodeView(
     this.barCode, {
     Key? key,
   }) : super(key: key);

@@ -272,7 +272,9 @@ class TotalTicketAndSeatsTextView extends StatelessWidget {
 
 class MovieSeatsSectionView extends StatefulWidget {
   const MovieSeatsSectionView(
-      this.seatListForRow, this.rowNumbersListForGridView, this.selectedSeat);
+      this.seatListForRow, this.rowNumbersListForGridView, this.selectedSeat,
+      {Key? key})
+      : super(key: key);
   // const MovieSeatsSectionView({
   //   Key? key,
   //   required List<MovieSeatVO> movieSeats,

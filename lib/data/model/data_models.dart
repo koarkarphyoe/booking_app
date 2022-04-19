@@ -27,10 +27,10 @@ abstract class DataModels {
     String password,
   );
 
-  void getNowShowingMovie(String status);
-  void getComingSoonMovie(String status);
+  void getNowShowingMovie();
+  void getComingSoonMovie();
   void getUserProfileData();
-  void getMovieDetails(int movieId);
+  Future<MovieVO> getMovieDetails(int movieId);
   Future<List<CinemasVO>?>? getCinemasList();
   Future<List<TimeSlotDataVO>?>? getCinemaNameAndTimeSlots(String? date);
   void logOut();
@@ -50,8 +50,8 @@ abstract class DataModels {
 
   Future<UserVO>? getUserInfoFromDatabase();
   Future<String?>? getTokenFromDatabase();
-  Future<List<MovieVO>?>? getNowShowingMovieFromDatabase();
-  Future<List<MovieVO>?>? getComingSoonMovieFromDatabase();
+  Future<List<MovieVO>> getNowShowingMovieFromDatabase();
+  Future<List<MovieVO>> getComingSoonMovieFromDatabase();
   Future<MovieVO>? getMovieDetailsFromDatabase(int movieId);
   void deleteTokenFromDatabase();
   void deleteUserInfoFromDatabase();

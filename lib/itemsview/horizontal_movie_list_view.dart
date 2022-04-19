@@ -8,7 +8,10 @@ class HorizontalMovieListView extends StatelessWidget {
   final List<MovieVO>? mMovie;
   final String titleText;
   final Function(int) onTapMovie;
-  const HorizontalMovieListView(this.titleText, this.mMovie, this.onTapMovie);
+
+  const HorizontalMovieListView(this.titleText, this.mMovie, this.onTapMovie,
+      {Key? key})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {

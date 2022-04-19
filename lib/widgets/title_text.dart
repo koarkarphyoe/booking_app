@@ -5,8 +5,10 @@ class TitleText extends StatelessWidget {
   final String greetingText;
   final Color textColor;
   final double textSize;
+
   const TitleText(this.greetingText,
-      {this.textColor = Colors.white, this.textSize = textRegular1X});
+      {this.textColor = Colors.white, this.textSize = textRegular1X, Key? key})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {

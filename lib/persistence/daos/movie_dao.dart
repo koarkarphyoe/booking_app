@@ -16,8 +16,9 @@ class MovieDao {
     // Map<int, DataVO> movieMap = {
     //   for (var movie in movieList) movie.id!.toInt(): movie
     // };
-    Map<int, MovieVO> movieMap = Map.fromIterable(movieList,
-        key: (movie) => movie.id, value: (movie) => movie);
+    Map<int, MovieVO> movieMap = {
+      for (var movie in movieList) movie.id!: movie
+    };
     await getMovieBox().putAll(movieMap);
   }
 
@@ -30,8 +31,8 @@ class MovieDao {
     await getMovieBox().put(movie.id, movie);
   }
 
-  MovieVO? getSingleMovie(int movieId) {
-    return getMovieBox().get(movieId);
+  MovieVO getSingleMovie(int movieId) {
+    return getMovieBox().get(movieId)!;
   }
 
   ///Reactive Programming
@@ -56,7 +57,7 @@ class MovieDao {
   }
 
   Stream<MovieVO> getMovieDetailsStream(int movieId) {
-    return Stream.value(getSingleMovie(movieId)!);
+    return Stream.value(getSingleMovie(movieId));
   }
 
   Box<MovieVO> getMovieBox() {

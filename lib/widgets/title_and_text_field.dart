@@ -9,7 +9,8 @@ class TitleAndTextFieldView extends StatelessWidget {
   final bool obScureText;
   final bool isLengthLimit;
   const TitleAndTextFieldView(this.textTitle, this.textController,
-      {this.obScureText = false,this.isLengthLimit=false});
+      {this.obScureText = false, this.isLengthLimit = false, Key? key})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {

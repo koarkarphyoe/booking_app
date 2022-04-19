@@ -1,5 +1,4 @@
 import 'package:hive/hive.dart';
-import 'package:student_app/data/vos/card_vo.dart';
 import 'package:student_app/data/vos/user_vo.dart';
 import 'package:student_app/persistence/hive_constants.dart';
 

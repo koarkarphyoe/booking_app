@@ -31,16 +31,19 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
   @override
   void initState() {
     super.initState();
+   
     // Network used before migrate to Reactive Programming
-    // movieModels.getMovieDetails(widget.movieId)?.then((value) {
+    // movieModels.getMovieDetails(widget.movieId).then((value) {
     //   setState(() {
     //     movieDetails = value;
-    //     castImage = value?.casts;
+    //     castImage = value.casts;
     //   });
     // });
 
     //Database used after migrate to Reactive Programming
-    movieModels.getMovieDetailsFromDatabase(widget.movieId)?.then((value) {
+    movieModels
+        .getMovieDetailsFromDatabase(widget.movieId.toInt())
+        ?.then((value) {
       setState(() {
         movieDetails = value;
         castImage = value.casts;
@@ -229,7 +232,9 @@ class PlotSummarySectionView extends StatelessWidget {
 class MovieDetailScreenTitleAndRatingView extends StatelessWidget {
   final MovieVO? movieDetails;
   final MovieVO? genreList;
-  const MovieDetailScreenTitleAndRatingView(this.genreList, this.movieDetails);
+  const MovieDetailScreenTitleAndRatingView(this.genreList, this.movieDetails,
+      {Key? key})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {

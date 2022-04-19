@@ -9,7 +9,6 @@ import 'package:student_app/data/vos/user_vo.dart';
 import 'package:student_app/network/requests/checkout_request.dart';
 import 'package:student_app/network/response/check_out_response.dart';
 import 'package:student_app/network/response/email_response.dart';
-import 'package:student_app/network/response/movie_details_response.dart';
 
 abstract class DataAgents {
   Future<EmailResponse>? postRegisterWithEmail(
@@ -22,9 +21,9 @@ abstract class DataAgents {
 
   Future<EmailResponse>? postLoginWithEmail(String email, String password);
   Future<UserVO>? getUserProfileData(String token);
-  Future<List<MovieVO>?>? getNowShowingMovie(String status);
-  Future<List<MovieVO>?>? getComingSoonMovie(String status);
-  Future<MovieVO?>? getMovieDetails(int movieId);
+  Future<List<MovieVO>> getNowShowingMovie();
+  Future<List<MovieVO>> getComingSoonMovie();
+  Future<MovieVO> getMovieDetails(int movieId);
   Future<List<CinemasVO>?>? getCinemasList();
   Future<List<TimeSlotDataVO>?>? getCinemaNameAndTimeSlots(
       String token, String? date);

@@ -4,7 +4,9 @@ import 'package:student_app/resources/dimens.dart';
 class ButtonViewWithIcon extends StatelessWidget {
   final String textTitle;
   final Image logoImage;
-  const ButtonViewWithIcon(this.textTitle, this.logoImage);
+
+  const ButtonViewWithIcon(this.textTitle, this.logoImage, {Key? key})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {

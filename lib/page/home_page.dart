@@ -49,14 +49,14 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
     // From database
-    userModels.getNowShowingMovieFromDatabase()?.then((value) {
+    userModels.getNowShowingMovieFromDatabase().then((value) {
       setState(() {
         movie = value;
       });
     });
 
     // From database
-    userModels.getComingSoonMovieFromDatabase()?.then((value) {
+    userModels.getComingSoonMovieFromDatabase().then((value) {
       setState(() {
         comingSoonMovie = value;
       });
@@ -113,25 +113,33 @@ class _HomePageState extends State<HomePage> {
       ),
       drawer: DrawerSectionView(
           mUser: mUser, menuItems: menuItems, userModels: userModels),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            Padding(
-              padding:
-                  const EdgeInsets.only(left: marginMedium, top: marginMedium),
-              child: UserNameAndPhoto(mUser),
-            ),
-            const SizedBox(height: marginMedium),
-            HorizontalMovieListView(nowShowingText, movie,
-                (movieId) => _navigateToMovieDetailPage(context, movieId)),
-            HorizontalMovieListView(comingSoonText, comingSoonMovie,
-                (movieId) => _navigateToMovieDetailPage(context, movieId)),
-            const SizedBox(
-              height: marginXSmall,
-            ),
-          ],
-        ),
-      ),
+      body: (movie != null && comingSoonMovie != null)
+          ? SingleChildScrollView(
+              child: Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(
+                        left: marginMedium, top: marginMedium),
+                    child: UserNameAndPhoto(mUser),
+                  ),
+                  const SizedBox(height: marginMedium),
+                  HorizontalMovieListView(
+                      nowShowingText,
+                      movie,
+                      (movieId) =>
+                          _navigateToMovieDetailPage(context, movieId)),
+                  HorizontalMovieListView(
+                      comingSoonText,
+                      comingSoonMovie,
+                      (movieId) =>
+                          _navigateToMovieDetailPage(context, movieId)),
+                  const SizedBox(
+                    height: marginXSmall,
+                  ),
+                ],
+              ),
+            )
+          : const CircularProgressIndicator(),
     );
   }
 
