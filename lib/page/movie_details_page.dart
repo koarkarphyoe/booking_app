@@ -26,7 +26,7 @@ class MovieDetailsPage extends StatefulWidget {
 class _MovieDetailsPageState extends State<MovieDetailsPage> {
   DataModels movieModels = DataModelsImpl();
   MovieVO? movieDetails;
-  List<CastsVO?>? castImage;
+  List<CastsVO>? castImage;
 
   @override
   void initState() {
@@ -131,21 +131,10 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
                             const SizedBox(
                               height: marginXSmall,
                             ),
-                            // SizedBox(
-                            //   height: movieDetailsScteenCastContainerHeight,
-                            //   child: ListView.builder(
-                            //     padding: const EdgeInsets.symmetric(
-                            //         horizontal: marginMedium),
-                            //     itemCount: castImage?.length.toInt(),
-                            //     scrollDirection: Axis.horizontal,
-                            //     itemBuilder: (BuildContext context, int index) {
-                            //       return (castImage != null)
-                            //           ? MovieDetailsCastImageView(
-                            //               castImage?[index])
-                            //           : Container();
-                            //     },
-                            //   ),
-                            // ),
+                            (castImage != null)
+                                ? CastsImagesListView(castImage: castImage)
+                                : const Center(
+                                    child: CircularProgressIndicator()),
                             const SizedBox(
                               height: marginMedium,
                             ),
@@ -189,6 +178,34 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
   }
 
   void navigateToPreviousPage(BuildContext context) => Navigator.pop(context);
+}
+
+class CastsImagesListView extends StatelessWidget {
+  const CastsImagesListView({
+    Key? key,
+    required this.castImage,
+  }) : super(key: key);
+
+  final List<CastsVO?>? castImage;
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: movieDetailsScteenCastContainerHeight,
+      child: ListView.builder(
+        padding: const EdgeInsets.symmetric(
+            horizontal: marginMedium),
+        itemCount: castImage?.length.toInt(),
+        scrollDirection: Axis.horizontal,
+        itemBuilder: (BuildContext context, int index) {
+          return (castImage != null)
+              ? MovieDetailsCastImageView(
+                  castImage?[index])
+              : Container();
+        },
+      ),
+    );
+  }
 }
 
 class PlotSummarySectionView extends StatelessWidget {
