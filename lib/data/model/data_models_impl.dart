@@ -30,7 +30,6 @@ class DataModelsImpl extends DataModels {
   }
 
   DataModelsImpl._internal();
-
   UserDao userDao = UserDao();
   TokenDao tokenDao = TokenDao();
   MovieDao movieDao = MovieDao();
@@ -91,10 +90,10 @@ class DataModelsImpl extends DataModels {
   }
 
   @override
-  Future<MovieVO> getMovieDetails(int movieId) {
-    return mDataAgent.getMovieDetails(movieId).then((value) async {
+  void getMovieDetails(int movieId) {
+     mDataAgent.getMovieDetails(movieId).then((value) async {
       movieDao.saveSingleMovie(value);
-      return Future.value(value);
+      // return Future.value(value);
     });
   }
 

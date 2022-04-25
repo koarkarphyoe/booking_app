@@ -16,7 +16,7 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
 class MovieDetailsPage extends StatefulWidget {
   final int movieId;
-  final String? token;
+  final String token;
   const MovieDetailsPage(this.movieId, this.token, {Key? key})
       : super(key: key);
   @override
@@ -31,7 +31,7 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
   @override
   void initState() {
     super.initState();
-   
+
     // Network used before migrate to Reactive Programming
     // movieModels.getMovieDetails(widget.movieId).then((value) {
     //   setState(() {
@@ -41,9 +41,7 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
     // });
 
     //Database used after migrate to Reactive Programming
-    movieModels
-        .getMovieDetailsFromDatabase(widget.movieId.toInt())
-        ?.then((value) {
+    movieModels.getMovieDetailsFromDatabase(widget.movieId)?.then((value) {
       setState(() {
         movieDetails = value;
         castImage = value.casts;
@@ -133,21 +131,21 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
                             const SizedBox(
                               height: marginXSmall,
                             ),
-                            SizedBox(
-                              height: movieDetailsScteenCastContainerHeight,
-                              child: ListView.builder(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: marginMedium),
-                                itemCount: castImage?.length.toInt(),
-                                scrollDirection: Axis.horizontal,
-                                itemBuilder: (BuildContext context, int index) {
-                                  return (castImage != null)
-                                      ? MovieDetailsCastImageView(
-                                          castImage?[index])
-                                      : Container();
-                                },
-                              ),
-                            ),
+                            // SizedBox(
+                            //   height: movieDetailsScteenCastContainerHeight,
+                            //   child: ListView.builder(
+                            //     padding: const EdgeInsets.symmetric(
+                            //         horizontal: marginMedium),
+                            //     itemCount: castImage?.length.toInt(),
+                            //     scrollDirection: Axis.horizontal,
+                            //     itemBuilder: (BuildContext context, int index) {
+                            //       return (castImage != null)
+                            //           ? MovieDetailsCastImageView(
+                            //               castImage?[index])
+                            //           : Container();
+                            //     },
+                            //   ),
+                            // ),
                             const SizedBox(
                               height: marginMedium,
                             ),
@@ -396,7 +394,7 @@ class MovieDetailsImageView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Image.network(
-      "$moviePosterBaseUrl${movie?.posterPath}",
+      "$moviePosterBaseUrl${movie?.posterPath.toString()}",
       // "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSHD8WDfqyhvTJycYGsqcxkhv5dG8PcxQ8YMw&usqp=CAU",
       fit: BoxFit.fill,
     );

@@ -5,6 +5,7 @@ import 'package:student_app/data/vos/movie_vo.dart';
 import 'package:student_app/data/vos/user_vo.dart';
 import 'package:student_app/itemsview/horizontal_movie_list_view.dart';
 import 'package:student_app/network/api_constants.dart';
+import 'package:student_app/page/blank_page.dart';
 import 'package:student_app/page/movie_details_page.dart';
 import 'package:student_app/page/splash_screen_page.dart';
 import 'package:student_app/resources/colors.dart';
@@ -148,7 +149,8 @@ class _HomePageState extends State<HomePage> {
     return Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => MovieDetailsPage(movieId, token),
+        builder: (context) => MovieDetailsPage(movieId, token!),
+        // builder: (context)=>BlankPage(movieId,token!),
       ),
     );
   }

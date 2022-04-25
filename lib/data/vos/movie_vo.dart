@@ -27,7 +27,6 @@ class MovieVO {
   @HiveField(4)
   String? posterPath;
 
-
   @HiveField(5)
   bool? isCurrentMovie;
 
