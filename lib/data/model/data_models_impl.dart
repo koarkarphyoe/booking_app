@@ -10,12 +10,14 @@ import 'package:student_app/data/vos/payment_method_vo.dart';
 import 'package:student_app/data/vos/snack_vo.dart';
 import 'package:student_app/data/vos/timeslotdata_vo.dart';
 import 'package:student_app/data/vos/user_vo.dart';
+import 'package:student_app/network/api_constants.dart';
 import 'package:student_app/network/data_agents/data_agents.dart';
 import 'package:student_app/network/data_agents/data_agents_impl.dart';
 import 'package:student_app/network/response/check_out_response.dart';
 import 'package:student_app/network/response/email_response.dart';
 import 'package:student_app/persistence/daos/cinema_dao.dart';
 import 'package:student_app/persistence/daos/movie_dao.dart';
+import 'package:student_app/persistence/daos/timeslotdata_dao.dart';
 import 'package:student_app/persistence/daos/token_dao.dart';
 import 'package:student_app/persistence/daos/user_dao.dart';
 
@@ -35,6 +37,7 @@ class DataModelsImpl extends DataModels {
   TokenDao tokenDao = TokenDao();
   MovieDao movieDao = MovieDao();
   CinemaDao cinemaDao = CinemaDao();
+  TimeSlotDataDao timeSlotDao = TimeSlotDataDao();
 
   @override
   Future<EmailResponse>? postRegisterWithEmail(
@@ -90,6 +93,7 @@ class DataModelsImpl extends DataModels {
         .getUserProfileData(tokenDao.getToken().toString())
         ?.then((value) {
       userDao.saveUserInfo(value);
+      return Future.value(value);
     });
   }
 
@@ -103,17 +107,31 @@ class DataModelsImpl extends DataModels {
 
   @override
   void getCinemasList() {
-     mDataAgent.getCinemasList()?.then((value) async {
+    mDataAgent.getCinemasList()?.then((value) async {
       cinemaDao.saveAllCinema(value!);
       // return Future.value(value);
     });
   }
 
+  //Before migration to Reactive Programming
+  // @override
+  // Future<List<TimeSlotDataVO>?>? getCinemaNameAndTimeSlots(String? date) {
+  //   return mDataAgent
+  //       .getCinemaNameAndTimeSlots(tokenDao.getToken().toString(), date)
+  //       ?.then((value) => {
+  // return Future.value(value);
+  // });
+  // }
+
+  //After migration to Reactive Programming
   @override
-  Future<List<TimeSlotDataVO>?>? getCinemaNameAndTimeSlots(String? date) {
-    return mDataAgent
+  void getCinemaNameAndTimeSlots(String? date) {
+    mDataAgent
         .getCinemaNameAndTimeSlots(tokenDao.getToken().toString(), date)
-        ?.then((value) => value);
+        ?.then((value) {
+      timeSlotDao.saveAllTimeSlotData(value!);
+      // return Future.value(value);
+    });
   }
 
   @override
@@ -226,6 +244,19 @@ class DataModelsImpl extends DataModels {
         .startWith(cinemaDao.getAllCinemaListStream())
         .combineLatest(cinemaDao.getAllCinemaListStream(),
             (p0, p1) => p1 as List<CinemasVO>)
+        .first;
+  }
+
+
+  @override
+  Future<List<TimeSlotDataVO>> getCinemaNameAndTimeSlotsFromDatabase(
+      String? date) {
+    getCinemaNameAndTimeSlots(date);
+    return timeSlotDao
+        .getAllTimeSlotDataEventStream()
+        .startWith(timeSlotDao.getAllTimeSlotDataListStream())
+        .combineLatest(timeSlotDao.getAllTimeSlotDataListStream(),
+            (p0, p1) => p1 as List<TimeSlotDataVO>)
         .first;
   }
 

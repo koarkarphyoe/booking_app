@@ -51,10 +51,10 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
 
   @override
   Widget build(BuildContext context) {
-    return (movieDetails != null)
-        ? Scaffold(
-            backgroundColor: Colors.white,
-            body: SizedBox(
+    return Scaffold(
+      backgroundColor: Colors.white,
+      body: (movieDetails != null)
+          ? SizedBox(
               // height: MediaQuery.of(context).size.height,
               child: CustomScrollView(
                 slivers: [
@@ -159,11 +159,9 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
                   ),
                 ],
               ),
-            ),
-          )
-        : const Center(
-            child: CircularProgressIndicator(),
-          );
+            )
+          : const Center(child: CircularProgressIndicator()),
+    );
   }
 
   void _navigateToMovieChooseTimePage(BuildContext context) {
@@ -193,14 +191,12 @@ class CastsImagesListView extends StatelessWidget {
     return SizedBox(
       height: movieDetailsScteenCastContainerHeight,
       child: ListView.builder(
-        padding: const EdgeInsets.symmetric(
-            horizontal: marginMedium),
+        padding: const EdgeInsets.symmetric(horizontal: marginMedium),
         itemCount: castImage?.length.toInt(),
         scrollDirection: Axis.horizontal,
         itemBuilder: (BuildContext context, int index) {
           return (castImage != null)
-              ? MovieDetailsCastImageView(
-                  castImage?[index])
+              ? MovieDetailsCastImageView(castImage?[index])
               : Container();
         },
       ),

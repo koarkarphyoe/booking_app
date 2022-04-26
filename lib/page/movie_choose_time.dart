@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:student_app/data/model/data_models.dart';
 import 'package:student_app/data/model/data_models_impl.dart';
+import 'package:student_app/data/vos/cinemas_vo.dart';
 import 'package:student_app/data/vos/date_vo.dart';
 import 'package:student_app/data/vos/timeslotdata_vo.dart';
 import 'package:student_app/page/movie_seats_page.dart';
@@ -23,6 +24,7 @@ class _MovieChooseTimeState extends State<MovieChooseTime> {
   DataModels mDataModels = DataModelsImpl();
 
   List<TimeSlotDataVO>? cinemaList;
+  List<CinemasVO>? cinemaDataList;
   // TimeSlotDataVO? cinemaName;
   // TimeslotsVO? timeSlots;
   List<DateVO?>? dateList;
@@ -60,13 +62,27 @@ class _MovieChooseTimeState extends State<MovieChooseTime> {
     selectedDate?.isSelected = true;
 
     // this api use for cinema names
+    // mDataModels
+    //     .getCinemaNameAndTimeSlots(selectedDate?.yMd.toString())
+    //     ?.then((value) {
+    //   setState(() {
+    //     cinemaList = value;
+    //   });
+    // });
+
     mDataModels
-        .getCinemaNameAndTimeSlots(selectedDate?.yMd.toString())
-        ?.then((value) {
+        .getCinemaNameAndTimeSlotsFromDatabase(selectedDate?.yMd.toString())
+        .then((value) {
       setState(() {
         cinemaList = value;
       });
     });
+
+    // mDataModels.getCinemasListFromDatabase().then((value) {
+    //   setState(() {
+    //     cinemaDataList = value;
+    //   });
+    // });
   }
 
   _selectDate(int dateId) {
@@ -99,17 +115,25 @@ class _MovieChooseTimeState extends State<MovieChooseTime> {
 
         // this api use for cinema names and user behavior in selecting date and time to request movie timeSlots
         // it is need to call again in setState bcoz timeSlots will different by following user selected date from Api
+        // mDataModels
+        //     .getCinemaNameAndTimeSlots(selectedDate?.yMd.toString())
+        //     ?.then(
+        //   (value) {
+        //     setState(
+        //       () {
+        //         cinemaList = value;
+        //       },
+        //     );
+        //   },
+        // );
+
         mDataModels
-            .getCinemaNameAndTimeSlots(selectedDate?.yMd.toString())
-            ?.then(
-          (value) {
-            setState(
-              () {
-                cinemaList = value;
-              },
-            );
-          },
-        );
+            .getCinemaNameAndTimeSlotsFromDatabase(selectedDate?.yMd.toString())
+            .then((value) {
+          setState(() {
+            cinemaList = value;
+          });
+        });
       },
     );
   }
@@ -251,12 +275,18 @@ class _MovieChooseTimeState extends State<MovieChooseTime> {
   }
 
   _navigateToMovieSeatsPage(BuildContext context, String? cinemaName,
-      String? date, String? time, int? cinemaId, String? yMd,int? timeSlotId) {
+      String? date, String? time, int? cinemaId, String? yMd, int? timeSlotId) {
     return Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => MovieSeatsPage(widget.movieDetails, cinemaName,
-            date, time, cinemaId, yMdForMovieSeatsPage,cinemaTimeSlotsIdForMovieSeatsPage),
+        builder: (context) => MovieSeatsPage(
+            widget.movieDetails,
+            cinemaName,
+            date,
+            time,
+            cinemaId,
+            yMdForMovieSeatsPage,
+            cinemaTimeSlotsIdForMovieSeatsPage),
       ),
     );
   }

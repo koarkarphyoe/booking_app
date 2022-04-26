@@ -4,12 +4,13 @@ import 'package:student_app/data/model/data_models_impl.dart';
 import 'package:student_app/data/vos/card_vo.dart';
 import 'package:student_app/data/vos/casts_vo.dart';
 import 'package:student_app/data/vos/movie_vo.dart';
+import 'package:student_app/data/vos/timeslotdata_vo.dart';
 import 'package:student_app/data/vos/user_vo.dart';
 import 'package:student_app/page/home_page.dart';
 import 'package:student_app/page/splash_screen_page.dart';
 import 'package:student_app/persistence/hive_constants.dart';
-
 import 'data/vos/cinemas_vo.dart';
+import 'data/vos/timeslots_vo.dart';
 
 void main() async {
   //check from DataAgents
@@ -54,6 +55,8 @@ void main() async {
   Hive.registerAdapter(MovieVOAdapter());
   Hive.registerAdapter(CastsVOAdapter());
   Hive.registerAdapter(CinemasVOAdapter());
+  Hive.registerAdapter(TimeSlotDataVOAdapter());
+  Hive.registerAdapter(TimeslotsVOAdapter());
 
   await Hive.openBox<UserVO>(boxNameUserVO);
   await Hive.openBox<CardVO>(boxNameCardVO);
@@ -61,6 +64,7 @@ void main() async {
   await Hive.openBox<CastsVO>(boxNameCastsVO);
   await Hive.openBox<String>(boxNameTokenVO);
   await Hive.openBox<CinemasVO>(boxNameCinemaVO);
+  await Hive.openBox<TimeSlotDataVO>(boxNameTimeSlotDataVO);
 
   runApp(const MyApp());
 }
@@ -111,3 +115,4 @@ class _MyAppState extends State<MyApp> {
     );
   }
 }
+

@@ -31,7 +31,11 @@ abstract class DataModels {
   void getUserProfileData();
   void getMovieDetails(int movieId);
   void getCinemasList();
-  Future<List<TimeSlotDataVO>?>? getCinemaNameAndTimeSlots(String? date);
+  //Before migrate to Reactive Programming
+  // Future<List<TimeSlotDataVO>?>? getCinemaNameAndTimeSlots(String? date);
+
+  //After migrate to Reactive Programming
+  void getCinemaNameAndTimeSlots(String? date);
   void logOut();
   bool isLogIn();
   Future<List<List<MovieSeatListVO>>?> getMovieSeat(
@@ -52,6 +56,7 @@ abstract class DataModels {
   Future<List<MovieVO>> getComingSoonMovieFromDatabase();
   Future<MovieVO>? getMovieDetailsFromDatabase(int movieId);
   Future<List<CinemasVO>> getCinemasListFromDatabase();
+  Future<List<TimeSlotDataVO>> getCinemaNameAndTimeSlotsFromDatabase(String? date);
   void deleteTokenFromDatabase();
   void deleteUserInfoFromDatabase();
 
