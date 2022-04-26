@@ -9,6 +9,8 @@ import 'package:student_app/page/home_page.dart';
 import 'package:student_app/page/splash_screen_page.dart';
 import 'package:student_app/persistence/hive_constants.dart';
 
+import 'data/vos/cinemas_vo.dart';
+
 void main() async {
   //check from DataAgents
   // DataAgentsImpl()
@@ -51,12 +53,14 @@ void main() async {
   Hive.registerAdapter(CardVOAdapter());
   Hive.registerAdapter(MovieVOAdapter());
   Hive.registerAdapter(CastsVOAdapter());
+  Hive.registerAdapter(CinemasVOAdapter());
 
   await Hive.openBox<UserVO>(boxNameUserVO);
   await Hive.openBox<CardVO>(boxNameCardVO);
   await Hive.openBox<MovieVO>(boxNameMovieVO);
   await Hive.openBox<CastsVO>(boxNameCastsVO);
   await Hive.openBox<String>(boxNameTokenVO);
+  await Hive.openBox<CinemasVO>(boxNameCinemaVO);
 
   runApp(const MyApp());
 }

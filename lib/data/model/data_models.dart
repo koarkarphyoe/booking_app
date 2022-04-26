@@ -12,7 +12,6 @@ import 'package:student_app/network/response/check_out_response.dart';
 import 'package:student_app/network/response/email_response.dart';
 
 abstract class DataModels {
-
   // Network
   Future<EmailResponse>? postRegisterWithEmail(
       String name,
@@ -31,7 +30,7 @@ abstract class DataModels {
   void getComingSoonMovie();
   void getUserProfileData();
   void getMovieDetails(int movieId);
-  Future<List<CinemasVO>?>? getCinemasList();
+  void getCinemasList();
   Future<List<TimeSlotDataVO>?>? getCinemaNameAndTimeSlots(String? date);
   void logOut();
   bool isLogIn();
@@ -45,7 +44,6 @@ abstract class DataModels {
       Map<String, dynamic> checkoutRequest);
   Future<CheckOutResponse>? checkOut(CheckoutRequest checkoutRequest);
 
-
   //Database
 
   Future<UserVO>? getUserInfoFromDatabase();
@@ -53,6 +51,7 @@ abstract class DataModels {
   Future<List<MovieVO>> getNowShowingMovieFromDatabase();
   Future<List<MovieVO>> getComingSoonMovieFromDatabase();
   Future<MovieVO>? getMovieDetailsFromDatabase(int movieId);
+  Future<List<CinemasVO>> getCinemasListFromDatabase();
   void deleteTokenFromDatabase();
   void deleteUserInfoFromDatabase();
 

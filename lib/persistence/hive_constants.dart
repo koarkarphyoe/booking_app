@@ -3,6 +3,7 @@ const int hiveTypeIdCardVO = 1;
 const int hiveTypeIdUserVO = 2;
 const int hiveTypeIdMovieVO = 3;
 const int hiveTypeIdCastsVO = 4;
+const int hiveTypeIdCinemaVO = 5;
 
 // hive box name
 
@@ -12,3 +13,4 @@ const String boxNameTokenVO = "BOX_NAME_TOKEN_VO";
 const String boxNameProfileVO = "BOX_NAME_TOKEN_VO";
 const String boxNameMovieVO = "BOX_NAME_MOVIE_VO";
 const String boxNameCastsVO = "BOX_NAME_CASTS_VO";
+const String boxNameCinemaVO = "BOX_NAME_CINEMA_VO";

@@ -14,6 +14,7 @@ import 'package:student_app/network/data_agents/data_agents.dart';
 import 'package:student_app/network/data_agents/data_agents_impl.dart';
 import 'package:student_app/network/response/check_out_response.dart';
 import 'package:student_app/network/response/email_response.dart';
+import 'package:student_app/persistence/daos/cinema_dao.dart';
 import 'package:student_app/persistence/daos/movie_dao.dart';
 import 'package:student_app/persistence/daos/token_dao.dart';
 import 'package:student_app/persistence/daos/user_dao.dart';
@@ -33,6 +34,7 @@ class DataModelsImpl extends DataModels {
   UserDao userDao = UserDao();
   TokenDao tokenDao = TokenDao();
   MovieDao movieDao = MovieDao();
+  CinemaDao cinemaDao = CinemaDao();
 
   @override
   Future<EmailResponse>? postRegisterWithEmail(
@@ -86,20 +88,25 @@ class DataModelsImpl extends DataModels {
   void getUserProfileData() async {
     mDataAgent
         .getUserProfileData(tokenDao.getToken().toString())
-        ?.then((value) => value);
+        ?.then((value) {
+      userDao.saveUserInfo(value);
+    });
   }
 
   @override
   void getMovieDetails(int movieId) {
-     mDataAgent.getMovieDetails(movieId).then((value) async {
+    mDataAgent.getMovieDetails(movieId).then((value) async {
       movieDao.saveSingleMovie(value);
       // return Future.value(value);
     });
   }
 
   @override
-  Future<List<CinemasVO>?>? getCinemasList() {
-    return mDataAgent.getCinemasList()?.then((value) => value);
+  void getCinemasList() {
+     mDataAgent.getCinemasList()?.then((value) async {
+      cinemaDao.saveAllCinema(value!);
+      // return Future.value(value);
+    });
   }
 
   @override
@@ -153,8 +160,7 @@ class DataModelsImpl extends DataModels {
 
   @override
   Future<UserVO>? getUserInfoFromDatabase() {
-    // ignore: unnecessary_this
-    this.getUserProfileData();
+    getUserProfileData();
     return userDao
         .getUserInfoEventStream()
         // ignore: void_checks
@@ -170,8 +176,7 @@ class DataModelsImpl extends DataModels {
 
   @override
   Future<List<MovieVO>> getNowShowingMovieFromDatabase() {
-    // ignore: unnecessary_this
-    this.getNowShowingMovie();
+    getNowShowingMovie();
     return movieDao
         .getAllMovieEventStream()
         // ignore: void_checks
@@ -183,8 +188,7 @@ class DataModelsImpl extends DataModels {
 
   @override
   Future<List<MovieVO>> getComingSoonMovieFromDatabase() {
-    // ignore: unnecessary_this
-    this.getComingSoonMovie();
+    getComingSoonMovie();
     return movieDao
         .getAllMovieEventStream()
         // ignore: void_checks
@@ -203,14 +207,25 @@ class DataModelsImpl extends DataModels {
   //After migrate Reactive Programming
   @override
   Future<MovieVO>? getMovieDetailsFromDatabase(int movieId) {
-    // ignore: unnecessary_this
-    this.getMovieDetails(movieId);
+    getMovieDetails(movieId);
     return movieDao
         .getAllMovieEventStream()
         // ignore: void_checks
         .startWith(movieDao.getMovieDetailsStream(movieId))
         .combineLatest(
             movieDao.getMovieDetailsStream(movieId), (p0, p1) => p1 as MovieVO)
+        .first;
+  }
+
+  @override
+  Future<List<CinemasVO>> getCinemasListFromDatabase() {
+    getCinemasList();
+    return cinemaDao
+        .getAllCinemaListEventStream()
+        // ignore: void_checks
+        .startWith(cinemaDao.getAllCinemaListStream())
+        .combineLatest(cinemaDao.getAllCinemaListStream(),
+            (p0, p1) => p1 as List<CinemasVO>)
         .first;
   }
 
