@@ -10,7 +10,6 @@ import 'package:student_app/data/vos/payment_method_vo.dart';
 import 'package:student_app/data/vos/snack_vo.dart';
 import 'package:student_app/data/vos/timeslotdata_vo.dart';
 import 'package:student_app/data/vos/user_vo.dart';
-import 'package:student_app/network/api_constants.dart';
 import 'package:student_app/network/data_agents/data_agents.dart';
 import 'package:student_app/network/data_agents/data_agents_impl.dart';
 import 'package:student_app/network/response/check_out_response.dart';
@@ -54,7 +53,7 @@ class DataModelsImpl extends DataModels {
   @override
   Future<UserVO>? postLoginWithEmail(String email, String password) {
     return mDataAgent.postLoginWithEmail(email, password)?.then((value) async {
-      userDao.saveUserInfo(value.data);
+      userDao.saveUserInfo(value.data!);
       //save token to Database(Hive)
       tokenDao.saveToken(value.token);
       return Future.value(value.data);
@@ -92,8 +91,10 @@ class DataModelsImpl extends DataModels {
     mDataAgent
         .getUserProfileData(tokenDao.getToken().toString())
         ?.then((value) {
-      userDao.saveUserInfo(value);
-      return Future.value(value);
+      //No need to save UserInfo in this ,bcoz already save from response postLoginWithEmail
+      // userDao.saveUserInfo(value);
+      // return Future.value(value);
+      return value;
     });
   }
 
@@ -246,7 +247,6 @@ class DataModelsImpl extends DataModels {
             (p0, p1) => p1 as List<CinemasVO>)
         .first;
   }
-
 
   @override
   Future<List<TimeSlotDataVO>> getCinemaNameAndTimeSlotsFromDatabase(

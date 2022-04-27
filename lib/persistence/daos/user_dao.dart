@@ -9,8 +9,8 @@ class UserDao {
   }
   UserDao._internal();
 
-  void saveUserInfo(UserVO? userInfo) async {
-    await getUserInfoBox().add(userInfo!);
+  void saveUserInfo(UserVO userInfo) async {
+    await getUserInfoBox().add(userInfo);
   }
 
   UserVO getUserInfo() {
