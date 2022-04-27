@@ -195,7 +195,7 @@ class DataModelsImpl extends DataModels {
 
   @override
   Future<List<MovieVO>> getNowShowingMovieFromDatabase() {
-    getNowShowingMovie();
+    this.getNowShowingMovie();
     return movieDao
         .getAllMovieEventStream()
         // ignore: void_checks
@@ -207,7 +207,7 @@ class DataModelsImpl extends DataModels {
 
   @override
   Future<List<MovieVO>> getComingSoonMovieFromDatabase() {
-    getComingSoonMovie();
+    this.getComingSoonMovie();
     return movieDao
         .getAllMovieEventStream()
         // ignore: void_checks

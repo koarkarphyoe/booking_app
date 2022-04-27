@@ -48,19 +48,35 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
+    //From network
+    // userModels.getNowShowingMovie().then((value) {
+    //   setState(() {
+    //     movie = value;
+    //   });
+    // });
+
     // From database
     userModels.getNowShowingMovieFromDatabase().then((value) {
       setState(() {
         movie = value;
+        print("Now Showing Started! ==> ${movie.toString()}");
       });
-    });
+    }).catchError((error) => debugPrint(error.toString()));
+
+    //From network
+    // userModels.getComingSoonMovie().then((value) {
+    //   setState(() {
+    //     comingSoonMovie = value;
+    //   });
+    // });
 
     // From database
     userModels.getComingSoonMovieFromDatabase().then((value) {
       setState(() {
         comingSoonMovie = value;
+        print("ComingSoonMovie ==> ${comingSoonMovie.toString()}");
       });
-    });
+    }).catchError((error) => debugPrint(error.toString()));
 
     userModels.getUserInfoFromDatabase()?.then((value) {
       setState(() {
@@ -85,62 +101,53 @@ class _HomePageState extends State<HomePage> {
       "Rate us"
     ];
     return Scaffold(
-      key: _drawerKey, //for Navigation Drawer Section
-      backgroundColor: Colors.white,
-      appBar: AppBar(
+        key: _drawerKey, //for Navigation Drawer Section
         backgroundColor: Colors.white,
-        leading: GestureDetector(
-          onTap: () {
-            //for Navigation Drawer Section
-            openDrawer();
-          },
-          child: const Icon(
-            Icons.menu,
-            color: Colors.black,
-          ),
-        ),
-        actions: const [
-          Padding(
-            padding: EdgeInsets.only(right: marginMedium),
-            child: Icon(
-              Icons.search,
+        appBar: AppBar(
+          backgroundColor: Colors.white,
+          leading: GestureDetector(
+            onTap: () {
+              //for Navigation Drawer Section
+              openDrawer();
+            },
+            child: const Icon(
+              Icons.menu,
               color: Colors.black,
-              size: searchAndMenuIconSize,
             ),
           ),
-        ],
-        elevation: 0,
-      ),
-      drawer: DrawerSectionView(
-          mUser: mUser, menuItems: menuItems, userModels: userModels),
-      body: (movie != null && comingSoonMovie != null)
-          ? SingleChildScrollView(
-              child: Column(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(
-                        left: marginMedium, top: marginMedium),
-                    child: UserNameAndPhoto(mUser),
-                  ),
-                  const SizedBox(height: marginMedium),
-                  HorizontalMovieListView(
-                      nowShowingText,
-                      movie,
-                      (movieId) =>
-                          _navigateToMovieDetailPage(context, movieId)),
-                  HorizontalMovieListView(
-                      comingSoonText,
-                      comingSoonMovie,
-                      (movieId) =>
-                          _navigateToMovieDetailPage(context, movieId)),
-                  const SizedBox(
-                    height: marginXSmall,
-                  ),
-                ],
+          actions: const [
+            Padding(
+              padding: EdgeInsets.only(right: marginMedium),
+              child: Icon(
+                Icons.search,
+                color: Colors.black,
+                size: searchAndMenuIconSize,
               ),
-            )
-          : const CircularProgressIndicator(),
-    );
+            ),
+          ],
+          elevation: 0,
+        ),
+        drawer: DrawerSectionView(
+            mUser: mUser, menuItems: menuItems, userModels: userModels),
+        body: SingleChildScrollView(
+          child: Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(
+                    left: marginMedium, top: marginMedium),
+                child: UserNameAndPhoto(mUser),
+              ),
+              const SizedBox(height: marginMedium),
+              HorizontalMovieListView(nowShowingText, movie,
+                  (movieId) => _navigateToMovieDetailPage(context, movieId)),
+              HorizontalMovieListView(comingSoonText, comingSoonMovie,
+                  (movieId) => _navigateToMovieDetailPage(context, movieId)),
+              const SizedBox(
+                height: marginXSmall,
+              ),
+            ],
+          ),
+        ));
   }
 
   Future<dynamic> _navigateToMovieDetailPage(

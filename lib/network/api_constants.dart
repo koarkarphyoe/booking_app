@@ -41,8 +41,8 @@ const String bookingDate = "booking_date";
 
 //Param Value
 
-const String statusValue1 = "current";
-const String statusValue2 = "comingsoon";
+const String statusCurrentMovie = "current";
+const String statusComingSoonMovie = "comingsoon";
 const String authorization = "Authorization";
 const String dateValue = "2022-01-27";
 const int cinemaDayTimeSlotsIdValue = 1;

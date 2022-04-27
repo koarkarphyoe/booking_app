@@ -6,11 +6,11 @@ import 'package:student_app/widgets/title_text_bold.dart';
 
 import 'title_text.dart';
 
-class MovieListView extends StatelessWidget {
+class MovieView extends StatelessWidget {
   final MovieVO? mMovie;
   final Function(int) onTapImage;
 
-  const MovieListView(this.mMovie, this.onTapImage, {Key? key})
+  const MovieView(this.mMovie, this.onTapImage, {Key? key})
       : super(key: key);
 
   @override

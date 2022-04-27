@@ -68,7 +68,7 @@ class DataAgentsImpl extends DataAgents {
   @override
   Future<List<MovieVO>> getNowShowingMovie() {
     return rApi
-        !.getMovies(statusValue1) //for NowShowing api
+        !.getMovies(statusCurrentMovie) //for NowShowing api
         .asStream()
         .map((event) => event.data!)
         .first;
@@ -77,7 +77,7 @@ class DataAgentsImpl extends DataAgents {
   @override
   Future<List<MovieVO>> getComingSoonMovie() {
     return rApi
-        !.getMovies(statusValue2) //for ComingSoon api
+        !.getMovies(statusComingSoonMovie) //for ComingSoon api
         .asStream()
         .map((event) => event.data!)
         .first;

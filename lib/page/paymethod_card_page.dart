@@ -62,8 +62,6 @@ class _PaymentCardPageState extends State<PaymentCardPage> {
   @override
   void initState() {
     super.initState();
-
-
     mDataModel.getUserInfoFromDatabase()?.then((value) {
       setState(() {
         cardList = value.cards;
@@ -74,8 +72,7 @@ class _PaymentCardPageState extends State<PaymentCardPage> {
   }
 
   void _createNewCard(String text, String text2, String text3, String text4) {
-    DataModelsImpl mModel = DataModelsImpl();
-    mModel.registerPaymentCard(text, text2, text3, text4)?.then((value) {
+    mDataModel.registerPaymentCard(text, text2, text3, text4)?.then((value) {
       setState(() {
         cardList = value;
       });

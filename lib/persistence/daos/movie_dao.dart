@@ -13,12 +13,17 @@ class MovieDao {
 
   // save and get all movie to peristence
   void saveAllMovie(List<MovieVO> movieList) async {
-    // Map<int, DataVO> movieMap = {
-    //   for (var movie in movieList) movie.id!.toInt(): movie
+    
+    // Map<int, MovieVO> movieMap = {
+    //   for (var movie in movieList) movie.id!: movie
     // };
-    Map<int, MovieVO> movieMap = {
-      for (var movie in movieList) movie.id!: movie
-    };
+
+     Map<int, MovieVO> movieMap = Map.fromIterable(
+      movieList,
+      key: (movie) => movie.id,
+      value: (movie) => movie,
+    );
+    
     await getMovieBox().putAll(movieMap);
   }
 
