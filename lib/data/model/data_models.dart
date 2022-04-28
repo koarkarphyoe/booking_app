@@ -52,8 +52,8 @@ abstract class DataModels {
 
   Future<UserVO>? getUserInfoFromDatabase();
   Future<String?>? getTokenFromDatabase();
-  Future<List<MovieVO>> getNowShowingMovieFromDatabase();
-  Future<List<MovieVO>> getComingSoonMovieFromDatabase();
+  Stream<List<MovieVO>> getNowShowingMovieFromDatabase();
+  Stream<List<MovieVO>> getComingSoonMovieFromDatabase();
   Future<MovieVO>? getMovieDetailsFromDatabase(int movieId);
   Future<List<CinemasVO>> getCinemasListFromDatabase();
   Future<List<TimeSlotDataVO>> getCinemaNameAndTimeSlotsFromDatabase(String? date);

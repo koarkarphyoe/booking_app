@@ -56,12 +56,11 @@ class _HomePageState extends State<HomePage> {
     // });
 
     // From database
-    userModels.getNowShowingMovieFromDatabase().then((value) {
+    userModels.getNowShowingMovieFromDatabase().listen((value) {
       setState(() {
         movie = value;
-        print("Now Showing Started! ==> ${movie.toString()}");
       });
-    }).catchError((error) => debugPrint(error.toString()));
+    }).onError((error) => debugPrint(error.toString()));
 
     //From network
     // userModels.getComingSoonMovie().then((value) {
@@ -71,12 +70,11 @@ class _HomePageState extends State<HomePage> {
     // });
 
     // From database
-    userModels.getComingSoonMovieFromDatabase().then((value) {
+    userModels.getComingSoonMovieFromDatabase().listen((value) {
       setState(() {
         comingSoonMovie = value;
-        print("ComingSoonMovie ==> ${comingSoonMovie.toString()}");
       });
-    }).catchError((error) => debugPrint(error.toString()));
+    }).onError((error) => debugPrint(error.toString()));
 
     userModels.getUserInfoFromDatabase()?.then((value) {
       setState(() {

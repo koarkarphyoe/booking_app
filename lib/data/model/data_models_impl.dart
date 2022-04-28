@@ -193,28 +193,39 @@ class DataModelsImpl extends DataModels {
     return Future.value(tokenDao.getToken());
   }
 
-  @override
-  Future<List<MovieVO>> getNowShowingMovieFromDatabase() {
-    this.getNowShowingMovie();
-    return movieDao
-        .getAllMovieEventStream()
-        // ignore: void_checks
-        .startWith(movieDao.getNowShowingMovieListStream())
-        .combineLatest(movieDao.getNowShowingMovieListStream(),
-            (p0, p1) => p1 as List<MovieVO>)
-        .first;
-  }
+  // @override
+  // Future<List<MovieVO>> getNowShowingMovieFromDatabase() {
+  //   this.getNowShowingMovie();
+  //   return movieDao
+  //       .getAllMovieEventStream()
+  //       // ignore: void_checks
+  //       .startWith(movieDao.getNowShowingMovieListStream())
+  //       .combineLatest(movieDao.getNowShowingMovieListStream(),
+  //           (p0, p1) => p1 as List<MovieVO>)
+  //       .first;
+  // }
 
+  //After migrate to Reactive Programming method 1
+  // @override
+  // Stream<List<MovieVO>> getNowShowingMovieFromDatabase() {
+  //   getNowShowingMovie();
+  //   return movieDao
+  //       .getAllMovieEventStream()
+  //       // ignore: void_checks
+  //       .startWith(movieDao.getNowShowingMovieListStream())
+  //       .map((event) => movieDao.getNowShowingMovieList());
+  // }
+
+  //After migrate to Reactive Programming method 2
   @override
-  Future<List<MovieVO>> getComingSoonMovieFromDatabase() {
-    this.getComingSoonMovie();
-    return movieDao
-        .getAllMovieEventStream()
-        // ignore: void_checks
-        .startWith(movieDao.getCommingSoonMovieListStream())
-        .combineLatest(movieDao.getCommingSoonMovieListStream(),
-            (p0, p1) => p1 as List<MovieVO>)
-        .first;
+  Stream<List<MovieVO>> getNowShowingMovieFromDatabase() {
+    getNowShowingMovie();
+    return movieDao.watchNowShowingMovieStream();
+  }
+  @override
+  Stream<List<MovieVO>> getComingSoonMovieFromDatabase() {
+    getComingSoonMovie();
+    return movieDao.watchComingSoonMovieStream();
   }
 
   //Before migrate Reactive Programming

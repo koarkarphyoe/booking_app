@@ -1,4 +1,6 @@
+import 'package:flutter/cupertino.dart';
 import 'package:hive/hive.dart';
+import 'package:stream_transform/stream_transform.dart';
 import 'package:student_app/data/vos/movie_vo.dart';
 import 'package:student_app/persistence/hive_constants.dart';
 
@@ -13,23 +15,36 @@ class MovieDao {
 
   // save and get all movie to peristence
   void saveAllMovie(List<MovieVO> movieList) async {
-    
     // Map<int, MovieVO> movieMap = {
     //   for (var movie in movieList) movie.id!: movie
     // };
 
-     Map<int, MovieVO> movieMap = Map.fromIterable(
+    Map<int, MovieVO> movieMap = Map.fromIterable(
       movieList,
       key: (movie) => movie.id,
       value: (movie) => movie,
     );
-    
+
     await getMovieBox().putAll(movieMap);
   }
 
   List<MovieVO> getAllMovie() {
     return getMovieBox().values.toList();
   }
+
+  // List<MovieVO> getNowShowingMovieList() {
+  //   return getAllMovie()
+  //       .where((movie) => movie.isCurrentMovie ?? false)
+  //       .toList();
+  // }
+
+  // List<MovieVO> getComingSoonMovieList() {
+  //   return getAllMovie()
+  //       .where((movie) => movie.isComingSoonMovie ?? false)
+  //       .toList();
+  // }
+
+
 
   //save and get single movie by id
   void saveSingleMovie(MovieVO movie) async {
@@ -49,6 +64,7 @@ class MovieDao {
     return Stream.value(getAllMovie().toList());
   }
 
+  //Stream method 1
   Stream<List<MovieVO>> getNowShowingMovieListStream() {
     return Stream.value(getAllMovie()
         .where((element) => element.isCurrentMovie ?? false)
@@ -63,6 +79,19 @@ class MovieDao {
 
   Stream<MovieVO> getMovieDetailsStream(int movieId) {
     return Stream.value(getSingleMovie(movieId));
+  }
+
+  //Stream method 2
+  Stream<List<MovieVO>> watchNowShowingMovieStream() {
+    return getMovieBox().watch().map((event) => getAllMovie()
+        .where((element) => element.isCurrentMovie ?? false)
+        .toList());
+  }
+
+  Stream<List<MovieVO>> watchComingSoonMovieStream() {
+    return getMovieBox().watch().map((event) => getAllMovie()
+        .where((element) => element.isComingSoonMovie ?? false)
+        .toList());
   }
 
   Box<MovieVO> getMovieBox() {
