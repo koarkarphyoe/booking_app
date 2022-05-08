@@ -12,8 +12,6 @@ import 'package:student_app/network/response/check_out_response.dart';
 import 'package:student_app/network/requests/checkout_request.dart';
 import 'package:student_app/network/response/email_response.dart';
 import 'package:student_app/network/response/movie_details_response.dart';
-import 'package:student_app/network/response/movie_seats_response.dart';
-import 'package:student_app/network/response/snack_list_response.dart';
 
 import 'data_agents.dart';
 
@@ -59,7 +57,7 @@ class DataAgentsImpl extends DataAgents {
   }
 
   @override
-  Future<List<DataVO>?>? getNowShowingMovie(String status) {
+  Future<List<DataVO>?>? getNowShowingMovie() {
     return rApi
         ?.getMovies(statusValue1) //for NowShowing api
         .asStream()
@@ -68,7 +66,7 @@ class DataAgentsImpl extends DataAgents {
   }
 
   @override
-  Future<List<DataVO>?>? getComingSoonMovie(String status) {
+  Future<List<DataVO>?>? getComingSoonMovie() {
     return rApi
         ?.getMovies(statusValue2) //for ComingSoon api
         .asStream()

@@ -3,7 +3,6 @@ import 'package:student_app/data/model/data_models.dart';
 import 'package:student_app/data/model/data_models_impl.dart';
 import 'package:student_app/data/vos/casts_vo.dart';
 import 'package:student_app/data/vos/data_vo.dart';
-import 'package:student_app/data/vos/movie_details_vo.dart';
 import 'package:student_app/network/api_constants.dart';
 import 'package:student_app/page/movie_choose_time.dart';
 import 'package:student_app/resources/colors.dart';
@@ -26,24 +25,26 @@ class MovieDetailsPage extends StatefulWidget {
 
 class _MovieDetailsPageState extends State<MovieDetailsPage> {
   DataModels movieModels = DataModelsImpl();
-  MovieDetailsVO? movieDetails;
+  DataVO? movieDetails;
   List<CastsVO>? castImage;
 
   @override
   void initState() {
     super.initState();
-    movieModels.getMovieDetails(widget.movieId)?.then((value) {
-      setState(() {
-        movieDetails = value;
-        castImage = value?.casts;
-      });
-    });
+    // movieModels.getMovieDetails(widget.movieId)?.then((value) {
+    //   setState(() {
+    //     movieDetails = value;
+    //     castImage = value?.casts;
+    //   });
+    // });
 
-    movieModels.getMovieDetailsFromDatabase(widget.movieId).then((value) {
-      setState(() {
-        movieDetails = value;
-        castImage = value?.casts;
-      });
+    movieModels.getMovieDetailsFromDatabase(widget.movieId).listen((value) {
+      if (mounted) {
+        setState(() {
+          movieDetails = value;
+          castImage = value?.casts;
+        });
+      }
     });
   }
 
@@ -191,7 +192,7 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
 }
 
 class PlotSummarySectionView extends StatelessWidget {
-  final MovieDetailsVO? movieDetails;
+  final DataVO? movieDetails;
   const PlotSummarySectionView(
     this.movieDetails, {
     Key? key,
@@ -227,7 +228,7 @@ class PlotSummarySectionView extends StatelessWidget {
 }
 
 class MovieDetailScreenTitleAndRatingView extends StatelessWidget {
-  final MovieDetailsVO? movieDetails;
+  final DataVO? movieDetails;
   final DataVO? genreList;
   const MovieDetailScreenTitleAndRatingView(this.genreList, this.movieDetails);
 

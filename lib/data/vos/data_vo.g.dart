@@ -24,13 +24,17 @@ class DataVOAdapter extends TypeAdapter<DataVO> {
       fields[4] as String?,
       fields[5] as bool?,
       fields[6] as bool?,
-    );
+    )
+      ..rating = fields[7] as double?
+      ..runtime = fields[8] as int?
+      ..overview = fields[9] as String?
+      ..casts = (fields[10] as List?)?.cast<CastsVO>();
   }
 
   @override
   void write(BinaryWriter writer, DataVO obj) {
     writer
-      ..writeByte(7)
+      ..writeByte(11)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -44,7 +48,15 @@ class DataVOAdapter extends TypeAdapter<DataVO> {
       ..writeByte(5)
       ..write(obj.isCurrentMovie)
       ..writeByte(6)
-      ..write(obj.isComingSoonMovie);
+      ..write(obj.isComingSoonMovie)
+      ..writeByte(7)
+      ..write(obj.rating)
+      ..writeByte(8)
+      ..write(obj.runtime)
+      ..writeByte(9)
+      ..write(obj.overview)
+      ..writeByte(10)
+      ..write(obj.casts);
   }
 
   @override
@@ -70,7 +82,13 @@ DataVO _$DataVOFromJson(Map<String, dynamic> json) => DataVO(
       json['poster_path'] as String?,
       json['isCurrentMovie'] as bool?,
       json['isComingSoonMovie'] as bool?,
-    );
+    )
+      ..rating = (json['rating'] as num?)?.toDouble()
+      ..runtime = json['runtime'] as int?
+      ..overview = json['overview'] as String?
+      ..casts = (json['casts'] as List<dynamic>?)
+          ?.map((e) => CastsVO.fromJson(e as Map<String, dynamic>))
+          .toList();
 
 Map<String, dynamic> _$DataVOToJson(DataVO instance) => <String, dynamic>{
       'id': instance.id,
@@ -80,4 +98,8 @@ Map<String, dynamic> _$DataVOToJson(DataVO instance) => <String, dynamic>{
       'poster_path': instance.posterPath,
       'isCurrentMovie': instance.isCurrentMovie,
       'isComingSoonMovie': instance.isComingSoonMovie,
+      'rating': instance.rating,
+      'runtime': instance.runtime,
+      'overview': instance.overview,
+      'casts': instance.casts,
     };

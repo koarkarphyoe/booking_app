@@ -1,4 +1,5 @@
 import 'package:hive/hive.dart';
+import 'package:rxdart/rxdart.dart';
 import 'package:student_app/data/vos/data_vo.dart';
 import 'package:student_app/persistence/hive_constants.dart';
 
@@ -32,6 +33,33 @@ class MovieDao {
 
   DataVO? getSingleMovie(int movieId) {
     return getMovieBox().get(movieId);
+  }
+
+  Stream<List<DataVO>> getAllComingSoonMovieStream() {
+    return getMovieBox().watch().map((event) {
+      return getAllMovie()
+          .where((element) => element.isComingSoonMovie ?? false)
+          .toList();
+    }).startWith(getAllMovie()
+        .where((element) => element.isComingSoonMovie ?? false)
+        .toList());
+  }
+
+  Stream<List<DataVO>> getAllCurrentMovieStream() {
+    return getMovieBox()
+        .watch()
+        .map((event) =>
+            getAllMovie().where((element) => element.isCurrentMovie!).toList())
+        .startWith(getAllMovie()
+            .where((element) => element.isCurrentMovie ?? false)
+            .toList());
+  }
+
+  Stream<DataVO> getSingleMovieStream(int movieId) {
+    return getMovieBox()
+        .watch()
+        .map((event) => getSingleMovie(movieId)!)
+        .startWith(getSingleMovie(movieId)!);
   }
 
   Box<DataVO> getMovieBox() {

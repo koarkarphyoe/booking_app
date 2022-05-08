@@ -2,11 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:student_app/resources/dimens.dart';
 
 class TitleTextBold extends StatelessWidget {
-  const TitleTextBold(
-    this.welcomeText, {
-    this.textColor = Colors.white,
-    this.textSize = textRegular7X,
-  });
+  const TitleTextBold(this.welcomeText,
+      {this.textColor = Colors.white, this.textSize = textRegular7X, Key? key})
+      : super(key: key);
   final String welcomeText;
   final Color textColor;
   final double textSize;

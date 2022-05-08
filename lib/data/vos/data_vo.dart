@@ -35,6 +35,22 @@ class DataVO {
   @HiveField(6)
   bool? isComingSoonMovie;
 
+  @JsonKey(name: "rating")
+  @HiveField(7)
+  double? rating;
+
+  @JsonKey(name: "runtime")
+  @HiveField(8)
+  int? runtime;
+
+  @JsonKey(name: "overview")
+  @HiveField(9)
+  String? overview;
+
+  @JsonKey(name: "casts")
+  @HiveField(10)
+  List<CastsVO>? casts;
+
   DataVO(this.id, this.originalTitle, this.releaseDate, this.genres,
       this.posterPath, this.isCurrentMovie, this.isComingSoonMovie);
 

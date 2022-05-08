@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:student_app/data/model/data_models_impl.dart';
 import 'package:student_app/data/vos/data_vo.dart';
-import 'package:student_app/data/vos/movie_details_vo.dart';
 import 'package:student_app/page/home_page.dart';
 import 'package:student_app/page/splash_screen_page.dart';
 import 'package:student_app/persistence/hive_constants.dart';
 import 'data/vos/card_vo.dart';
+import 'data/vos/casts_vo.dart';
 import 'data/vos/user_vo.dart';
 
 void main() async {
@@ -50,12 +50,11 @@ void main() async {
   Hive.registerAdapter(UserVOAdapter());
   Hive.registerAdapter(CardVOAdapter());
   Hive.registerAdapter(DataVOAdapter());
-  Hive.registerAdapter(MovieDetailsVOAdapter());
+  Hive.registerAdapter(CastsVOAdapter());
 
   await Hive.openBox<UserVO>(boxNameUserVO);
   await Hive.openBox<CardVO>(boxNameCardVO);
   await Hive.openBox<DataVO>(boxNameDataVO);
-  await Hive.openBox<MovieDetailsVO>(boxNameMovieDetailsVO);
   await Hive.openBox<String>(boxNameTokenVO);
 
   runApp(const MyApp());
