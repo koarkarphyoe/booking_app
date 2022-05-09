@@ -48,7 +48,6 @@ abstract class DataModels {
   Future<String?>? getTokenFromDatabase();
   Stream<List<DataVO>?>? getNowShowingMovieFromDatabase();
   Stream<List<DataVO>?>? getComingSoonMovieFromDatabase();
-  Future<DataVO>? getMovieFromDatabase(int movieId);
   Stream<DataVO?> getMovieDetailsFromDatabase(int movieId);
   void deleteTokenFromDatabase();
   void deleteUserInfoFromDatabase();

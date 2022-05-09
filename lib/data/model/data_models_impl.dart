@@ -14,6 +14,7 @@ import 'package:student_app/network/data_agents/data_agents_impl.dart';
 import 'package:student_app/network/response/check_out_response.dart';
 import 'package:student_app/network/response/email_response.dart';
 import 'package:student_app/persistence/daos/movie_dao.dart';
+import 'package:student_app/persistence/daos/movie_details_dao.dart';
 import 'package:student_app/persistence/daos/token_dao.dart';
 import 'package:student_app/persistence/daos/user_dao.dart';
 
@@ -33,6 +34,7 @@ class DataModelsImpl extends DataModels {
   UserDao userDao = UserDao();
   TokenDao tokenDao = TokenDao();
   MovieDao movieDao = MovieDao();
+  MovieDetailsDao movieDetailsDao = MovieDetailsDao();
 
   @override
   Future<EmailResponse>? postRegisterWithEmail(
@@ -100,8 +102,7 @@ class DataModelsImpl extends DataModels {
   @override
   void getMovieDetails(int movieId) {
     mDataAgent.getMovieDetails(movieId)?.then((value) async {
-      value.data;
-      movieDao.saveSingleMovie(value.data!);
+      movieDetailsDao.saveSingleMovie(value!.data!);
     });
   }
 
@@ -182,14 +183,9 @@ class DataModelsImpl extends DataModels {
   }
 
   @override
-  Future<DataVO>? getMovieFromDatabase(int movieId) {
-    return Future.value(movieDao.getSingleMovie(movieId));
-  }
-
-  @override
   Stream<DataVO?> getMovieDetailsFromDatabase(int movieId) {
     getMovieDetails(movieId);
-    return movieDao.getSingleMovieStream(movieId);
+    return movieDetailsDao.getSingleMovieStream(movieId);
   }
 
   @override

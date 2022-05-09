@@ -41,7 +41,7 @@ class _HomePageState extends State<HomePage> {
 
   UserVO? mUser;
   String? token;
-  List<DataVO>? movie;
+  List<DataVO>? currentMovie;
   List<DataVO>? comingSoonMovie;
 
   // call network data again from this page
@@ -59,7 +59,7 @@ class _HomePageState extends State<HomePage> {
     // From database
     userModels.getNowShowingMovieFromDatabase()?.listen((value) {
       setState(() {
-        movie = value;
+        currentMovie = value;
       });
     }).onError((error) {
       debugPrint(error.toString());
@@ -76,6 +76,7 @@ class _HomePageState extends State<HomePage> {
     userModels.getComingSoonMovieFromDatabase()?.listen((value) {
       setState(() {
         comingSoonMovie = value;
+        print(comingSoonMovie!.length.toString());
       });
     });
 
@@ -139,7 +140,7 @@ class _HomePageState extends State<HomePage> {
               child: UserNameAndPhoto(mUser),
             ),
             const SizedBox(height: marginMedium),
-            HorizontalMovieListView(nowShowingText, movie,
+            HorizontalMovieListView(nowShowingText, currentMovie,
                 (movieId) => _navigateToMovieDetailPage(context, movieId)),
             HorizontalMovieListView(comingSoonText, comingSoonMovie,
                 (movieId) => _navigateToMovieDetailPage(context, movieId)),
@@ -157,7 +158,7 @@ class _HomePageState extends State<HomePage> {
     return Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) =>MovieDetailsPage(movieId, token),
+        builder: (context) => MovieDetailsPage(movieId, token),
       ),
     );
   }

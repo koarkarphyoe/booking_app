@@ -26,15 +26,6 @@ class MovieDao {
     return getMovieBox().values.toList();
   }
 
-  //save and get single movie by id
-  void saveSingleMovie(DataVO movie) async {
-    await getMovieBox().put(movie.id, movie);
-  }
-
-  DataVO? getSingleMovie(int movieId) {
-    return getMovieBox().get(movieId);
-  }
-
   Stream<List<DataVO>> getAllComingSoonMovieStream() {
     return getMovieBox().watch().map((event) {
       return getAllMovie()
@@ -53,13 +44,6 @@ class MovieDao {
         .startWith(getAllMovie()
             .where((element) => element.isCurrentMovie ?? false)
             .toList());
-  }
-
-  Stream<DataVO> getSingleMovieStream(int movieId) {
-    return getMovieBox()
-        .watch()
-        .map((event) => getSingleMovie(movieId)!)
-        .startWith(getSingleMovie(movieId)!);
   }
 
   Box<DataVO> getMovieBox() {

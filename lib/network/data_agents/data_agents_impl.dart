@@ -75,7 +75,7 @@ class DataAgentsImpl extends DataAgents {
   }
 
   @override
-  Future<MovieDetailsResponse>? getMovieDetails(int movieId) {
+  Future<MovieDetailsResponse?>? getMovieDetails(int movieId) {
     return rApi
         ?.getMovieDetails(movieId.toString())
         .asStream()
