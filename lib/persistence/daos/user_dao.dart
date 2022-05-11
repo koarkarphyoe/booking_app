@@ -1,4 +1,5 @@
 import 'package:hive/hive.dart';
+import 'package:rxdart/rxdart.dart';
 import 'package:student_app/data/vos/user_vo.dart';
 import 'package:student_app/persistence/hive_constants.dart';
 
@@ -17,6 +18,15 @@ class UserDao {
     return getUserInfoBox().values.last;
   }
 
+  //Reactive Programming
+  Stream<UserVO?> getUserInfoStream() {
+    return getUserInfoBox()
+        .watch()
+        .map((event) => getUserInfo())
+        .startWith(getUserInfo());
+  }
+
+  //Create Hive Box
   Box<UserVO> getUserInfoBox() {
     return Hive.box<UserVO>(boxNameUserVO);
   }

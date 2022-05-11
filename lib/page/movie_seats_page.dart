@@ -329,11 +329,14 @@ class MovieNameTimeAndCinemaSectionView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Center(
-          child: TitleTextBold(
-            movieName!,
-            textColor: Colors.black,
-            textSize: textRegular4X,
+        Padding(
+          padding: const EdgeInsets.only(left: 16),
+          child: Center(
+            child: TitleTextBold(
+              movieName!,
+              textColor: Colors.black,
+              textSize: textRegular4X,
+            ),
           ),
         ),
         const SizedBox(

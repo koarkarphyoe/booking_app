@@ -59,59 +59,76 @@ class _MovieChooseTimeState extends State<MovieChooseTime> {
     //to use for first date auto selected
     selectedDate?.isSelected = true;
 
-    // this api use for cinema names
+    // this api use for cinema names from network
+    // mDataModels
+    //     .getCinemaNameAndTimeSlots(selectedDate?.yMd.toString())
+    //     .then((value) {
+    //   setState(() {
+    //     cinemaList = value;
+    //   });
+    // });
+
+    //this api use for cinema names from database
     mDataModels
-        .getCinemaNameAndTimeSlots(selectedDate?.yMd.toString())
-        ?.then((value) {
-      setState(() {
-        cinemaList = value;
-      });
+        .getCinemasListFromDatabase(selectedDate!.yMd.toString())
+        .listen((value) {
+      if (mounted) {
+        setState(() {
+          cinemaList = value;
+        });
+      }
     });
   }
 
   _selectDate(int dateId) {
-    setState(
-      () {
-        //second method for time choosing
-        dateList = dateList?.map(
-          (date) {
-            date?.isSelected = false;
-            // print("setState condition in UI before selecting by user");
-            if (date?.id == dateId) {
-              date?.isSelected = true;
-              dateForMovieSeatsPage = date?.dayMonthDate; //for single select
-              yMdForMovieSeatsPage = date?.yMd;
-              // print("setState condition in UI after selecting by user");
-            }
-            return date;
-          },
-        ).toList();
+    setState(() {
+      //second method for time choosing
+      dateList = dateList?.map(
+        (date) {
+          date?.isSelected = false;
+          // print("setState condition in UI before selecting by user");
+          if (date?.id == dateId) {
+            date?.isSelected = true;
+            dateForMovieSeatsPage = date?.dayMonthDate; //for single select
+            yMdForMovieSeatsPage = date?.yMd;
+            // print("setState condition in UI after selecting by user");
+          }
+          return date;
+        },
+      ).toList();
 
-        //first method for date choosing
-        // selectedDate = dateList!.firstWhere((element) => element.id == dateId);
-        //Reset all selected date when user chage tapping on date!
-        // dateList?.forEach((element) => element.isSelected = false);
-        //isSelected is false in DateVO,now it is setup to true to handle the color of date when select the date from the user!
-        // selectedDate?.isSelected = true;
-        //to show and test actual date in console!
-        // debugPrint(selectedDate?.yMd.toString());
-        // debugPrint("DateVO id is ${selectedDate?.id.toString()}");
+      //first method for date choosing
+      // selectedDate = dateList!.firstWhere((element) => element.id == dateId);
+      //Reset all selected date when user chage tapping on date!
+      // dateList?.forEach((element) => element.isSelected = false);
+      //isSelected is false in DateVO,now it is setup to true to handle the color of date when select the date from the user!
+      // selectedDate?.isSelected = true;
+      //to show and test actual date in console!
+      // debugPrint(selectedDate?.yMd.toString());
+      // debugPrint("DateVO id is ${selectedDate?.id.toString()}");
 
-        // this api use for cinema names and user behavior in selecting date and time to request movie timeSlots
-        // it is need to call again in setState bcoz timeSlots will different by following user selected date from Api
-        mDataModels
-            .getCinemaNameAndTimeSlots(selectedDate?.yMd.toString())
-            ?.then(
-          (value) {
-            setState(
-              () {
-                cinemaList = value;
-              },
-            );
-          },
-        );
-      },
-    );
+      // this api use for cinema names and user behavior in selecting date and time to request movie timeSlots
+      // it is need to call again in setState bcoz timeSlots will different by following user selected date from Api
+      //From network
+      //   mDataModels
+      //     .getCinemaNameAndTimeSlots(selectedDate?.yMd.toString())
+      //     .then((value) {
+      //   setState(() {
+      //     cinemaList = value;
+      //   });
+      // });
+
+      //From database
+      mDataModels
+          .getCinemasListFromDatabase(selectedDate!.yMd.toString())
+          .listen((value) {
+        if (mounted) {
+          setState(() {
+            cinemaList = value;
+          });
+        }
+      });
+    });
   }
 
   _selectTime(int? timeSlotsId, int? cinemaId) {
@@ -250,12 +267,18 @@ class _MovieChooseTimeState extends State<MovieChooseTime> {
   }
 
   _navigateToMovieSeatsPage(BuildContext context, String? cinemaName,
-      String? date, String? time, int? cinemaId, String? yMd,int? timeSlotId) {
+      String? date, String? time, int? cinemaId, String? yMd, int? timeSlotId) {
     return Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => MovieSeatsPage(widget.movieDetails, cinemaName,
-            date, time, cinemaId, yMdForMovieSeatsPage,cinemaTimeSlotsIdForMovieSeatsPage),
+        builder: (context) => MovieSeatsPage(
+            widget.movieDetails,
+            cinemaName,
+            date,
+            time,
+            cinemaId,
+            yMdForMovieSeatsPage,
+            cinemaTimeSlotsIdForMovieSeatsPage),
       ),
     );
   }

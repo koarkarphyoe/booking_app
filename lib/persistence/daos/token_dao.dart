@@ -1,4 +1,5 @@
 import 'package:hive/hive.dart';
+import 'package:rxdart/rxdart.dart';
 import 'package:student_app/persistence/hive_constants.dart';
 
 class TokenDao {
@@ -16,6 +17,15 @@ class TokenDao {
 
   String? getToken() {
     return getTokenBox().get("token");
+  }
+
+  //Reactive Programming
+
+  Stream<String?> getTokenStream() {
+    return getTokenBox()
+        .watch()
+        .map((event) => getToken())
+        .startWith(getToken());
   }
 
   Box<String> getTokenBox() {

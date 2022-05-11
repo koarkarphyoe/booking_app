@@ -13,6 +13,7 @@ import 'package:student_app/network/data_agents/data_agents.dart';
 import 'package:student_app/network/data_agents/data_agents_impl.dart';
 import 'package:student_app/network/response/check_out_response.dart';
 import 'package:student_app/network/response/email_response.dart';
+import 'package:student_app/persistence/daos/timeslot_dao.dart';
 import 'package:student_app/persistence/daos/movie_dao.dart';
 import 'package:student_app/persistence/daos/movie_details_dao.dart';
 import 'package:student_app/persistence/daos/token_dao.dart';
@@ -35,6 +36,7 @@ class DataModelsImpl extends DataModels {
   TokenDao tokenDao = TokenDao();
   MovieDao movieDao = MovieDao();
   MovieDetailsDao movieDetailsDao = MovieDetailsDao();
+  TimeSlotDao cinemasTimeSlotDao = TimeSlotDao();
 
   @override
   Future<EmailResponse>? postRegisterWithEmail(
@@ -111,11 +113,25 @@ class DataModelsImpl extends DataModels {
     return mDataAgent.getCinemasList()?.then((value) => value);
   }
 
+  //Before migrate to Reactive Programming
+  // @override
+  // Future<List<TimeSlotDataVO>> getCinemaNameAndTimeSlots(String? date) async {
+  //   return mDataAgent
+  //       .getCinemaNameAndTimeSlots(tokenDao.getToken().toString(), date)!
+  //       .then((value) {
+  //     cinemasTimeSlotDao.saveAllCinemasList(value!, date!);
+  //     return Future.value(value);
+  //   });
+  // }
+
+  //After migrate to Reactive Programming
   @override
-  Future<List<TimeSlotDataVO>?>? getCinemaNameAndTimeSlots(String? date) {
-    return mDataAgent
-        .getCinemaNameAndTimeSlots(tokenDao.getToken().toString(), date)
-        ?.then((value) => value);
+  void getCinemaNameAndTimeSlots(String? date) async {
+    mDataAgent
+        .getCinemaNameAndTimeSlots(tokenDao.getToken().toString(), date)!
+        .then((value) {
+      cinemasTimeSlotDao.saveAllCinemasList(value!, date!);
+    });
   }
 
   @override
@@ -149,15 +165,28 @@ class DataModelsImpl extends DataModels {
   }
 
   //Database
+  //Before migrate to Reactive Programming
+  // @override
+  // Future<UserVO>? getUserInfoFromDatabase() {
+  //   return Future.value(userDao.getUserInfo());
+  // }
 
+  //After migrate to Reactive Programming
   @override
-  Future<UserVO>? getUserInfoFromDatabase() {
-    return Future.value(userDao.getUserInfo());
+  Stream<UserVO?>? getUserInfoFromDatabase() {
+    return userDao.getUserInfoStream();
   }
 
+  //Before migrate to Reactive Programming
+  // @override
+  // Future<String?>? getTokenFromDatabase() {
+  //   return Future.value(tokenDao.getToken());
+  // }
+
+  //After migrate to Reactive Programming
   @override
-  Future<String?>? getTokenFromDatabase() {
-    return Future.value(tokenDao.getToken());
+  Stream<String?>? getTokenFromDatabase() {
+    return tokenDao.getTokenStream();
   }
 
   //Before migrate to Reactive Programming
@@ -186,6 +215,21 @@ class DataModelsImpl extends DataModels {
   Stream<DataVO?> getMovieDetailsFromDatabase(int movieId) {
     getMovieDetails(movieId);
     return movieDetailsDao.getSingleMovieStream(movieId);
+  }
+
+
+  //Before migrate to Reactive Programming
+  //   @override
+  //   Future<List<TimeSlotDataVO>> getCinemasListFromDatabase(String date) {
+  //   getCinemaNameAndTimeSlots(date);
+  //   return Future.value(cinemasTimeSlotDao.getCinemasList(date));
+  // }
+  
+  //After migrate to Reactive Programming
+  @override
+  Stream<List<TimeSlotDataVO>> getCinemasListFromDatabase(String date) {
+    getCinemaNameAndTimeSlots(date);
+    return cinemasTimeSlotDao.getCinemaTimeSlotStream(date);
   }
 
   @override
@@ -248,4 +292,5 @@ class DataModelsImpl extends DataModels {
         .checkOut(tokenDao.getToken().toString(), checkoutRequest)
         ?.then((value) => value);
   }
+
 }

@@ -13,7 +13,7 @@ class MovieDao {
   MovieDao._internal();
 
   // save and get all movie to peristence
-  void saveAllMovie(List<DataVO> movieList) async {
+  void saveAllMovie(List<DataVO> movieList,) async {
     // Map<int, DataVO> movieMap = {
     //   for (var movie in movieList) movie.id!.toInt(): movie
     // };
@@ -26,6 +26,7 @@ class MovieDao {
     return getMovieBox().values.toList();
   }
 
+  //Reactive Programming
   Stream<List<DataVO>> getAllComingSoonMovieStream() {
     return getMovieBox().watch().map((event) {
       return getAllMovie()
@@ -46,6 +47,7 @@ class MovieDao {
             .toList());
   }
 
+  //Create Hive Box
   Box<DataVO> getMovieBox() {
     return Hive.box<DataVO>(boxNameDataVO);
   }

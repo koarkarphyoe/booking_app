@@ -58,9 +58,11 @@ class _HomePageState extends State<HomePage> {
 
     // From database
     userModels.getNowShowingMovieFromDatabase()?.listen((value) {
-      setState(() {
-        currentMovie = value;
-      });
+      if (mounted) {
+        setState(() {
+          currentMovie = value;
+        });
+      }
     }).onError((error) {
       debugPrint(error.toString());
     });
@@ -74,22 +76,28 @@ class _HomePageState extends State<HomePage> {
 
     // From database
     userModels.getComingSoonMovieFromDatabase()?.listen((value) {
-      setState(() {
-        comingSoonMovie = value;
-        print(comingSoonMovie!.length.toString());
-      });
+      if (mounted) {
+        setState(() {
+          comingSoonMovie = value;
+          // print(comingSoonMovie!.length.toString());
+        });
+      }
     });
 
-    userModels.getUserInfoFromDatabase()?.then((value) {
-      setState(() {
-        mUser = value;
-      });
+    userModels.getUserInfoFromDatabase()?.listen((value) {
+      if (mounted) {
+        setState(() {
+          mUser = value;
+        });
+      }
     });
 
-    userModels.getTokenFromDatabase()?.then((value) {
-      setState(() {
-        token = value;
-      });
+    userModels.getTokenFromDatabase()?.listen((value) {
+      if (mounted) {
+        setState(() {
+          token = value;
+        });
+      }
     });
   }
 

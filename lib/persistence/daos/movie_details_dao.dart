@@ -19,7 +19,8 @@ class MovieDetailsDao {
   DataVO? getSingleMovie(int movieId) {
     return getMovieBox().get(movieId);
   }
-
+  
+  //Reactive Programming
   Stream<DataVO?> getSingleMovieStream(int movieId) {
     return getMovieBox()
         .watch()
@@ -27,6 +28,7 @@ class MovieDetailsDao {
         .startWith(getSingleMovie(movieId));
   }
 
+  //Create Hive Box
   Box<DataVO> getMovieBox() {
     return Hive.box<DataVO>(boxNameMovieDetailsVO);
   }

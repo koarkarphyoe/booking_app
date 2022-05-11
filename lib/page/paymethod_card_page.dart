@@ -1,4 +1,3 @@
-import 'dart:convert';
 
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
@@ -17,9 +16,7 @@ import 'package:student_app/widgets/confirm_button_view.dart';
 import 'package:student_app/widgets/payment_card_view.dart';
 import 'package:student_app/widgets/title_text.dart';
 import 'package:student_app/widgets/title_text_bold.dart';
-
 import '../data/model/data_models_impl.dart';
-import '../network/data_agents/data_agents_impl.dart';
 
 class PaymentCardPage extends StatefulWidget {
   final dynamic subtotal;
@@ -66,9 +63,9 @@ class _PaymentCardPageState extends State<PaymentCardPage> {
   void initState() {
     super.initState();
 
-    mDataModel.getUserInfoFromDatabase()?.then((value) {
+    mDataModel.getUserInfoFromDatabase()?.listen((value) {
       setState(() {
-        cardList = value.cards;
+        cardList = value?.cards;
         selectedCard = cardList?.first;
       });
     });

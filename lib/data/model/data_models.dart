@@ -13,7 +13,6 @@ import 'package:student_app/network/response/email_response.dart';
 
 abstract class DataModels {
   // Network
-
   Future<EmailResponse>? postRegisterWithEmail(
       String name,
       String email,
@@ -31,27 +30,32 @@ abstract class DataModels {
   void getComingSoonMovie();
   void getMovieDetails(int movieId);
   Future<List<CinemasVO>?>? getCinemasList();
-  Future<List<TimeSlotDataVO>?>? getCinemaNameAndTimeSlots(String? date);
+  // Future<List<TimeSlotDataVO>> getCinemaNameAndTimeSlots(String? date);//Before migrate to Reactive Programming
+  void getCinemaNameAndTimeSlots(String? date);//After migrate to Reactive Programming
   void logOut();
   bool isLogIn();
   Future<List<List<MovieSeatListVO>>?> getMovieSeat(
       int cinemaDayTimeslotId, String bookingDate);
   Future<List<SnackVO>>? getSnack();
   Future<List<PaymentMethodVO>?>? getPaymentList();
-  Future<List<CardVO>?>? registerCardList(String cardHolder,String cardNumber,String expireDate,String cvc );
-  Future<CheckOutResponse>? postCheckOutRequest(Map<String,dynamic> checkoutRequest);
+  Future<List<CardVO>?>? registerCardList(
+      String cardHolder, String cardNumber, String expireDate, String cvc);
+  Future<CheckOutResponse>? postCheckOutRequest(
+      Map<String, dynamic> checkoutRequest);
   Future<CheckOutResponse>? checkOut(CheckoutRequest checkoutRequest);
 
   //Database
-
-  Future<UserVO>? getUserInfoFromDatabase();
-  Future<String?>? getTokenFromDatabase();
+  Stream<UserVO?>?
+      getUserInfoFromDatabase(); //in this case no need to apply Reactive Programming(Stream)
+  Stream<String?>?
+      getTokenFromDatabase(); //in this case no need to apply Reactive Programming(Stream)
   Stream<List<DataVO>?>? getNowShowingMovieFromDatabase();
   Stream<List<DataVO>?>? getComingSoonMovieFromDatabase();
   Stream<DataVO?> getMovieDetailsFromDatabase(int movieId);
-  void deleteTokenFromDatabase();
-  void deleteUserInfoFromDatabase();
+  Stream<List<TimeSlotDataVO>> getCinemasListFromDatabase(String date);
 
   //Other
   List<DateVO> getDates();
+  void deleteTokenFromDatabase();
+  void deleteUserInfoFromDatabase();
 }
