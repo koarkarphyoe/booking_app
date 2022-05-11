@@ -47,7 +47,16 @@ class _PaymentMethodPageState extends State<PaymentMethodPage> {
   void initState() {
     super.initState();
     subtotal = widget.selectedSeatPrice;
-    mDataModel.getSnack()?.then((value) {
+
+    //Before migrate to Reactive Programming,called data from network
+    // mDataModel.getSnack()?.then((value) {
+    //   setState(() {
+    //     snackList = value;
+    //   });
+    // });
+
+    //After migrate to Reactive Programming,called data from network and save in database and use under function
+    mDataModel.getSnackListFromDatabase().listen((value) {
       setState(() {
         snackList = value;
       });

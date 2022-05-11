@@ -13,6 +13,7 @@ import 'package:student_app/network/data_agents/data_agents.dart';
 import 'package:student_app/network/data_agents/data_agents_impl.dart';
 import 'package:student_app/network/response/check_out_response.dart';
 import 'package:student_app/network/response/email_response.dart';
+import 'package:student_app/persistence/daos/snack_dao.dart';
 import 'package:student_app/persistence/daos/timeslot_dao.dart';
 import 'package:student_app/persistence/daos/movie_dao.dart';
 import 'package:student_app/persistence/daos/movie_details_dao.dart';
@@ -37,6 +38,7 @@ class DataModelsImpl extends DataModels {
   MovieDao movieDao = MovieDao();
   MovieDetailsDao movieDetailsDao = MovieDetailsDao();
   TimeSlotDao cinemasTimeSlotDao = TimeSlotDao();
+  SnackDao snackDao = SnackDao();
 
   @override
   Future<EmailResponse>? postRegisterWithEmail(
@@ -143,11 +145,20 @@ class DataModelsImpl extends DataModels {
         .then((value) => value);
   }
 
+  //Before migrate to Reactive Programming
+  // @override
+  // Future<List<SnackVO>>? getSnack() {
+  //   return mDataAgent
+  //       .getSnackList(tokenDao.getToken().toString())
+  //       ?.then((value) => value);
+  // }
+
+  //After migrate to Reactive Programming
   @override
-  Future<List<SnackVO>>? getSnack() {
-    return mDataAgent
-        .getSnackList(tokenDao.getToken().toString())
-        ?.then((value) => value);
+  void getSnack() {
+    mDataAgent.getSnackList(tokenDao.getToken().toString())?.then((value) {
+      snackDao.saveAllSnack(value);
+    });
   }
 
   @override
@@ -217,14 +228,13 @@ class DataModelsImpl extends DataModels {
     return movieDetailsDao.getSingleMovieStream(movieId);
   }
 
-
   //Before migrate to Reactive Programming
   //   @override
   //   Future<List<TimeSlotDataVO>> getCinemasListFromDatabase(String date) {
   //   getCinemaNameAndTimeSlots(date);
   //   return Future.value(cinemasTimeSlotDao.getCinemasList(date));
   // }
-  
+
   //After migrate to Reactive Programming
   @override
   Stream<List<TimeSlotDataVO>> getCinemasListFromDatabase(String date) {
@@ -293,4 +303,9 @@ class DataModelsImpl extends DataModels {
         ?.then((value) => value);
   }
 
+  @override
+  Stream<List<SnackVO>> getSnackListFromDatabase() {
+    getSnack();
+    return snackDao.getAllSnackListStream();
+  }
 }

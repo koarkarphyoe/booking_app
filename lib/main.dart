@@ -9,6 +9,7 @@ import 'package:student_app/page/splash_screen_page.dart';
 import 'package:student_app/persistence/hive_constants.dart';
 import 'data/vos/card_vo.dart';
 import 'data/vos/casts_vo.dart';
+import 'data/vos/snack_vo.dart';
 import 'data/vos/timeslots_vo.dart';
 import 'data/vos/user_vo.dart';
 
@@ -57,6 +58,7 @@ void main() async {
   Hive.registerAdapter(CinemasVOAdapter());
   Hive.registerAdapter(TimeslotsVOAdapter());
   Hive.registerAdapter(TimeSlotDataVOAdapter());
+  Hive.registerAdapter(SnackVOAdapter());
 
   await Hive.openBox<UserVO>(boxNameUserVO);
   await Hive.openBox<CardVO>(boxNameCardVO);
@@ -64,6 +66,7 @@ void main() async {
   await Hive.openBox<String>(boxNameTokenVO);
   await Hive.openBox<DataVO>(boxNameMovieDetailsVO);
   await Hive.openBox<TimeSlotDataVO>(boxNameCinemaTimeSlotDataVO);
+  await Hive.openBox<SnackVO>(boxNameSnackVO);
 
   runApp(const MyApp());
 }

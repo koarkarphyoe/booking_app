@@ -31,12 +31,14 @@ abstract class DataModels {
   void getMovieDetails(int movieId);
   Future<List<CinemasVO>?>? getCinemasList();
   // Future<List<TimeSlotDataVO>> getCinemaNameAndTimeSlots(String? date);//Before migrate to Reactive Programming
-  void getCinemaNameAndTimeSlots(String? date);//After migrate to Reactive Programming
+  void getCinemaNameAndTimeSlots(
+      String? date); //After migrate to Reactive Programming
   void logOut();
   bool isLogIn();
   Future<List<List<MovieSeatListVO>>?> getMovieSeat(
       int cinemaDayTimeslotId, String bookingDate);
-  Future<List<SnackVO>>? getSnack();
+  // Future<List<SnackVO>>? getSnack(); //Before migrate Reactive Programming
+  void getSnack();//After migrate Reactive Programming
   Future<List<PaymentMethodVO>?>? getPaymentList();
   Future<List<CardVO>?>? registerCardList(
       String cardHolder, String cardNumber, String expireDate, String cvc);
@@ -53,6 +55,7 @@ abstract class DataModels {
   Stream<List<DataVO>?>? getComingSoonMovieFromDatabase();
   Stream<DataVO?> getMovieDetailsFromDatabase(int movieId);
   Stream<List<TimeSlotDataVO>> getCinemasListFromDatabase(String date);
+  Stream<List<SnackVO>> getSnackListFromDatabase();
 
   //Other
   List<DateVO> getDates();
