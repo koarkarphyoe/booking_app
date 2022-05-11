@@ -3,6 +3,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:student_app/data/model/data_models_impl.dart';
 import 'package:student_app/data/vos/cinemas_vo.dart';
 import 'package:student_app/data/vos/data_vo.dart';
+import 'package:student_app/data/vos/payment_method_vo.dart';
 import 'package:student_app/data/vos/timeslotdata_vo.dart';
 import 'package:student_app/page/home_page.dart';
 import 'package:student_app/page/splash_screen_page.dart';
@@ -59,6 +60,7 @@ void main() async {
   Hive.registerAdapter(TimeslotsVOAdapter());
   Hive.registerAdapter(TimeSlotDataVOAdapter());
   Hive.registerAdapter(SnackVOAdapter());
+  Hive.registerAdapter(PaymentMethodVOAdapter());
 
   await Hive.openBox<UserVO>(boxNameUserVO);
   await Hive.openBox<CardVO>(boxNameCardVO);
@@ -67,6 +69,7 @@ void main() async {
   await Hive.openBox<DataVO>(boxNameMovieDetailsVO);
   await Hive.openBox<TimeSlotDataVO>(boxNameCinemaTimeSlotDataVO);
   await Hive.openBox<SnackVO>(boxNameSnackVO);
+  await Hive.openBox<PaymentMethodVO>(boxNamePaymentMethodVO);
 
   runApp(const MyApp());
 }

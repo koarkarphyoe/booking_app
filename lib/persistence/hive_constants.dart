@@ -8,6 +8,7 @@ const int hiveTypeIdCinemasVO = 6;
 const int hiveTypeIdCinemaTimeSlotDataVO = 7;
 const int hiveTypeIdTimeSlotVO = 8;
 const int hiveTypeIdSnackVO = 9;
+const int hiveTypeIdPaymentMethodVO = 10;
 
 // hive box name
 
@@ -20,4 +21,5 @@ const String boxNameMovieDetailsVO = "BOX_NAME_MOVIE_DETAILS_VO";
 const String boxNameCinemasVO = "BOX_NAME_CINEMAS_VO";
 const String boxNameCinemaTimeSlotDataVO = "BOX_NAME_CINEMA_TIMESLOT_DATAVO";
 const String boxNameTimeSlotVO = "BOX_NAME_TIMESLOT_VO";
-const String boxNameSnackVO="BOX_NAME_SNACK_VO";
+const String boxNameSnackVO = "BOX_NAME_SNACK_VO";
+const String boxNamePaymentMethodVO = "BOX_NAME_PAYMENT_METHOD_VO";

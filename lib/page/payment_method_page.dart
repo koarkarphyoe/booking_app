@@ -23,7 +23,7 @@ class PaymentMethodPage extends StatefulWidget {
   final dynamic cinemaId;
   final dynamic timeSlotsId;
   const PaymentMethodPage(this.selectedSeatName, this.selectedSeatPrice,
-      this.movieDetails, this.time, this.yMd, this.cinemaId,this.timeSlotsId,
+      this.movieDetails, this.time, this.yMd, this.cinemaId, this.timeSlotsId,
       {Key? key})
       : super(key: key);
 
@@ -62,10 +62,18 @@ class _PaymentMethodPageState extends State<PaymentMethodPage> {
       });
     });
 
-    mDataModel.getPaymentList()?.then((value) {
-      setState(() {
-        paymentMethodList = value;
-      });
+    // mDataModel.getPaymentList()?.then((value) {
+    //   setState(() {
+    //     paymentMethodList = value;
+    //   });
+    // });
+    
+    mDataModel.getPaymentListFromDatabase().listen((event) {
+      if (mounted) {
+        setState(() {
+          paymentMethodList = event;
+        });
+      }
     });
   }
 

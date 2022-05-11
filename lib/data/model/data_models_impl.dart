@@ -13,6 +13,7 @@ import 'package:student_app/network/data_agents/data_agents.dart';
 import 'package:student_app/network/data_agents/data_agents_impl.dart';
 import 'package:student_app/network/response/check_out_response.dart';
 import 'package:student_app/network/response/email_response.dart';
+import 'package:student_app/persistence/daos/payment_method_dao.dart';
 import 'package:student_app/persistence/daos/snack_dao.dart';
 import 'package:student_app/persistence/daos/timeslot_dao.dart';
 import 'package:student_app/persistence/daos/movie_dao.dart';
@@ -39,6 +40,7 @@ class DataModelsImpl extends DataModels {
   MovieDetailsDao movieDetailsDao = MovieDetailsDao();
   TimeSlotDao cinemasTimeSlotDao = TimeSlotDao();
   SnackDao snackDao = SnackDao();
+  PaymentMethodDao paymentMethodDao = PaymentMethodDao();
 
   @override
   Future<EmailResponse>? postRegisterWithEmail(
@@ -162,10 +164,10 @@ class DataModelsImpl extends DataModels {
   }
 
   @override
-  Future<List<PaymentMethodVO>?>? getPaymentList() {
-    return mDataAgent
+  void getPaymentList() {
+     mDataAgent
         .getPaymentMethodList(tokenDao.getToken().toString())
-        ?.then((value) => value);
+        ?.then((value) => paymentMethodDao.saveAllPaymentMethod(value!));
   }
 
   @override
@@ -307,5 +309,11 @@ class DataModelsImpl extends DataModels {
   Stream<List<SnackVO>> getSnackListFromDatabase() {
     getSnack();
     return snackDao.getAllSnackListStream();
+  }
+
+  @override
+  Stream<List<PaymentMethodVO>> getPaymentListFromDatabase() {
+    getPaymentList();
+    return paymentMethodDao.getAllPaymentListStream();
   }
 }
