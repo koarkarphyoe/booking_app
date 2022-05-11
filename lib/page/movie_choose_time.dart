@@ -11,8 +11,7 @@ import 'package:student_app/widgets/confirm_button_view.dart';
 import 'package:student_app/widgets/title_text_bold.dart';
 
 class MovieChooseTime extends StatefulWidget {
-  // ignore: prefer_typing_uninitialized_variables
-  final movieDetails;
+  final dynamic movieDetails;
   const MovieChooseTime(this.movieDetails, {Key? key}) : super(key: key);
 
   @override
@@ -54,10 +53,10 @@ class _MovieChooseTimeState extends State<MovieChooseTime> {
 
     // firstly,to get the cinemaList data from api,so it is need => date String
     selectedDate = dateList?.first;
-    dateForMovieSeatsPage = selectedDate?.dayMonthDate;
-    yMdForMovieSeatsPage = selectedDate?.yMd;
     //to use for first date auto selected
     selectedDate?.isSelected = true;
+    dateForMovieSeatsPage = selectedDate?.dayMonthDate;
+    yMdForMovieSeatsPage = selectedDate?.yMd;
 
     // this api use for cinema names from network
     // mDataModels
@@ -91,7 +90,20 @@ class _MovieChooseTimeState extends State<MovieChooseTime> {
             date?.isSelected = true;
             dateForMovieSeatsPage = date?.dayMonthDate; //for single select
             yMdForMovieSeatsPage = date?.yMd;
-            // print("setState condition in UI after selecting by user");
+            // print("${date?.yMd}");
+            //       
+      //From database
+      mDataModels
+          .getCinemasListFromDatabase(date!.yMd.toString())
+          .listen((value) {
+        if (mounted) {
+          setState(() {
+            cinemaList = value;
+            // print(
+            // "Cinema list is => ${cinemaList.toString()} and Date is ${date.yMd.toString()}");
+          });
+        }
+      });
           }
           return date;
         },
@@ -118,16 +130,18 @@ class _MovieChooseTimeState extends State<MovieChooseTime> {
       //   });
       // });
 
-      //From database
-      mDataModels
-          .getCinemasListFromDatabase(selectedDate!.yMd.toString())
-          .listen((value) {
-        if (mounted) {
-          setState(() {
-            cinemaList = value;
-          });
-        }
-      });
+      // //From database
+      // mDataModels
+      //     .getCinemasListFromDatabase(selectedDate!.yMd.toString())
+      //     .listen((value) {
+      //   if (mounted) {
+      //     setState(() {
+      //       cinemaList = value;
+      //       print(
+      //           "Cinema list is => ${cinemaList.toString()} and Date is ${selectedDate?.yMd.toString()}");
+      //     });
+      //   }
+      // });
     });
   }
 
@@ -147,7 +161,7 @@ class _MovieChooseTimeState extends State<MovieChooseTime> {
                   cinemaNameForMovieSeatsPage = cinema.cinema;
                   cinemaIdForMovieSeatsPage = cinema.cinemaId;
                   cinemaTimeSlotsIdForMovieSeatsPage = timeSlotsId;
-                  print(cinemaTimeSlotsIdForMovieSeatsPage);
+                  // print(cinemaTimeSlotsIdForMovieSeatsPage);
                 }
               },
             ).toList();

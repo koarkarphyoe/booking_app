@@ -57,12 +57,12 @@ class _TicketViewPageState extends State<TicketViewPage> {
           mDataModel
               .getMovieDetailsFromDatabase(voucher!.movieId!.toInt())
               .listen((value) {
-            setState(() {
-              mMovie = value;
-            });
+            if (mounted) {
+              setState(() {
+                mMovie = value;
+              });
+            }
           });
-
-
         });
       });
     });
@@ -108,9 +108,9 @@ class _TicketViewPageState extends State<TicketViewPage> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           MovieTicketImageView(mMovie),
-                          SizedBox(height: marginSmall),
+                          const SizedBox(height: marginSmall),
                           Padding(
-                            padding: EdgeInsets.only(left: marginMedium),
+                            padding: const EdgeInsets.only(left: marginMedium),
                             child: MovieTitleNameInTicketView(
                                 mMovie!.originalTitle.toString(),
                                 mMovie!.runtime.toString()),
