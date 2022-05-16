@@ -41,7 +41,7 @@ class MovieDao {
     return getMovieBox()
         .watch()
         .map((event) =>
-            getAllMovie().where((element) => element.isCurrentMovie!).toList())
+            getAllMovie().where((element) => element.isCurrentMovie ?? false).toList())
         .startWith(getAllMovie()
             .where((element) => element.isCurrentMovie ?? false)
             .toList());

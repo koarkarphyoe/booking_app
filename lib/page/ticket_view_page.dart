@@ -163,10 +163,8 @@ class _TicketViewPageState extends State<TicketViewPage> {
   }
 
   void _navigateToHomePage(BuildContext context) {
-    Navigator.pushAndRemoveUntil(
-        context,
-        MaterialPageRoute(builder: (context) => const HomePage()),
-        (route) => false);
+    Navigator.pushAndRemoveUntil(context,
+        MaterialPageRoute(builder: (context) => HomePage()), (route) => false);
   }
 }
 

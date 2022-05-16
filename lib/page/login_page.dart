@@ -129,7 +129,7 @@ class _LoginPageState extends State<LoginPage> {
       Navigator.pushAndRemoveUntil(
           context,
           MaterialPageRoute(
-            builder: (context) => const HomePage(),
+            builder: (context) => HomePage(),
           ),
           (route) => false);
       //if want to use,need to change UserVO to Email Response VO in data_model
