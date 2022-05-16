@@ -32,7 +32,7 @@ class HomePage extends StatelessWidget {
       "Rate us"
     ];
     return ChangeNotifierProvider(
-      create: (BuildContext context)=>HomeBloc(),
+      create: (BuildContext context) => HomeBloc(),
       child: Scaffold(
         key: _drawerKey, //for Navigation Drawer Section
         backgroundColor: Colors.white,
@@ -137,8 +137,7 @@ class HomePage extends StatelessWidget {
     return Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => MovieDetailsPage(movieId, token),
-      ),
+          builder: (context) => MovieDetailsPage(movieId, token, key)),
     );
   }
 }

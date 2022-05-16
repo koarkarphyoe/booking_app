@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:student_app/data/model/data_models.dart';
-import 'package:student_app/data/model/data_models_impl.dart';
+import 'package:provider/provider.dart';
+import 'package:student_app/bloc/details_bloc.dart';
 import 'package:student_app/data/vos/casts_vo.dart';
 import 'package:student_app/data/vos/data_vo.dart';
 import 'package:student_app/network/api_constants.dart';
@@ -14,175 +14,204 @@ import 'package:student_app/widgets/title_text.dart';
 import 'package:student_app/widgets/title_text_bold.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
-class MovieDetailsPage extends StatefulWidget {
+class MovieDetailsPage extends StatelessWidget {
   final int movieId;
   final String? token;
-  const MovieDetailsPage(this.movieId, this.token);
-
-  @override
-  State<MovieDetailsPage> createState() => _MovieDetailsPageState();
-}
-
-class _MovieDetailsPageState extends State<MovieDetailsPage> {
-  DataModels movieModels = DataModelsImpl();
-  DataVO? movieDetails;
-  List<CastsVO>? castImage;
-
-  @override
-  void initState() {
-    super.initState();
-    // movieModels.getMovieDetails(widget.movieId)?.then((value) {
-    //   setState(() {
-    //     movieDetails = value;
-    //     castImage = value?.casts;
-    //   });
-    // });
-
-    movieModels.getMovieDetailsFromDatabase(widget.movieId).listen((value) {
-      if (mounted) {
-        setState(() {
-          movieDetails = value;
-          castImage = value?.casts;
-        });
-      }
-    });
-  }
+  const MovieDetailsPage(this.movieId, this.token,Key?key):super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return (movieDetails != null && castImage != null)
-        ? Scaffold(
-            body: SizedBox(
-              // height: MediaQuery.of(context).size.height,
-              child: CustomScrollView(
-                slivers: [
-                  SliverAppBar(
-                    elevation: 0,
-                    expandedHeight: MediaQuery.of(context).size.height / 2,
-                    collapsedHeight: sliverAppBarCollapsedHeight,
-                    automaticallyImplyLeading: false,
-                    backgroundColor: Colors.white,
-                    flexibleSpace: Stack(
-                      children: [
-                        Positioned.fill(
-                          child: MovieDetailsScreenImageView(movieDetails),
-                        ),
-                        Align(
-                          alignment: Alignment.topLeft,
-                          child: Padding(
-                            padding: const EdgeInsets.only(
-                                top: marginMedium2X, left: marginMedium),
-                            child: MovieDetailsScreenBackButtonView(
-                              onTapBack: () {
-                                navigateToPreviousPage(context);
-                              },
+    return ChangeNotifierProvider.value(
+      value: DetailsBloc(movieId),
+      child: Scaffold(
+        body: Selector<DetailsBloc, DataVO?>(
+            selector: (BuildContext context, dataVO) => dataVO.movieDetails,
+            builder: (BuildContext context, movieDetails, Widget? child) {
+              return (movieDetails != null)
+                  ? SizedBox(
+                      child: CustomScrollView(
+                        slivers: [
+                          SliverAppBar(
+                            elevation: 0,
+                            expandedHeight:
+                                MediaQuery.of(context).size.height / 2,
+                            collapsedHeight: sliverAppBarCollapsedHeight,
+                            automaticallyImplyLeading: false,
+                            backgroundColor: Colors.white,
+                            flexibleSpace: Stack(
+                              children: [
+                                Positioned.fill(
+                                  child: Selector<DetailsBloc, DataVO?>(
+                                    selector: (BuildContext context, dataVO) {
+                                      return dataVO.movieDetails;
+                                    },
+                                    builder: (BuildContext context,
+                                        movieDetails, Widget? child) {
+                                      return MovieDetailsScreenImageView(
+                                          movieDetails);
+                                    },
+                                  ),
+                                ),
+                                Align(
+                                  alignment: Alignment.topLeft,
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(
+                                        top: marginMedium2X,
+                                        left: marginMedium),
+                                    child: MovieDetailsScreenBackButtonView(
+                                      onTapBack: () {
+                                        navigateToPreviousPage(context);
+                                      },
+                                    ),
+                                  ),
+                                ),
+                                const Align(
+                                  alignment: Alignment.center,
+                                  child: MovieDetailsScreenPlayButtonView(),
+                                ),
+                                Align(
+                                  alignment: Alignment.bottomCenter,
+                                  child: Container(
+                                    height: movieDetailsWhiteContainerHeight,
+                                    width: MediaQuery.of(context).size.width,
+                                    decoration: const BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.only(
+                                        topLeft:
+                                            Radius.circular(marginMedium2X),
+                                        topRight:
+                                            Radius.circular(marginMedium2X),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
-                        ),
-                        const Align(
-                          alignment: Alignment.center,
-                          child: MovieDetailsScreenPlayButtonView(),
-                        ),
-                        Align(
-                          alignment: Alignment.bottomCenter,
-                          child: Container(
-                            height: movieDetailsWhiteContainerHeight,
-                            width: MediaQuery.of(context).size.width,
-                            decoration: const BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.only(
-                                topLeft: Radius.circular(marginMedium2X),
-                                topRight: Radius.circular(marginMedium2X),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  SliverList(
-                    delegate: SliverChildListDelegate(
-                      [
-                        Padding(
-                          padding: const EdgeInsets.only(left: marginMedium),
-                          child: MovieDetailScreenTitleAndRatingView(
-                              movieDetails, movieDetails),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(marginMedium),
-                          child: PlotSummarySectionView(movieDetails),
-                        ),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const Padding(
-                              padding: EdgeInsets.only(
-                                  left: marginMedium,
-                                  right: marginMedium,
-                                  bottom: marginMedium),
-                              child: TitleTextBold(
-                                castText,
-                                textSize: textRegular2X,
-                                textColor: Colors.black,
-                              ),
-                            ),
-                            const SizedBox(
-                              height: marginXSmall,
-                            ),
-                            SizedBox(
-                              height: movieDetailsScteenCastContainerHeight,
-                              child: ListView.builder(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: marginMedium),
-                                itemCount: castImage?.length.toInt(),
-                                scrollDirection: Axis.horizontal,
-                                itemBuilder: (BuildContext context, int index) {
-                                  return (castImage != null)
-                                      ? MovieDetailsCastImageView(
-                                          castImage?[index])
-                                      : const Center(
-                                          child: CircularProgressIndicator(),
+                          SliverList(
+                            delegate: SliverChildListDelegate(
+                              [
+                                Padding(
+                                  padding:
+                                      const EdgeInsets.only(left: marginMedium),
+                                  child: Selector<DetailsBloc, DataVO?>(
+                                    selector: (BuildContext context, dataVO) =>
+                                        dataVO.movieDetails,
+                                    builder: (BuildContext context,
+                                        movieDetails, Widget? child) {
+                                      return MovieDetailScreenTitleAndRatingView(
+                                          movieDetails, movieDetails);
+                                    },
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.all(marginMedium),
+                                  child: Selector<DetailsBloc, DataVO?>(
+                                    selector: (BuildContext context, dataVO) =>
+                                        dataVO.movieDetails,
+                                    builder: (BuildContext context,
+                                        movieDetails, Widget? child) {
+                                      return PlotSummarySectionView(
+                                          movieDetails);
+                                    },
+                                  ),
+                                ),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    const Padding(
+                                      padding: EdgeInsets.only(
+                                          left: marginMedium,
+                                          right: marginMedium,
+                                          bottom: marginMedium),
+                                      child: TitleTextBold(
+                                        castText,
+                                        textSize: textRegular2X,
+                                        textColor: Colors.black,
+                                      ),
+                                    ),
+                                    const SizedBox(
+                                      height: marginXSmall,
+                                    ),
+                                    Selector<DetailsBloc, List<CastsVO>?>(
+                                      selector:
+                                          (BuildContext context, castVO) =>
+                                              castVO.castImage,
+                                      builder: (BuildContext context, castImage,
+                                          Widget? child) {
+                                        return SizedBox(
+                                          height:
+                                              movieDetailsScteenCastContainerHeight,
+                                          child: ListView.builder(
+                                            padding: const EdgeInsets.symmetric(
+                                                horizontal: marginMedium),
+                                            itemCount:
+                                                castImage?.length.toInt(),
+                                            scrollDirection: Axis.horizontal,
+                                            itemBuilder: (BuildContext context,
+                                                int index) {
+                                              return (castImage != null)
+                                                  ? MovieDetailsCastImageView(
+                                                      castImage[index])
+                                                  : const Center(
+                                                      child:
+                                                          CircularProgressIndicator(),
+                                                    );
+                                            },
+                                          ),
                                         );
-                                },
-                              ),
+                                      },
+                                    ),
+                                    const SizedBox(
+                                      height: marginMedium,
+                                    ),
+                                    Padding(
+                                      padding:
+                                          const EdgeInsets.all(marginMedium),
+                                      child: Selector<DetailsBloc, DataVO?>(
+                                        selector:
+                                            (BuildContext context, dataVO) =>
+                                                dataVO.movieDetails,
+                                        builder: (BuildContext context,
+                                            movieDetails, Widget? child) {
+                                          return ConfirmButtonView(
+                                            getYourTicketText,
+                                            () {
+                                              _navigateToMovieChooseTimePage(
+                                                  context, movieDetails);
+                                            },
+                                            buttonBackgroundColor: primaryColor,
+                                            isGhostButton: true,
+                                          );
+                                        },
+                                      ),
+                                    ),
+                                    const SizedBox(
+                                      height: marginMediumLarge,
+                                    ),
+                                  ],
+                                ),
+                              ],
                             ),
-                            const SizedBox(
-                              height: marginMedium,
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.all(marginMedium),
-                              child: ConfirmButtonView(
-                                getYourTicketText,
-                                () {
-                                  _navigateToMovieChooseTimePage(context);
-                                },
-                                buttonBackgroundColor: primaryColor,
-                                isGhostButton: true,
-                              ),
-                            ),
-                            const SizedBox(
-                              height: marginMediumLarge,
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          )
-        : const Center(
-            child: CircularProgressIndicator(),
-          );
+                          ),
+                        ],
+                      ),
+                    )
+                  : const Center(
+                      child: CircularProgressIndicator(),
+                    );
+            }),
+      ),
+    );
   }
 
-  void _navigateToMovieChooseTimePage(BuildContext context) {
+  void _navigateToMovieChooseTimePage(
+      BuildContext context, DataVO? movieDetails) {
     Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) => MovieChooseTime(
-          movieDetails!,
+          movieDetails,
         ),
       ),
     );
