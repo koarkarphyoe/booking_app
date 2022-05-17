@@ -1,7 +1,8 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables
 
 import 'package:flutter/material.dart';
-import 'package:student_app/data/model/data_models_impl.dart';
+import 'package:provider/provider.dart';
+import 'package:student_app/bloc/seats_bloc.dart';
 import 'package:student_app/data/vos/movie_seat_list_vo.dart';
 import 'package:student_app/itemsview/movie_seat_item_view.dart';
 import 'package:student_app/page/payment_method_page.dart';
@@ -14,7 +15,7 @@ import 'package:student_app/widgets/title_text_bold.dart';
 import '../itemsview/movie_seats_status.dart';
 import '../resources/strings.dart';
 
-class MovieSeatsPage extends StatefulWidget {
+class MovieSeatsPage extends StatelessWidget {
   final dynamic movieDetails;
   final dynamic cinemaName;
   final dynamic date;
@@ -23,191 +24,111 @@ class MovieSeatsPage extends StatefulWidget {
   final dynamic yMd;
   final dynamic timeSlotsId;
   const MovieSeatsPage(this.movieDetails, this.cinemaName, this.date, this.time,
-      this.cinemaId, this.yMd,this.timeSlotsId,
+      this.cinemaId, this.yMd, this.timeSlotsId,
       {Key? key})
       : super(key: key);
 
   @override
-  State<MovieSeatsPage> createState() => _MovieSeatsPageState();
-}
-
-class _MovieSeatsPageState extends State<MovieSeatsPage> {
-  DataModelsImpl mModel = DataModelsImpl();
-
-  List<List<MovieSeatListVO>>? allSeatPlanList;
-  List<MovieSeatListVO>? seatListForRow;
-  int? rowNumbersListForGridView;
-  List<String> selectedSeat = [];
-  double totalSelectedSeatPrice = 0.0;
-
-  //for Method 2
-  // List<MovieSeatListVO> seatNameLists = [];
-
-  @override
-  void initState() {
-    super.initState();
-    mModel.getMovieSeat(widget.cinemaId, widget.yMd).then(
-      (value) {
-        setState(
-          () {
-            //Method 2
-            allSeatPlanList = value;
-            rowNumbersListForGridView = allSeatPlanList?.first.length;
-            seatListForRow =
-                allSeatPlanList?.expand((element) => element).toList();
-            // seatNameLists.addAll(seatListForRow!.map((e) => e).toList());
-            // addSeatId(seatLists);
-
-            //Method 1
-            // allSeatPlanList = value;
-            // seatListForRow = [];
-            // for (int i = 0; i < allSeatPlanList!.length; i++) {
-            //   List<MovieSeatListVO> seats = [
-            //     ...allSeatPlanList![i]
-            //   ]; // ... Spread operator insert all the elements of a list into another list
-            //   for (var seat in seats) {
-            //     seatListForRow?.add(seat);
-            //   }
-            // }
-            // rowNumbersListForGridView = allSeatPlanList?.first.length;
-          },
-        );
-      },
-    );
-  }
-
-  void _selectedSeat(String? seatName) {
-    setState(
-      () {
-        //Method 1
-        seatListForRow?.map((e) {
-          if (e.seatName != "" &&
-              e.type == "available" &&
-              e.seatName == seatName) {
-            if (e.isSelected == true) {
-              e.isSelected = false;
-              selectedSeat.remove(e.seatName);
-              totalSelectedSeatPrice -= e.price!.toDouble();
-
-              // print(totalSelectedSeatPrice.toString());
-              // print("Remove seat $selectedSeat");
-            } else {
-              e.isSelected = true;
-              selectedSeat.add(e.seatName.toString());
-              totalSelectedSeatPrice += e.price!.toDouble();
-
-              // print("Selected seat $selectedSeat");
-              // print(e.seatName.toString());
-              // print(totalSelectedSeatPrice.toString());
-            }
-          }
-        }).toList();
-
-        //Method 2
-        // seatNameLists.map((e) {
-        //   if (e.seatName == seatName) {
-        //     e.isSelected = true;
-        //     print(e.seatName.toString());
-        //   } else {
-        //     e.isSelected = false;
-        //   }
-        // }).toList();
-      },
-    );
-  }
-
-  // addSeatId(List<MovieSeatListVO> mseats) {
-  //   for (int i = 0; i < mseats.length; i++) {
-  //     seatLists[i].seatId = i + 1;
-  //     seatLists[i].isSelected = false;
-  //   }
-  // }
-
-  @override
   Widget build(BuildContext context) {
-    // final List<MovieSeatVO> _movieSeats = dummyMovieSeats;
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        elevation: 0,
-        leading: const BackButtonView(),
-      ),
-      body: Container(
-        width: MediaQuery.of(context).size.width,
-        color: Colors.white,
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              MovieNameTimeAndCinemaSectionView(
-                  widget.movieDetails.originalTitle,
-                  widget.cinemaName,
-                  widget.date,
-                  widget.time),
-              const SizedBox(height: marginMedium1X),
-              MovieSeatsSectionView(seatListForRow, rowNumbersListForGridView,
-                  (seatName) {
-                _selectedSeat(seatName);
-              }),
-              const SizedBox(height: marginMedium),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: marginMedium),
-                child: Row(
-                  children: [
-                    const MovieSeatsStatusView(
-                        movieSeatAvailableColor, movieSeatAvailable),
-                    const SizedBox(
-                      width: marginMediumXXXX,
-                    ),
-                    const MovieSeatsStatusView(
-                        movieSeatReservedColor, movieSeatReserved),
-                    const SizedBox(
-                      width: marginMediumXXX,
-                    ),
-                    const MovieSeatsStatusView(
-                        movieSeatTakenColor, movieSeatYourSelection)
-                  ],
-                ),
-              ),
-              const SizedBox(height: marginMedium1X),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: marginMedium),
-                child: TotalTicketAndSeatsTextView(
-                    "Tickets", selectedSeat.length.toString()),
-              ),
-              const SizedBox(height: marginMedium),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: marginMedium),
-                child: TotalTicketAndSeatsTextView(
-                    "Seats", selectedSeat.map((e) => e).toString()),
-              ),
-              const SizedBox(
-                height: marginMedium,
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: marginMedium),
-                child: ConfirmButtonView(
-                  "Buy Ticket for \$${totalSelectedSeatPrice.toString()}",
-                  () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => PaymentMethodPage(
-                          selectedSeat.join(","),
-                          totalSelectedSeatPrice,
-                          widget.movieDetails,
-                          widget.yMd,
-                          widget.time,
-                          widget.cinemaId,
-                          widget.timeSlotsId,
-                        ),
-                      ),
-                    );
+    return ChangeNotifierProvider.value(
+      value: SeatsBloc(cinemaId, yMd),
+      child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: Colors.white,
+          elevation: 0,
+          leading: const BackButtonView(),
+        ),
+        body: Container(
+          width: MediaQuery.of(context).size.width,
+          color: Colors.white,
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                MovieNameTimeAndCinemaSectionView(
+                    movieDetails.originalTitle, cinemaName, date, time),
+                const SizedBox(height: marginMedium1X),
+                Consumer<SeatsBloc>(
+                  builder: (BuildContext context, bloc, Widget? child) {
+                    return MovieSeatsSectionView(
+                        bloc.seatListForRow, bloc.rowNumbersListForGridView,
+                        (seatName) {
+                      bloc.onTapSeat(seatName!);
+                    });
                   },
-                  buttonBackgroundColor: primaryColor,
                 ),
-              ),
-              const SizedBox(height: marginMedium),
-            ],
+                const SizedBox(height: marginMedium),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: marginMedium),
+                  child: Row(
+                    children: [
+                      const MovieSeatsStatusView(
+                          movieSeatAvailableColor, movieSeatAvailable),
+                      const SizedBox(
+                        width: marginMediumXXXX,
+                      ),
+                      const MovieSeatsStatusView(
+                          movieSeatReservedColor, movieSeatReserved),
+                      const SizedBox(
+                        width: marginMediumXXX,
+                      ),
+                      const MovieSeatsStatusView(
+                          movieSeatTakenColor, movieSeatYourSelection)
+                    ],
+                  ),
+                ),
+                const SizedBox(height: marginMedium1X),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: marginMedium),
+                  child: Consumer<SeatsBloc>(
+                    builder: (BuildContext context, bloc, Widget? child) {
+                      return TotalTicketAndSeatsTextView(
+                          "Tickets", bloc.selectedSeat.length.toString());
+                    },
+                  ),
+                ),
+                const SizedBox(height: marginMedium),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: marginMedium),
+                  child: Consumer<SeatsBloc>(
+                    builder: (BuildContext context, bloc, Widget? child) {
+                      return TotalTicketAndSeatsTextView(
+                          "Seats", bloc.selectedSeat.map((e) => e).toString());
+                    },
+                  ),
+                ),
+                const SizedBox(
+                  height: marginMedium,
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: marginMedium),
+                  child: Consumer<SeatsBloc>(
+                    builder: (BuildContext context, bloc, Widget? child) {
+                      return ConfirmButtonView(
+                        "Buy Ticket for \$${bloc.totalSelectedSeatPrice.toString()}",
+                        () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => PaymentMethodPage(
+                                bloc.selectedSeat.join(","),
+                                bloc.totalSelectedSeatPrice,
+                                movieDetails,
+                                yMd,
+                                time,
+                                cinemaId,
+                                timeSlotsId,
+                              ),
+                            ),
+                          );
+                        },
+                        buttonBackgroundColor: primaryColor,
+                      );
+                    },
+                  ),
+                ),
+                const SizedBox(height: marginMedium),
+              ],
+            ),
           ),
         ),
       ),
@@ -273,13 +194,7 @@ class TotalTicketAndSeatsTextView extends StatelessWidget {
 class MovieSeatsSectionView extends StatefulWidget {
   const MovieSeatsSectionView(
       this.seatListForRow, this.rowNumbersListForGridView, this.selectedSeat);
-  // const MovieSeatsSectionView({
-  //   Key? key,
-  //   required List<MovieSeatVO> movieSeats,
-  // })  : _movieSeats = movieSeats,
-  //       super(key: key);
 
-  // final List<MovieSeatVO> _movieSeats;
   final List<MovieSeatListVO>? seatListForRow;
   final int? rowNumbersListForGridView;
   final Function(String? seatName) selectedSeat;

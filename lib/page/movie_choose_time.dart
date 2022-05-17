@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:student_app/bloc/timeslots_bloc.dart';
 import 'package:student_app/data/vos/date_vo.dart';
 import 'package:student_app/data/vos/timeslotdata_vo.dart';
+import 'package:student_app/data/vos/timeslots_vo.dart';
 import 'package:student_app/resources/colors.dart';
 import 'package:student_app/resources/dimens.dart';
 import 'package:student_app/widgets/title_text_bold.dart';
@@ -16,8 +17,8 @@ class MovieChooseTime extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (BuildContext context) => TimeSlotsBloc(),
+    return ChangeNotifierProvider.value(
+      value: TimeSlotsBloc(),
       child: Scaffold(
           appBar: AppBar(
             elevation: 0,
@@ -43,22 +44,24 @@ class MovieChooseTime extends StatelessWidget {
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Consumer<TimeSlotsBloc>(
+                              Selector<TimeSlotsBloc, List<DateVO?>?>(
+                                selector: (p0, p1) => p1.dateList,
                                 builder: (BuildContext context, dateList,
                                     Widget? child) {
-                                  return MovieDateChooseSectionView(
-                                      dateList.dateList, (dateId) {
+                                  return MovieDateChooseSectionView(dateList,
+                                      (dateId) {
                                     TimeSlotsBloc bloc =
                                         Provider.of(context, listen: false);
                                     bloc.onTapDate(dateId);
                                   });
                                 },
                               ),
-                              Consumer<TimeSlotsBloc>(
+                              Selector<TimeSlotsBloc, List<TimeSlotDataVO>?>(
+                                shouldRebuild: (previous, next) => false,
+                                selector: (p0, p1) => p1.cinemaList,
                                 builder: (BuildContext context, cinemaList,
                                     Widget? child) {
-                                  return ChooseItemGridSectionView(
-                                      cinemaList.cinemaList,
+                                  return ChooseItemGridSectionView(cinemaList,
                                       (timeSlotsId, cinemaId) {
                                     TimeSlotsBloc bloc =
                                         Provider.of(context, listen: false);
@@ -70,7 +73,9 @@ class MovieChooseTime extends StatelessWidget {
                                 padding: const EdgeInsets.symmetric(
                                     horizontal: marginMedium,
                                     vertical: marginMedium2X),
-                                child: Consumer<TimeSlotsBloc>(
+                                child: Selector<TimeSlotsBloc,
+                                    List<TimeSlotDataVO>?>(
+                                  selector: (p0, p1) => p1.cinemaList,
                                   builder: (BuildContext context, bloc,
                                       Widget? child) {
                                     return ConfirmButtonView(

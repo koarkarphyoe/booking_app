@@ -41,6 +41,7 @@ class TimeSlotsBloc extends ChangeNotifier {
 
   void onTapDate(int dateId) {
     _selectDate(dateId);
+    
   }
 
   _selectDate(int dateId) {
@@ -52,13 +53,20 @@ class TimeSlotsBloc extends ChangeNotifier {
           date?.isSelected = true;
           dateForMovieSeatsPage = date?.dayMonthDate; //for single select
           yMdForMovieSeatsPage = date?.yMd;
-
+          notifyListeners();
           // From database
           mDataModels
               .getCinemasListFromDatabase(date!.yMd.toString())
               .listen((value) {
             cinemaList = value;
-            notifyListeners();
+            // cinemaList
+            //     ?.map(
+            //       (e) => e.timeslots?.map((e) {
+            //         e?.isSelected = true;
+            //         timeForMovieSeatsPage = e?.startTime;
+            //       }),
+            //     )
+            //     .toList();
           });
         }
         return date;
@@ -85,7 +93,6 @@ class TimeSlotsBloc extends ChangeNotifier {
               cinemaNameForMovieSeatsPage = cinema.cinema;
               cinemaIdForMovieSeatsPage = cinema.cinemaId;
               cinemaTimeSlotsIdForMovieSeatsPage = timeSlotsId;
-
               print(
                   "CinemaTimeSlotsID is =>${cinemaTimeSlotsIdForMovieSeatsPage}");
             }
