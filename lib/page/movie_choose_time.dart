@@ -1,282 +1,124 @@
 import 'package:flutter/material.dart';
-import 'package:student_app/data/model/data_models.dart';
-import 'package:student_app/data/model/data_models_impl.dart';
+import 'package:provider/provider.dart';
+import 'package:student_app/bloc/timeslots_bloc.dart';
 import 'package:student_app/data/vos/date_vo.dart';
 import 'package:student_app/data/vos/timeslotdata_vo.dart';
-import 'package:student_app/page/movie_seats_page.dart';
 import 'package:student_app/resources/colors.dart';
 import 'package:student_app/resources/dimens.dart';
-import 'package:student_app/resources/strings.dart';
-import 'package:student_app/widgets/confirm_button_view.dart';
 import 'package:student_app/widgets/title_text_bold.dart';
+import '../resources/strings.dart';
+import '../widgets/confirm_button_view.dart';
+import 'movie_seats_page.dart';
 
-class MovieChooseTime extends StatefulWidget {
+class MovieChooseTime extends StatelessWidget {
   final dynamic movieDetails;
   const MovieChooseTime(this.movieDetails, {Key? key}) : super(key: key);
 
   @override
-  State<MovieChooseTime> createState() => _MovieChooseTimeState();
-}
-
-class _MovieChooseTimeState extends State<MovieChooseTime> {
-  DataModels mDataModels = DataModelsImpl();
-
-  List<TimeSlotDataVO>? cinemaList;
-  // TimeSlotDataVO? cinemaName;
-  // TimeslotsVO? timeSlots;
-  List<DateVO?>? dateList;
-  DateVO? selectedDate;
-
-  // Send data to MovieSeatsPage
-  String? dateForMovieSeatsPage;
-  String? timeForMovieSeatsPage;
-  String? cinemaNameForMovieSeatsPage;
-  int? cinemaIdForMovieSeatsPage;
-  int? cinemaTimeSlotsIdForMovieSeatsPage;
-  String? yMdForMovieSeatsPage;
-
-  // TimeSlotDataVO? selectedCinemaTime;//it is need to use ,when use method 2 in time choosing
-
-  @override
-  void initState() {
-    super.initState();
-
-    // this api not use for cinema names (only testing api)
-    // mDataModels.getCinemasList()?.then((value) {
-    //   setState(() {
-    //     cinemas = value;
-    //   });
-    // });
-
-    // take dateList from dateVO
-    dateList = mDataModels.getDates();
-
-    // firstly,to get the cinemaList data from api,so it is need => date String
-    selectedDate = dateList?.first;
-    //to use for first date auto selected
-    selectedDate?.isSelected = true;
-    dateForMovieSeatsPage = selectedDate?.dayMonthDate;
-    yMdForMovieSeatsPage = selectedDate?.yMd;
-
-    // this api use for cinema names from network
-    // mDataModels
-    //     .getCinemaNameAndTimeSlots(selectedDate?.yMd.toString())
-    //     .then((value) {
-    //   setState(() {
-    //     cinemaList = value;
-    //   });
-    // });
-
-    //this api use for cinema names from database
-    mDataModels
-        .getCinemasListFromDatabase(selectedDate!.yMd.toString())
-        .listen((value) {
-      if (mounted) {
-        setState(() {
-          cinemaList = value;
-        });
-      }
-    });
-  }
-
-  _selectDate(int dateId) {
-    setState(() {
-      //second method for time choosing
-      dateList = dateList?.map(
-        (date) {
-          date?.isSelected = false;
-          // print("setState condition in UI before selecting by user");
-          if (date?.id == dateId) {
-            date?.isSelected = true;
-            dateForMovieSeatsPage = date?.dayMonthDate; //for single select
-            yMdForMovieSeatsPage = date?.yMd;
-            // print("${date?.yMd}");
-            //       
-      //From database
-      mDataModels
-          .getCinemasListFromDatabase(date!.yMd.toString())
-          .listen((value) {
-        if (mounted) {
-          setState(() {
-            cinemaList = value;
-            // print(
-            // "Cinema list is => ${cinemaList.toString()} and Date is ${date.yMd.toString()}");
-          });
-        }
-      });
-          }
-          return date;
-        },
-      ).toList();
-
-      //first method for date choosing
-      // selectedDate = dateList!.firstWhere((element) => element.id == dateId);
-      //Reset all selected date when user chage tapping on date!
-      // dateList?.forEach((element) => element.isSelected = false);
-      //isSelected is false in DateVO,now it is setup to true to handle the color of date when select the date from the user!
-      // selectedDate?.isSelected = true;
-      //to show and test actual date in console!
-      // debugPrint(selectedDate?.yMd.toString());
-      // debugPrint("DateVO id is ${selectedDate?.id.toString()}");
-
-      // this api use for cinema names and user behavior in selecting date and time to request movie timeSlots
-      // it is need to call again in setState bcoz timeSlots will different by following user selected date from Api
-      //From network
-      //   mDataModels
-      //     .getCinemaNameAndTimeSlots(selectedDate?.yMd.toString())
-      //     .then((value) {
-      //   setState(() {
-      //     cinemaList = value;
-      //   });
-      // });
-
-      // //From database
-      // mDataModels
-      //     .getCinemasListFromDatabase(selectedDate!.yMd.toString())
-      //     .listen((value) {
-      //   if (mounted) {
-      //     setState(() {
-      //       cinemaList = value;
-      //       print(
-      //           "Cinema list is => ${cinemaList.toString()} and Date is ${selectedDate?.yMd.toString()}");
-      //     });
-      //   }
-      // });
-    });
-  }
-
-  _selectTime(int? timeSlotsId, int? cinemaId) {
-    setState(
-      () {
-        //Method 1 can use
-        cinemaList = cinemaList?.map(
-          (cinema) {
-            cinema.timeslots?.map(
-              (timeSlots) {
-                timeSlots?.isSelected =
-                    false; //if want double selecting,no need to use
-                if (timeSlots?.cinemaDayTimeslotId == timeSlotsId) {
-                  timeSlots?.isSelected = true;
-                  timeForMovieSeatsPage = timeSlots?.startTime;
-                  cinemaNameForMovieSeatsPage = cinema.cinema;
-                  cinemaIdForMovieSeatsPage = cinema.cinemaId;
-                  cinemaTimeSlotsIdForMovieSeatsPage = timeSlotsId;
-                  // print(cinemaTimeSlotsIdForMovieSeatsPage);
-                }
-              },
-            ).toList();
-            return cinema;
-          },
-        ).toList();
-      },
-    );
-
-    // for default selecting color and need to use by combining mehtod 2 & 3
-    // cinemaList = cinemaList?.map(
-    //   (cinema) {
-    //     cinema.timeslots?.map(
-    //       (timeSlotsId) {
-    //         timeSlotsId?.isSelected = false;
-    //       },
-    //     ).toList();
-    //     return cinema;
-    //   },
-    // ).toList();
-
-    //Method 2
-    // selectedCinemaTime =
-    //     cinemaList?.firstWhere((element) => element.cinemaId == cinemaId);
-    // selectedCinemaTime?.timeslots
-    //     ?.firstWhere(
-    //         (element) => element?.cinemaDayTimeslotId == timeSlotsId)
-    //     ?.isSelected = true;
-
-    //Method 3
-    //Reset unselected time button colors
-    // cinemaList?.forEach((element) {
-    //   element.timeslots?.forEach((element) {
-    //     element?.isSelected = false;
-    //   });
-    //   element.timeslots?.forEach((element) {
-    //     if (element?.cinemaDayTimeslotId == timeSlotsId) {
-    //       element?.isSelected = true;
-    //     }
-    //   });
-    // });
-  }
-
-  @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        elevation: 0,
-        backgroundColor: primaryColor,
-        leading: GestureDetector(
-          onTap: () {
-            _navigateToPreviousPage(context);
-          },
-          child: const Icon(
-            Icons.chevron_left,
-            size: paymentPageBackButtonIconSize,
-            color: Colors.white,
-          ),
-        ),
-      ),
-      body: (cinemaList != null)
-          ? SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      MovieDateChooseSectionView(
-                          dateList, (dateId) => _selectDate(dateId)),
-                      ChooseItemGridSectionView(
-                          cinemaList,
-                          (timeSlotsId, cinemaId) =>
-                              _selectTime(timeSlotsId, cinemaId)),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: marginMedium, vertical: marginMedium2X),
-                        child: ConfirmButtonView(
-                          buttonNextText,
-                          () {
-                            if (cinemaNameForMovieSeatsPage == null &&
-                                cinemaIdForMovieSeatsPage == null) {
-                              showDialog(
-                                context: context,
-                                builder: (context) {
-                                  return const AlertDialog(
-                                    title: Text("Sorry!"),
-                                    content: Text(
-                                        "Please choose time from one of the Cineam !"),
-                                  );
-                                },
-                              );
-                            } else {
-                              _navigateToMovieSeatsPage(
-                                  context,
-                                  cinemaNameForMovieSeatsPage,
-                                  dateForMovieSeatsPage,
-                                  timeForMovieSeatsPage,
-                                  cinemaIdForMovieSeatsPage,
-                                  yMdForMovieSeatsPage,
-                                  cinemaTimeSlotsIdForMovieSeatsPage);
-                            }
-                          },
-                          isGhostButton: true,
-                          buttonBackgroundColor: primaryColor,
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
+    return ChangeNotifierProvider(
+      create: (BuildContext context) => TimeSlotsBloc(),
+      child: Scaffold(
+          appBar: AppBar(
+            elevation: 0,
+            backgroundColor: primaryColor,
+            leading: GestureDetector(
+              onTap: () {
+                _navigateToPreviousPage(context);
+              },
+              child: const Icon(
+                Icons.chevron_left,
+                size: paymentPageBackButtonIconSize,
+                color: Colors.white,
               ),
-            )
-          : const Center(
-              child: CircularProgressIndicator(),
             ),
+          ),
+          body: Consumer<TimeSlotsBloc>(
+            builder: (BuildContext context, mCinemaList, Widget? child) {
+              return (mCinemaList.cinemaList != null)
+                  ? SingleChildScrollView(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Consumer<TimeSlotsBloc>(
+                                builder: (BuildContext context, dateList,
+                                    Widget? child) {
+                                  return MovieDateChooseSectionView(
+                                      dateList.dateList, (dateId) {
+                                    TimeSlotsBloc bloc =
+                                        Provider.of(context, listen: false);
+                                    bloc.onTapDate(dateId);
+                                  });
+                                },
+                              ),
+                              Consumer<TimeSlotsBloc>(
+                                builder: (BuildContext context, cinemaList,
+                                    Widget? child) {
+                                  return ChooseItemGridSectionView(
+                                      cinemaList.cinemaList,
+                                      (timeSlotsId, cinemaId) {
+                                    TimeSlotsBloc bloc =
+                                        Provider.of(context, listen: false);
+                                    bloc.onTapTime(timeSlotsId, cinemaId);
+                                  });
+                                },
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: marginMedium,
+                                    vertical: marginMedium2X),
+                                child: Consumer<TimeSlotsBloc>(
+                                  builder: (BuildContext context, bloc,
+                                      Widget? child) {
+                                    return ConfirmButtonView(
+                                      buttonNextText,
+                                      () {
+                                        TimeSlotsBloc bloc =
+                                            Provider.of(context, listen: false);
+                                        if (bloc.cinemaNameForMovieSeatsPage ==
+                                                null &&
+                                            bloc.cinemaIdForMovieSeatsPage ==
+                                                null) {
+                                          showDialog(
+                                            context: context,
+                                            builder: (context) {
+                                              return const AlertDialog(
+                                                title: Text("Sorry!"),
+                                                content: Text(
+                                                    "Please choose time from one of the Cineam !"),
+                                              );
+                                            },
+                                          );
+                                        } else {
+                                          _navigateToMovieSeatsPage(
+                                              context,
+                                              bloc.cinemaNameForMovieSeatsPage,
+                                              bloc.dateForMovieSeatsPage,
+                                              bloc.timeForMovieSeatsPage,
+                                              bloc.cinemaIdForMovieSeatsPage,
+                                              bloc.yMdForMovieSeatsPage,
+                                              bloc.cinemaTimeSlotsIdForMovieSeatsPage);
+                                        }
+                                      },
+                                      isGhostButton: true,
+                                      buttonBackgroundColor: primaryColor,
+                                    );
+                                  },
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    )
+                  : const Center(
+                      child: CircularProgressIndicator(),
+                    );
+            },
+          )),
     );
   }
 
@@ -286,13 +128,7 @@ class _MovieChooseTimeState extends State<MovieChooseTime> {
       context,
       MaterialPageRoute(
         builder: (context) => MovieSeatsPage(
-            widget.movieDetails,
-            cinemaName,
-            date,
-            time,
-            cinemaId,
-            yMdForMovieSeatsPage,
-            cinemaTimeSlotsIdForMovieSeatsPage),
+            movieDetails, cinemaName, date, time, cinemaId, yMd, timeSlotId),
       ),
     );
   }
