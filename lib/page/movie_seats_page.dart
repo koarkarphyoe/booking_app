@@ -5,7 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:student_app/bloc/seats_bloc.dart';
 import 'package:student_app/data/vos/movie_seat_list_vo.dart';
 import 'package:student_app/itemsview/movie_seat_item_view.dart';
-import 'package:student_app/page/payment_method_page.dart';
+import 'package:student_app/page/snacks_page.dart';
 import 'package:student_app/resources/colors.dart';
 import 'package:student_app/resources/dimens.dart';
 import 'package:student_app/widgets/confirm_button_view.dart';
@@ -109,7 +109,7 @@ class MovieSeatsPage extends StatelessWidget {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => PaymentMethodPage(
+                              builder: (context) => SnacksPage(
                                 bloc.selectedSeat.join(","),
                                 bloc.totalSelectedSeatPrice,
                                 movieDetails,

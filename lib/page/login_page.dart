@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:student_app/data/model/data_models.dart';
 import 'package:student_app/data/model/data_models_impl.dart';
-import 'package:student_app/network/api_constants.dart';
 import 'package:student_app/page/home_page.dart';
 import 'package:student_app/resources/colors.dart';
 import 'package:student_app/resources/dimens.dart';
@@ -67,20 +66,6 @@ class _LoginPageState extends State<LoginPage> {
                             child: Text(text),
                           ))
                       .toList(),
-                  //[
-                  // Tab(
-                  //   child: Text(
-                  //     "Login",
-                  //     style: TextStyle(color: Colors.black, fontSize: 20),
-                  //   ),
-                  // ),
-                  // Tab(
-                  //   child: Text(
-                  //     "Register",
-                  //     style: TextStyle(color: Colors.black, fontSize: 20),
-                  //   ),
-                  // ),
-                  //]
                 ),
                 SizedBox(
                   height: tabBarViewSizedBoxHeight,
@@ -132,32 +117,6 @@ class _LoginPageState extends State<LoginPage> {
             builder: (context) => HomePage(),
           ),
           (route) => false);
-      //if want to use,need to change UserVO to Email Response VO in data_model
-      // if (value.code == 400) {
-      //   showDialog(
-      //       context: context,
-      //       builder: (context) {
-      //         return AlertDialog(
-      //           content: Text("${value.message}"),
-      //         );
-      //       });
-      // } else {
-      //   debugPrint("User Token==> ${value.token.toString()}");
-      //   Navigator.pushAndRemoveUntil(
-      //       context,
-      //       MaterialPageRoute(
-      //         builder: (context) => const HomePage(),
-      //       ),
-      //       (route) => false);
-      //   // Navigator.push(
-      //   //   context,
-      //   //   MaterialPageRoute(
-      //   //     builder: (context) {
-      //   //       return const HomePage();
-      //   //     },
-      //   //   ),
-      //   // );
-      // }
     }).catchError((error) {
       print("${error.toString()}");
     });
@@ -175,13 +134,8 @@ class _LoginPageState extends State<LoginPage> {
         .postRegisterWithEmail(name, email, password, phoneNo,
             facebookAccessToken, googleAccessToken)!
         .then(
-      (value) {
-        // print(value.message);
-        // print(value.code);
-        // print(value.data);
-        // print(value.token);
-      },
-    );
+          (value) {},
+        );
   }
 }
 
@@ -214,7 +168,11 @@ class RegisterScreenView extends StatelessWidget {
           const SizedBox(height: marginMedium1X),
           TitleAndTextFieldView(emailText, emailTextController),
           const SizedBox(height: marginMedium1X),
-          TitleAndTextFieldView(passwordText, passwordTextController,obScureText: true,),
+          TitleAndTextFieldView(
+            passwordText,
+            passwordTextController,
+            obScureText: true,
+          ),
           const SizedBox(height: marginMedium1X),
           TitleAndTextFieldView(
               phoneNumberTextField, phoneNumberTextController),
@@ -265,7 +223,11 @@ class LoginScreenView extends StatelessWidget {
           const SizedBox(height: marginMedium1X),
           TitleAndTextFieldView(emailText, emailTextController),
           const SizedBox(height: marginMedium1X),
-          TitleAndTextFieldView(passwordText, passwordTextController,obScureText: true,),
+          TitleAndTextFieldView(
+            passwordText,
+            passwordTextController,
+            obScureText: true,
+          ),
           const SizedBox(height: marginMedium1X),
           const Align(
             alignment: Alignment.centerRight,
@@ -290,10 +252,6 @@ class LoginScreenView extends StatelessWidget {
             () {
               onTapButton(
                   emailTextController.text, passwordTextController.text);
-              // onTapButton(
-              //   print("$emailTextController"),
-              //   print("$passwordTextController"),
-              // );
             },
             textColor: Colors.white,
             buttonBackgroundColor: primaryColor,

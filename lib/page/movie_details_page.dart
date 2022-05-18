@@ -17,7 +17,7 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 class MovieDetailsPage extends StatelessWidget {
   final int movieId;
   final String? token;
-  const MovieDetailsPage(this.movieId, this.token,Key?key):super(key: key);
+  const MovieDetailsPage(this.movieId, this.token, Key? key) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
