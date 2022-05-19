@@ -1,12 +1,7 @@
-
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
-import 'package:student_app/data/vos/card_vo.dart';
-import 'package:student_app/data/vos/data_vo.dart';
-import 'package:student_app/data/vos/voucher_vo.dart';
-import 'package:student_app/general_functions.dart';
-import 'package:student_app/network/requests/checkout_request.dart';
-import 'package:student_app/network/response/check_out_response.dart';
+import 'package:provider/provider.dart';
+import 'package:student_app/bloc/cards_bloc.dart';
 import 'package:student_app/page/create_new_card_page.dart';
 import 'package:student_app/page/ticket_view_page.dart';
 import 'package:student_app/resources/colors.dart';
@@ -16,17 +11,16 @@ import 'package:student_app/widgets/confirm_button_view.dart';
 import 'package:student_app/widgets/payment_card_view.dart';
 import 'package:student_app/widgets/title_text.dart';
 import 'package:student_app/widgets/title_text_bold.dart';
-import '../data/model/data_models_impl.dart';
 
-class PaymentCardPage extends StatefulWidget {
-  final dynamic subtotal;
-  final dynamic movieDetails;
-  final dynamic time;
-  final dynamic yMd;
-  final dynamic cinemaId;
-  final dynamic selectedSeatName;
-  final dynamic finalSelectedSnackListResult;
-  final dynamic timeSlotsId;
+class PaymentCardPage extends StatelessWidget {
+   final dynamic subtotal;
+   final dynamic movieDetails;
+   final dynamic time;
+   final dynamic yMd;
+   final dynamic cinemaId;
+   final dynamic selectedSeatName;
+   final dynamic finalSelectedSnackListResult;
+   final dynamic timeSlotsId;
 
   const PaymentCardPage(
       this.subtotal,
@@ -41,147 +35,119 @@ class PaymentCardPage extends StatefulWidget {
       : super(key: key);
 
   @override
-  State<PaymentCardPage> createState() => _PaymentCardPageState();
-}
-
-class _PaymentCardPageState extends State<PaymentCardPage> {
-  DataModelsImpl mDataModel = DataModelsImpl();
-  CheckoutRequest checkoutRequest = CheckoutRequest();
-
-  List<CardVO>? cardList;
-  CardVO? selectedCard;
-  CheckOutResponse? checkOutResponse;
-  VoucherVO? voucher;
-  DataVO? mMovie;
-  int? movieId;
-
-  //Change the require variable to Json for CheckOut api request
-  // CheckoutRequest checkoutRequest = CheckoutRequest(); // changed to Modal class
-  String? encodedJson;
-
-  @override
-  void initState() {
-    super.initState();
-
-    mDataModel.getUserInfoFromDatabase()?.listen((value) {
-      setState(() {
-        cardList = value?.cards;
-        selectedCard = cardList?.first;
-      });
-    });
-    _createCheckOutVOForApiRequest();
-  }
-
-  @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        elevation: 0,
-        leading: GestureDetector(
-          onTap: () {
-            Navigator.pop(context);
-          },
-          child: const Icon(
-            Icons.chevron_left,
-            size: paymentPageBackButtonIconSize,
-            color: Colors.black,
-          ),
-        ),
-      ),
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: marginMedium),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const TitleText(
-                    paymentAmount,
-                    textColor: paymentCardIconColor,
-                    textSize: textRegular,
-                  ),
-                  const SizedBox(height: marginXSmall),
-                  TitleTextBold("\$${widget.subtotal.toString()}",
-                      textColor: Colors.black, textSize: textRegular4X),
-                  const SizedBox(height: marginMedium1X),
-                ],
-              ),
-            ),
-            (cardList != null)
-                ? CarouselSlider(
-                    items: cardList
-                        ?.map(
-                          (e) => CardView(e, (cardId) {
-                            if (e.id == cardId) {
-                              selectedCard = e;
-                              // print(selectedCard!.id.toString());
-                            }
-                          }),
-                        )
-                        .toList(),
-                    options: CarouselOptions(
-                      height: carouselOptionHeight,
-                      enlargeCenterPage: true,
-                    ),
-                  )
-                : const Center(child: CircularProgressIndicator()),
-            const SizedBox(
-              height: paymentPageBackButtonIconSize,
-            ),
-            GestureDetector(
+    return ChangeNotifierProvider.value(
+        value: CardsBloc(),
+        child: Scaffold(
+          appBar: AppBar(
+            backgroundColor: Colors.white,
+            elevation: 0,
+            leading: GestureDetector(
               onTap: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const CreateNewCardPage(),
-                    ));
+                Navigator.pop(context);
               },
-              child: const Padding(
-                padding: EdgeInsets.symmetric(horizontal: marginMedium),
-                child: AddNewCard(),
+              child: const Icon(
+                Icons.chevron_left,
+                size: paymentPageBackButtonIconSize,
+                color: Colors.black,
               ),
             ),
-            const SizedBox(
-              height: carouselOptionHeight,
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: marginMedium),
-              child: ConfirmButtonView(
-                comfirmBtnText,
-                () {
-                  setState(() {
-                    _createCheckOutVOForApiRequest();
+          ),
+          body: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: marginMedium),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const TitleText(
+                        paymentAmount,
+                        textColor: paymentCardIconColor,
+                        textSize: textRegular,
+                      ),
+                      const SizedBox(height: marginXSmall),
+                      TitleTextBold("\$${subtotal.toString()}",
+                          textColor: Colors.black, textSize: textRegular4X),
+                      const SizedBox(height: marginMedium1X),
+                    ],
+                  ),
+                ),
+                Selector<CardsBloc, CardsBloc>(
+                    shouldRebuild: (previous, next) => true,
+                    selector: (BuildContext context, bloc) => bloc,
+                    builder: (BuildContext context, bloc, Widget? child) {
+                      return (bloc.cardList != null)
+                          ? CarouselSlider(
+                              items: bloc.cardList
+                                  ?.map(
+                                    (e) => CardView(e, (cardId) {
+                                      if (e.id == cardId) {
+                                        bloc.selectedCard = e;
+                                        // print(selectedCard!.id.toString());
+                                      }
+                                    }),
+                                  )
+                                  .toList(),
+                              options: CarouselOptions(
+                                height: carouselOptionHeight,
+                                enlargeCenterPage: true,
+                              ),
+                            )
+                          : const Center(child: CircularProgressIndicator());
+                    }),
+                const SizedBox(
+                  height: paymentPageBackButtonIconSize,
+                ),
+                GestureDetector(
+                  onTap: () {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) =>
-                                TicketViewPage(checkoutRequest)));
-                  });
-                },
-                isGhostButton: true,
-                buttonBackgroundColor: primaryColor,
-              ),
+                          builder: (context) => CreateNewCardPage(),
+                        ));
+                  },
+                  child: const Padding(
+                    padding: EdgeInsets.symmetric(horizontal: marginMedium),
+                    child: AddNewCard(),
+                  ),
+                ),
+                const SizedBox(
+                  height: carouselOptionHeight,
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: marginMedium),
+                  child: Selector<CardsBloc, CardsBloc>(
+                    selector: (BuildContext context, bloc) => bloc,
+                    builder: (BuildContext context, bloc, Widget? child) {
+                      return ConfirmButtonView(
+                        comfirmBtnText,
+                        () {
+                          bloc.onTapCreateCheckOutVOForApiRequest(
+                              time,
+                              timeSlotsId,
+                              movieDetails.id,
+                              selectedSeatName,
+                              finalSelectedSnackListResult);
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                    builder: (context) =>
+                                        TicketViewPage(bloc.checkoutRequest)));
+                        
+                        },
+                        isGhostButton: true,
+                        buttonBackgroundColor: primaryColor,
+                      );
+                    },
+                  ),
+                ),
+              ],
             ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  void _createCheckOutVOForApiRequest() {
-    checkoutRequest.cardId = selectedCard?.id;
-    checkoutRequest.bookingDate = Functions().formatDate(widget.time);
-    checkoutRequest.cinemaDayTimeslotId = widget.timeSlotsId;
-    checkoutRequest.movieId = widget.movieDetails.id;
-    checkoutRequest.seatNumber = widget.selectedSeatName.toString();
-    checkoutRequest.snacks = widget.finalSelectedSnackListResult;
-    // This step is to confirm Json object is working or not in Postman
-    // encodedJson = jsonEncode(checkoutRequest);
-    // print(encodedJson);
+          ),
+        ));
   }
 }
 
@@ -202,7 +168,7 @@ class AddNewCard extends StatelessWidget {
         SizedBox(
           width: marginSmall,
         ),
-        TitleTextBold("Add new card",
+        TitleTextBold(addNewCard,
             textColor: addIconInPaymentCardColor, textSize: textRegular1X),
       ],
     );

@@ -58,7 +58,11 @@ const movieSeatAvailable = "Available";
 const movieSeatReserved = "Reserved";
 const movieSeatYourSelection = "Your Selection";
 const createNewCard = "Create new card!";
+const addNewCard = "Add new card";
 const chooseYourCard = "Choose your card!";
+const sorry = "Sorry!";
+const pleaseCheckAndFillCardInformation =
+    "Please check and fill card information!";
 
 
 

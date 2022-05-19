@@ -30,30 +30,11 @@ class _TicketViewPageState extends State<TicketViewPage> {
   @override
   void initState() {
     setState(() {
-      //Method 1
-      // mDataModel.postCheckOutRequest(widget.checkoutRequest.toJson())?.then((value) {
-      //   setState(() {
-      //     voucher = value.data;
-      //     // print(voucher?.movieId.toString());
-      //     mDataModel.getMovieDetails(voucher!.movieId!.toInt())?.then((value) {
-      //       setState(() {
-      //         mMovie = value;
-      //       });
-      //     });
-      //   });
-      // });
-
-      //Method 2
+     
       mDataModel.checkOut(widget.checkoutRequest)?.then((value) {
         setState(() {
           voucher = value.data;
-          // print(voucher?.movieId.toString());
-          // mDataModel.getMovieDetails(voucher!.movieId!.toInt())?.then((value) {
-          //   setState(() {
-          //     mMovie = value;
-          //   });
-          // });
-
+        
           mDataModel
               .getMovieDetailsFromDatabase(voucher!.movieId!.toInt())
               .listen((value) {
@@ -136,8 +117,7 @@ class _TicketViewPageState extends State<TicketViewPage> {
                           const SizedBox(height: marginMedium),
                           MovieBookingVoucherView(
                               theaterText, voucher!.cinemaId.toString()),
-                          // SizedBox(height: marginMedium),
-                          // MovieBookingVoucherView(screenText, "2"),
+                         
                           const SizedBox(height: marginMedium),
                           MovieBookingVoucherView(
                               rowText, voucher!.row.toString()),
