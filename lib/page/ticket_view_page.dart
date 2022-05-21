@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:student_app/bloc/ticket_bloc.dart';
 import 'package:student_app/data/model/data_models.dart';
 import 'package:student_app/data/model/data_models_impl.dart';
 import 'package:student_app/data/vos/data_vo.dart';
@@ -13,138 +15,148 @@ import 'package:syncfusion_flutter_barcodes/barcodes.dart';
 
 import '../network/api_constants.dart';
 
-class TicketViewPage extends StatefulWidget {
+class TicketViewPage extends StatelessWidget {
   final dynamic checkoutRequest;
 
   const TicketViewPage(this.checkoutRequest, {Key? key}) : super(key: key);
 
-  @override
-  State<TicketViewPage> createState() => _TicketViewPageState();
-}
+//   @override
+//   State<TicketViewPage> createState() => _TicketViewPageState();
+// }
 
-class _TicketViewPageState extends State<TicketViewPage> {
-  DataModels mDataModel = DataModelsImpl();
-  VoucherVO? voucher;
-  DataVO? mMovie;
+// class _TicketViewPageState extends State<TicketViewPage> {
+//   DataModels mDataModel = DataModelsImpl();
+//   VoucherVO? voucher;
+//   DataVO? mMovie;
 
-  @override
-  void initState() {
-    setState(() {
-     
-      mDataModel.checkOut(widget.checkoutRequest)?.then((value) {
-        setState(() {
-          voucher = value.data;
-        
-          mDataModel
-              .getMovieDetailsFromDatabase(voucher!.movieId!.toInt())
-              .listen((value) {
-            if (mounted) {
-              setState(() {
-                mMovie = value;
-              });
-            }
-          });
-        });
-      });
-    });
+//   @override
+//   void initState() {
+//     setState(() {
 
-    super.initState();
-  }
+//       mDataModel.checkOut(widget.checkoutRequest)?.then((value) {
+//         setState(() {
+//           voucher = value.data;
+
+//           mDataModel
+//               .getMovieDetailsFromDatabase(voucher!.movieId!.toInt())
+//               .listen((value) {
+//             if (mounted) {
+//               setState(() {
+//                 mMovie = value;
+//               });
+//             }
+//           });
+//         });
+//       });
+//     });
+
+//     super.initState();
+//   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        leading: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: marginMedium),
-          child: GestureDetector(
-            onTap: () {
-              _navigateToHomePage(context);
-            },
-            child: const Icon(
-              Icons.close,
-              color: Colors.black,
-              size: comboSetButtonHeight,
+    return ChangeNotifierProvider.value(
+      value: TicketBloc(checkoutRequest),
+      child: Scaffold(
+          backgroundColor: Colors.white,
+          appBar: AppBar(
+            leading: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: marginMedium),
+              child: GestureDetector(
+                onTap: () {
+                  _navigateToHomePage(context);
+                },
+                child: const Icon(
+                  Icons.close,
+                  color: Colors.black,
+                  size: comboSetButtonHeight,
+                ),
+              ),
             ),
+            backgroundColor: Colors.white,
+            elevation: 0,
+            centerTitle: true,
           ),
-        ),
-        backgroundColor: Colors.white,
-        elevation: 0,
-        centerTitle: true,
-      ),
-      body: (voucher != null && mMovie != null)
-          ? SingleChildScrollView(
-              child: Column(
-                children: [
-                  TitleTextBoldView(mMovie?.originalTitle.toString()),
-                  const SizedBox(height: marginXSmall),
-                  TitleTextNormalView(voucher?.username),
-                  const SizedBox(height: marginXSmall),
-                  SizedBox(
-                    height: movieTicketTopSizedBoxHeight,
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: marginMediumXXX),
+          body: Consumer<TicketBloc>(
+            builder: (BuildContext context, bloc, Widget? child) {
+              return (bloc.voucher != null && bloc.mMovie != null)
+                  ? SingleChildScrollView(
                       child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          MovieTicketImageView(mMovie),
-                          const SizedBox(height: marginSmall),
+                          TitleTextBoldView(
+                              bloc.mMovie?.originalTitle.toString()),
+                          const SizedBox(height: marginXSmall),
+                          TitleTextNormalView(bloc.voucher?.username),
+                          const SizedBox(height: marginXSmall),
+                          SizedBox(
+                            height: movieTicketTopSizedBoxHeight,
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: marginMediumXXX),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  MovieTicketImageView(bloc.mMovie),
+                                  const SizedBox(height: marginSmall),
+                                  Padding(
+                                    padding: const EdgeInsets.only(
+                                        left: marginMedium),
+                                    child: MovieTitleNameInTicketView(
+                                        bloc.mMovie!.originalTitle.toString(),
+                                        bloc.mMovie!.runtime.toString()),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            height: 250,
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: marginMediumXXXX),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  MovieBookingVoucherView(bookingNoText,
+                                      bloc.voucher!.bookingNo.toString()),
+                                  const SizedBox(height: marginMedium),
+                                  MovieBookingVoucherView(showTimeAndDateText,
+                                      "${bloc.voucher!.timeslot?.startTime}  ${bloc.voucher!.bookingDate}"),
+                                  const SizedBox(height: marginMedium),
+                                  MovieBookingVoucherView(theaterText,
+                                      bloc.voucher!.cinemaId.toString()),
+                                  const SizedBox(height: marginMedium),
+                                  MovieBookingVoucherView(
+                                      rowText, bloc.voucher!.row.toString()),
+                                  const SizedBox(height: marginMedium),
+                                  MovieBookingVoucherView(
+                                      seatText, bloc.voucher!.seat.toString()),
+                                  const SizedBox(height: marginMedium),
+                                  MovieBookingVoucherView(
+                                      priceText, "${bloc.voucher!.total}"),
+                                ],
+                              ),
+                            ),
+                          ),
                           Padding(
-                            padding: const EdgeInsets.only(left: marginMedium),
-                            child: MovieTitleNameInTicketView(
-                                mMovie!.originalTitle.toString(),
-                                mMovie!.runtime.toString()),
+                            padding: const EdgeInsets.all(marginMedium),
+                            child: BarCodeView(bloc.voucher!.bookingNo),
                           ),
                         ],
                       ),
-                    ),
-                  ),
-                  SizedBox(
-                    height: 250,
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: marginMediumXXXX),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          MovieBookingVoucherView(
-                              bookingNoText, voucher!.bookingNo.toString()),
-                          const SizedBox(height: marginMedium),
-                          MovieBookingVoucherView(showTimeAndDateText,
-                              "${voucher!.timeslot?.startTime}  ${voucher!.bookingDate}"),
-                          const SizedBox(height: marginMedium),
-                          MovieBookingVoucherView(
-                              theaterText, voucher!.cinemaId.toString()),
-                         
-                          const SizedBox(height: marginMedium),
-                          MovieBookingVoucherView(
-                              rowText, voucher!.row.toString()),
-                          const SizedBox(height: marginMedium),
-                          MovieBookingVoucherView(
-                              seatText, voucher!.seat.toString()),
-                          const SizedBox(height: marginMedium),
-                          MovieBookingVoucherView(
-                              priceText, "${voucher!.total}"),
-                        ],
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(marginMedium),
-                    child: BarCodeView(voucher!.bookingNo),
-                  ),
-                ],
-              ),
-            )
-          : const Center(child: CircularProgressIndicator()),
+                    )
+                  : const Center(child: CircularProgressIndicator());
+            },
+          )),
     );
   }
 
   void _navigateToHomePage(BuildContext context) {
-    Navigator.pushAndRemoveUntil(context,
-        MaterialPageRoute(builder: (context) => HomePage()), (route) => false);
+    Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(builder: (context) => const HomePage()),
+        (route) => false);
   }
 }
 

@@ -1,11 +1,12 @@
-import 'package:flutter/cupertino.dart';
-
+import 'package:flutter/material.dart';
 import '../data/model/data_models.dart';
 import '../data/model/data_models_impl.dart';
 import '../data/vos/data_vo.dart';
 import '../data/vos/user_vo.dart';
 
 class HomeBloc extends ChangeNotifier {
+  final GlobalKey<ScaffoldState> drawer = GlobalKey();
+
   //State
   UserVO? mUser;
   String? token;
@@ -14,6 +15,10 @@ class HomeBloc extends ChangeNotifier {
 
   //Model
   DataModels userModels = DataModelsImpl();
+
+  void openDrawer() {
+    drawer.currentState!.openDrawer();
+  }
 
   HomeBloc() {
     //NowPlayingMovie
@@ -41,5 +46,9 @@ class HomeBloc extends ChangeNotifier {
       token = databaseToken;
       notifyListeners();
     }).onError((error) => debugPrint(error.toString()));
+  }
+
+  void onTapLogOut() {
+    userModels.logOut();
   }
 }

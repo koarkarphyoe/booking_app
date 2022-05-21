@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:student_app/bloc/home_bloc.dart';
-import 'package:student_app/data/model/data_models.dart';
 import 'package:student_app/data/vos/data_vo.dart';
 import 'package:student_app/data/vos/user_vo.dart';
 import 'package:student_app/itemsview/horizontal_movie_list_view.dart';
@@ -15,12 +14,7 @@ import 'package:student_app/widgets/title_text.dart';
 import 'package:student_app/widgets/title_text_bold.dart';
 
 class HomePage extends StatelessWidget {
-  //for Navigation Drawer Section ,it is need key and openDrawer()
-  HomePage({Key? key}) : super(key: key);
-  final GlobalKey<ScaffoldState> _drawerKey = GlobalKey();
-  void openDrawer() {
-    _drawerKey.currentState!.openDrawer();
-  }
+  const HomePage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -31,103 +25,109 @@ class HomePage extends StatelessWidget {
       "Help",
       "Rate us"
     ];
-    return ChangeNotifierProvider(
-      create: (BuildContext context) => HomeBloc(),
-      child: Scaffold(
-        key: _drawerKey, //for Navigation Drawer Section
-        backgroundColor: Colors.white,
-        appBar: AppBar(
-          backgroundColor: Colors.white,
-          leading: GestureDetector(
-            onTap: () {
-              //for Navigation Drawer Section
-              openDrawer();
-            },
-            child: const Icon(
-              Icons.menu,
-              color: Colors.black,
-            ),
-          ),
-          actions: const [
-            Padding(
-              padding: EdgeInsets.only(right: marginMedium),
-              child: Icon(
-                Icons.search,
-                color: Colors.black,
-                size: searchAndMenuIconSize,
-              ),
-            ),
-          ],
-          elevation: 0,
-        ),
-        drawer: Selector<HomeBloc, UserVO?>(
-          selector: (BuildContext context, userVO) => userVO.mUser,
-          builder: (BuildContext context, userInfo, Widget? child) {
-            return Selector<HomeBloc, DataModels>(
-              selector: (BuildContext context, model) => model.userModels,
-              builder: (BuildContext context, userModels, Widget? child) {
-                return DrawerSectionView(
-                    mUser: userInfo,
-                    menuItems: menuItems,
-                    userModels: userModels);
-              },
-            );
-          },
-        ),
-        body: SingleChildScrollView(
-          child: Column(
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(
-                    left: marginMedium, top: marginMedium),
-                child: Selector<HomeBloc, UserVO?>(
-                  selector: (BuildContext context, userVO) => userVO.mUser,
-                  builder: (BuildContext context, mUser, Widget? child) {
-                    return UserNameAndPhoto(mUser);
-                  },
+    return ChangeNotifierProvider.value(
+      value: HomeBloc(),
+      child: Selector<HomeBloc, HomeBloc>(
+        selector: (BuildContext context, bloc) => bloc,
+        builder: (BuildContext context, bloc, Widget? child) {
+          return Scaffold(
+            key: bloc.drawer, //for Navigation Drawer Section
+            backgroundColor: Colors.white,
+            appBar: AppBar(
+              backgroundColor: Colors.white,
+              leading: GestureDetector(
+                onTap: () {
+                  //for Navigation Drawer Section
+                  bloc.openDrawer();
+                },
+                child: const Icon(
+                  Icons.menu,
+                  color: Colors.black,
                 ),
               ),
-              const SizedBox(height: marginMedium),
-              Selector<HomeBloc, List<DataVO>?>(
-                selector: (BuildContext context, dataVO) => dataVO.currentMovie,
-                builder: (BuildContext context, currentMovie, Widget? child) {
-                  return Selector<HomeBloc, String?>(
-                    selector: (BuildContext context, tokenString) =>
-                        tokenString.token,
-                    builder: (BuildContext context, token, Widget? child) {
-                      return HorizontalMovieListView(
-                          nowShowingText,
-                          currentMovie,
-                          (movieId) => _navigateToMovieDetailPage(
-                              context, movieId, token!));
+              actions: const [
+                Padding(
+                  padding: EdgeInsets.only(right: marginMedium),
+                  child: Icon(
+                    Icons.search,
+                    color: Colors.black,
+                    size: searchAndMenuIconSize,
+                  ),
+                ),
+              ],
+              elevation: 0,
+            ),
+
+            drawer: Consumer<HomeBloc>(
+                builder: (BuildContext context, bloc, Widget? child) {
+              return DrawerSectionView(
+                mUser: bloc.mUser,
+                menuItems: menuItems,
+                onTaplogOut: () => bloc.onTapLogOut(),
+              );
+            }),
+
+            body: SingleChildScrollView(
+              child: Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(
+                        left: marginMedium, top: marginMedium),
+                    child: Selector<HomeBloc, UserVO?>(
+                      shouldRebuild: (previous, next) => true,
+                      selector: (BuildContext context, userVO) => userVO.mUser,
+                      builder: (BuildContext context, mUser, Widget? child) {
+                        return UserNameAndPhoto(mUser);
+                      },
+                    ),
+                  ),
+                  const SizedBox(height: marginMedium),
+                  Selector<HomeBloc, List<DataVO>?>(
+                    shouldRebuild: (previous, next) => true,
+                    selector: (BuildContext context, dataVO) =>
+                        dataVO.currentMovie,
+                    builder:
+                        (BuildContext context, currentMovie, Widget? child) {
+                      return Selector<HomeBloc, String?>(
+                        selector: (BuildContext context, tokenString) =>
+                            tokenString.token,
+                        builder: (BuildContext context, token, Widget? child) {
+                          return HorizontalMovieListView(
+                              nowShowingText,
+                              currentMovie,
+                              (movieId) => _navigateToMovieDetailPage(
+                                  context, movieId, token!));
+                        },
+                      );
                     },
-                  );
-                },
-              ),
-              Selector<HomeBloc, List<DataVO>?>(
-                selector: (BuildContext context, dataVO) =>
-                    dataVO.comingSoonMovie,
-                builder:
-                    (BuildContext context, comingSoonMovie, Widget? child) {
-                  return Selector<HomeBloc, String?>(
-                    selector: (BuildContext context, tokenString) =>
-                        tokenString.token,
-                    builder: (BuildContext context, token, Widget? child) {
-                      return HorizontalMovieListView(
-                          comingSoonText,
-                          comingSoonMovie,
-                          (movieId) => _navigateToMovieDetailPage(
-                              context, movieId, token!));
+                  ),
+                  Selector<HomeBloc, List<DataVO>?>(
+                    shouldRebuild: (previous, next) => true,
+                    selector: (BuildContext context, dataVO) =>
+                        dataVO.comingSoonMovie,
+                    builder:
+                        (BuildContext context, comingSoonMovie, Widget? child) {
+                      return Selector<HomeBloc, String?>(
+                        selector: (BuildContext context, tokenString) =>
+                            tokenString.token,
+                        builder: (BuildContext context, token, Widget? child) {
+                          return HorizontalMovieListView(
+                              comingSoonText,
+                              comingSoonMovie,
+                              (movieId) => _navigateToMovieDetailPage(
+                                  context, movieId, token!));
+                        },
+                      );
                     },
-                  );
-                },
+                  ),
+                  const SizedBox(
+                    height: marginXSmall,
+                  ),
+                ],
               ),
-              const SizedBox(
-                height: marginXSmall,
-              ),
-            ],
-          ),
-        ),
+            ),
+          );
+        },
       ),
     );
   }
@@ -147,12 +147,12 @@ class DrawerSectionView extends StatelessWidget {
     Key? key,
     required this.mUser,
     required this.menuItems,
-    required this.userModels,
+    required this.onTaplogOut,
   }) : super(key: key);
 
   final UserVO? mUser;
   final List<String> menuItems;
-  final DataModels userModels;
+  final Function() onTaplogOut;
 
   @override
   Widget build(BuildContext context) {
@@ -188,19 +188,13 @@ class DrawerSectionView extends StatelessWidget {
                 const Spacer(),
                 GestureDetector(
                   onTap: () {
-                    userModels.logOut();
+                    onTaplogOut();
                     Navigator.pushAndRemoveUntil(
                         context,
                         MaterialPageRoute(
                           builder: (context) => const SplashScreen(),
                         ),
                         (route) => false);
-                    // Navigator.push(
-                    //   context,
-                    //   MaterialPageRoute(
-                    //     builder: (context) => const SplashScreen(),
-                    //   )
-                    // );
                   },
                   child: const ListTile(
                     leading: Icon(
@@ -236,18 +230,6 @@ class UserNameAndPhoto extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        // Container(
-        //   height: 50.0,
-        //   width: 50.0,
-        //   decoration:  const BoxDecoration(
-        //     shape: BoxShape.circle,
-        //     image: DecorationImage(fit: BoxFit.cover,
-        //       image:NetworkImage(
-        //         "https://6.viki.io/image/9c15adec53ea43dfa3e2ce0c77c83c1f.jpeg?s=900x600&e=t",
-        //       ),
-        //     ),
-        //   ),
-        // ),
         Container(
           child: (userVO?.profileImage != null)
               ? CircleAvatar(
