@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:student_app/bloc/ticket_bloc.dart';
-import 'package:student_app/data/model/data_models.dart';
-import 'package:student_app/data/model/data_models_impl.dart';
 import 'package:student_app/data/vos/data_vo.dart';
-import 'package:student_app/data/vos/voucher_vo.dart';
 import 'package:student_app/page/home_page.dart';
 import 'package:student_app/resources/dimens.dart';
 import 'package:student_app/resources/strings.dart';

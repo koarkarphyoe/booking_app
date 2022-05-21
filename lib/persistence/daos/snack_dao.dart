@@ -11,8 +11,7 @@ class SnackDao {
   SnackDao._internal();
 
   void saveAllSnack(List<SnackVO> snackList) async {
-    Map<int, SnackVO> snackMap = Map.fromIterable(snackList,
-        key: (snack) => snack.id, value: (snack) => snack);
+    Map<int, SnackVO> snackMap = { for (var snack in snackList) snack.id! : snack };
     await getSnackBox().putAll(snackMap);
   }
 

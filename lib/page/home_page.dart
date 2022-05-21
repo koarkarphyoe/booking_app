@@ -27,8 +27,7 @@ class HomePage extends StatelessWidget {
     ];
     return ChangeNotifierProvider.value(
       value: HomeBloc(),
-      child: Selector<HomeBloc, HomeBloc>(
-        selector: (BuildContext context, bloc) => bloc,
+      child: Consumer<HomeBloc>(
         builder: (BuildContext context, bloc, Widget? child) {
           return Scaffold(
             key: bloc.drawer, //for Navigation Drawer Section
@@ -57,7 +56,6 @@ class HomePage extends StatelessWidget {
               ],
               elevation: 0,
             ),
-
             drawer: Consumer<HomeBloc>(
                 builder: (BuildContext context, bloc, Widget? child) {
               return DrawerSectionView(

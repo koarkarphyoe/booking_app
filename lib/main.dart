@@ -59,7 +59,7 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: dataModels.isLogIn() ? HomePage() : const SplashScreen(),
+      home: dataModels.isLogIn() ? const HomePage() : const SplashScreen(),
     );
   }
 }

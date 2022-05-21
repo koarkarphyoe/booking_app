@@ -17,8 +17,7 @@ class MovieDao {
     // Map<int, DataVO> movieMap = {
     //   for (var movie in movieList) movie.id!.toInt(): movie
     // };
-    Map<int, DataVO> movieMap = Map.fromIterable(movieList,
-        key: (movie) => movie.id, value: (movie) => movie);
+    Map<int, DataVO> movieMap = { for (var movie in movieList) movie.id! : movie };
     await getMovieBox().putAll(movieMap);
   }
 

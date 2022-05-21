@@ -25,27 +25,25 @@ class HomeBloc extends ChangeNotifier {
     userModels.getNowShowingMovieFromDatabase()?.listen((nowShowingMovie) {
       currentMovie = nowShowingMovie;
       notifyListeners();
-    }).onError((error) {
-      debugPrint(error.toString());
     });
 
     //CommingSoonMovie
     userModels.getComingSoonMovieFromDatabase()?.listen((comingsoonMovie) {
       comingSoonMovie = comingsoonMovie;
       notifyListeners();
-    }).onError((error) => debugPrint(error.toString()));
+    });
 
     //UserInfo
     userModels.getUserInfoFromDatabase()?.listen((userInfo) {
       mUser = userInfo;
       notifyListeners();
-    }).onError((error) => debugPrint(error.toString()));
+    });
 
     //Token
     userModels.getTokenFromDatabase()?.listen((databaseToken) {
       token = databaseToken;
       notifyListeners();
-    }).onError((error) => debugPrint(error.toString()));
+    });
   }
 
   void onTapLogOut() {

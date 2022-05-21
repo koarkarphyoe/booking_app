@@ -3,7 +3,6 @@ import 'package:provider/provider.dart';
 import 'package:student_app/bloc/timeslots_bloc.dart';
 import 'package:student_app/data/vos/date_vo.dart';
 import 'package:student_app/data/vos/timeslotdata_vo.dart';
-import 'package:student_app/data/vos/timeslots_vo.dart';
 import 'package:student_app/resources/colors.dart';
 import 'package:student_app/resources/dimens.dart';
 import 'package:student_app/widgets/title_text_bold.dart';

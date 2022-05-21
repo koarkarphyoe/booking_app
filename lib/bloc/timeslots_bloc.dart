@@ -94,7 +94,7 @@ class TimeSlotsBloc extends ChangeNotifier {
               cinemaIdForMovieSeatsPage = cinema.cinemaId;
               cinemaTimeSlotsIdForMovieSeatsPage = timeSlotsId;
               print(
-                  "CinemaTimeSlotsID is =>${cinemaTimeSlotsIdForMovieSeatsPage}");
+                  "CinemaTimeSlotsID is =>$cinemaTimeSlotsIdForMovieSeatsPage");
             }
           },
         ).toList();

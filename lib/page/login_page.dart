@@ -114,11 +114,11 @@ class _LoginPageState extends State<LoginPage> {
       Navigator.pushAndRemoveUntil(
           context,
           MaterialPageRoute(
-            builder: (context) => HomePage(),
+            builder: (context) => const HomePage(),
           ),
           (route) => false);
     }).catchError((error) {
-      print("${error.toString()}");
+      print(error.toString());
     });
   }
 

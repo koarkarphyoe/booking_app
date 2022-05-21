@@ -11,8 +11,7 @@ class TimeSlotDao {
   TimeSlotDao._internal();
 
   void saveAllCinemasList(List<TimeSlotDataVO> timeSlot, String date) async {
-    Map<int, TimeSlotDataVO> timeSlotMap = Map.fromIterable(timeSlot,
-        key: (timeSlot) => timeSlot.cinemaId, value: (timeSlot) => timeSlot);
+    Map<int, TimeSlotDataVO> timeSlotMap = { for (var timeSlot in timeSlot) timeSlot.cinemaId! : timeSlot };
     await getCinemaBox().putAll(timeSlotMap);
   }
 

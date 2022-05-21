@@ -11,10 +11,7 @@ class PaymentMethodDao {
   PaymentMethodDao._internal();
 
   void saveAllPaymentMethod(List<PaymentMethodVO> paymentMehtodList) async {
-    Map<int, PaymentMethodVO> paymentMethodMap = Map.fromIterable(
-        paymentMehtodList,
-        key: (payment) => payment.id,
-        value: (payment) => payment);
+    Map<int, PaymentMethodVO> paymentMethodMap = { for (var payment in paymentMehtodList) payment.id! : payment };
     await getPaymentMethodBox().putAll(paymentMethodMap);
   }
 
